@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title></title>
+    <link rel="stylesheet" href="leaflet.css" />
+    <script src="leaflet.js"></script>
+    <script src="leaflet-providers.js"></script>
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.2/html5shiv.js"></script>
+      <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+  </head>
+  <body style="padding:0; margin:0;">
+    <div style="height: 100vh; " id="map"></div>
+    <script>
+      // var map = L.map('map').setView([39.2743511, -76.60643290000002], 16);
+      // var map = L.map('map').setView([37.88870327915568, -76.81609005707618], 16);
+      // var map = L.map('map').setView([0, 0], 2);
+      // var marker = L.marker([39.2743511, -76.60643290000002]).addTo(map);
+      var bounds = new L.LatLngBounds(
+        new L.LatLng(37.888704, -76.816090),
+        new L.LatLng(37.891677, -76.811757));
+      var map = L.map('map').fitBounds(bounds);
+      var layer = L.tileLayer.provider('Esri.WorldImagery').addTo(map);
+      var GeoTiff = L.tileLayer('originalTiles/{z}/{x}/{y}.png', {
+        maxZoom: 20,
+        minZoom:16,
+        tms: true,
+        opacity:1,
+      }).addTo(map);
+      var latlngs = [];
+      // var polyline = L.polyline(latlngs, {color: 'red'}).addTo(map);
+      
+
+
+    </script>
+  </body>
+</html>

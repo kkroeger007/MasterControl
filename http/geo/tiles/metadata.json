@@ -1,0 +1,13 @@
+{
+  "name": "tiles",
+  "version": "1.0.0",
+  "description": "",
+  "type": "overlay",
+  "format": "png",
+  "minzoom": "16",
+  "maxzoom": "20",
+  "bounds": "-76.81609006,37.88870390,-76.81175691,37.89167698",
+  "scale": "1",
+  "profile": "mercator"
+}
+<BoundingBox minx="37.88792495232364" miny="-76.81609005707617" maxx="37.89167697801283" maxy="-76.81175729778016"/>
