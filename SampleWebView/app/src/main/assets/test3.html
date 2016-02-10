@@ -13,6 +13,7 @@
     <script type="text/javascript" src="leafletJS/mapHandling.js"></script>
     <script type="text/javascript" src="leafletJS/markerHandling.js"></script>
     <script type="text/javascript" src="leafletJS/serverMaps.js"></script>
+    <script type="text/javascript" src="leafletJS/userHandling.js"></script>
 </head>
 <body style="padding:0; margin:0;">
 <div style="height: 100vh; " id="map"></div>
@@ -22,7 +23,7 @@
         new L.LatLng(37.891677, -76.811757));
       var map = L.map('map').fitBounds(bounds);
       map.options.maxZoom = 20;
-      map.options.minZoom = 18;
+      map.options.minZoom = 1;
 
       var layer = L.tileLayer.provider('Esri.WorldImagery').addTo(map);
 
@@ -34,7 +35,6 @@
         tms: true,
         opacity:1,
       }).addTo(map);
-
       map.on('click', parseClickEvent(addMarkerAtLocation));
       androidDoneLoading();
     </script>

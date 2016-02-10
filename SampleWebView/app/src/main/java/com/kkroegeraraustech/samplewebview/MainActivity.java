@@ -5,18 +5,22 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.Application;
 import android.content.ClipData;
+import android.content.ComponentName;
 import android.content.ContentResolver;
 import android.content.ContentUris;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.ServiceConnection;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
+import android.location.Location;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.IBinder;
 import android.preference.PreferenceManager;
 import android.provider.DocumentsContract;
 import android.provider.MediaStore;
@@ -60,8 +64,90 @@ import java.util.Collections;
 import java.util.List;
 
 import com.kkroegeraraustech.samplewebview.StorageHelper;
+import com.kkroegeraraustech.samplewebview.services.GPSTrackingService;
 
 public class MainActivity extends AppCompatActivity {
+
+    WebAppInterface mWebAppInterface;
+    /**
+     * Create a GPS Service Listener that updates the user location
+     */
+    private boolean mGPSServiceBounded = false;
+    private GPSTrackingService mGPSTrackingService = new GPSTrackingService(MainActivity.this);
+    private Location mCurrentLOC;
+    public ServiceConnection mConnectionGPS = new ServiceConnection() {
+        @Override
+        public void onServiceConnected(ComponentName name, IBinder service) {
+            // We've bound to LocalService, cast the IBinder and get LocalService instance
+            GPSTrackingService.LocalBinder binder = (GPSTrackingService.LocalBinder) service;
+            mGPSTrackingService = binder.getService();
+            mGPSServiceBounded = true;
+            mGPSTrackingService.setOnServiceListener(mGPSListener);
+        }
+
+        @Override
+        public void onServiceDisconnected(ComponentName name) {
+            mGPSTrackingService = null;
+            mGPSServiceBounded = false;
+        }
+    };
+
+
+    private GPSTrackingService.UpdateGPSListener mGPSListener = new GPSTrackingService.UpdateGPSListener() {
+        @Override
+        public void onUpdateLocation(final Location newLocation) {
+            if(newLocation != null) {
+                mCurrentLOC.setLatitude(newLocation.getLatitude());
+                mCurrentLOC.setLongitude(newLocation.getLongitude());
+                mCurrentLOC.setAccuracy(newLocation.getAccuracy());
+                mCurrentLOC.setAltitude(newLocation.getAltitude());
+                mCurrentLOC.setBearing(newLocation.getBearing());
+                testThis(newLocation);
+            }
+        }
+    };
+    public void testThis(Location testLocation){
+        mWebAppInterface.updateUserLocation(testLocation);
+    }
+
+    private void doBindServices() {
+        Intent intent = new Intent(this, GPSTrackingService.class);
+        mGPSServiceBounded = bindService(intent, mConnectionGPS, Context.BIND_AUTO_CREATE);
+    }
+
+    private void doUnbindService()
+    {
+        if (mGPSServiceBounded)
+        {
+            // Detach our existing connection.
+            unbindService(mConnectionGPS);
+            mGPSServiceBounded = false;
+        }
+    }
+
+    protected void onResume() {
+        super.onResume();
+        if(mGPSServiceBounded) {
+            startService(new Intent(this, GPSTrackingService.class));
+        }
+    }
+    @Override
+    protected void onPause() {
+        super.onPause();
+        doUnbindService();
+    }
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        //doUnbindService();
+    }
+
+    @Override
+    protected void onStart(){
+        super.onStart();
+        doBindServices();
+    }
+
 
     SharedPreferences mSharedPreferences;
     String URI;
@@ -221,10 +307,11 @@ public class MainActivity extends AppCompatActivity {
     EditText ed1;
 
 
-
     @SuppressLint("SetJavaScriptEnabled")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        mWebAppInterface = new WebAppInterface(this);
+        mCurrentLOC = new Location("");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         verifyStoragePermissions(this);
@@ -308,12 +395,22 @@ public class MainActivity extends AppCompatActivity {
 
     public class WebAppInterface{
         Context mContext;
-
+        float testFloat;
         /** Instantiate the interface and set the context */
         WebAppInterface(Context c) {
             mContext = c;
         }
 
+        @JavascriptInterface
+        public void updateUserLocation(final Location userLocation){
+            mWebView.post(new Runnable() {
+                @Override
+                public void run() {
+                    String locString ="javascript:addMarkerAtLocation(["+ String.valueOf(userLocation.getLatitude()) + "," +String.valueOf(userLocation.getLongitude())+ "])";
+                    mWebView.loadUrl(locString);
+                }
+            });
+        }
         @JavascriptInterface
         public void doneLoading(){
             mWebView.post(new Runnable() {
@@ -334,7 +431,7 @@ public class MainActivity extends AppCompatActivity {
 
         @JavascriptInterface
         public void returnResult(String dialogMsg){
-            Log.v(null,dialogMsg);
+            Log.v(null, dialogMsg);
         }
     }
 }
