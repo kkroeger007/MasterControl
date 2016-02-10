@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title></title>
+
+    <!-- **** CSS **** -->
+
+    <!-- Materialize CSS -->
+    <link rel="stylesheet" href="css/materialize/materialize.min.css" />
+    <!-- Ionicons -->
+    <link rel="stylesheet" href="css/ionicons/ionicons.min.css" />
+
+    <!-- jQuery-ui CSS -->
+    <link rel="stylesheet" href="jquery-ui/themes/humanity/jquery-ui.min.css" />
+    <!-- Slider CSS -->
+    <!-- <link rel="stylesheet" href="css/jquery-ui-slider-pips/jquery-ui-slider-pips.css" /> -->
+    <link rel="stylesheet" href="jQRangeSlider-5.7.2/css/iThing-min.css" type="text/css" />
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="css/font-awesome-4.5.0/css/font-awesome.min.css" />
+
+    <!-- Leaflet CSS -->
+    <link rel="stylesheet" href="leaflet.css" />
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="css/overlay.css" />
+
+
+    <!-- **** JavaScript **** -->
+
+    <!-- jQuery and jQuery-UI JS -->
+    <script src="js/jquery/dist/jquery.min.js"></script>
+    <script src="jquery-ui/jquery-ui.min.js"></script>
+
+
+    <!-- Leaflet JS -->
+    <script src="leaflet.js"></script>
+    <script src="leaflet-providers.js"></script>
+
+    <!-- Slider JS -->
+    <!-- <script src="js/jquery-ui-slider-pips/jquery-ui-slider-pips.min.js"></script> -->
+    <script src="jQRangeSlider-5.7.2/jQDateRangeSlider-min.js"></script>
+
+    <!-- Materialize JS -->
+    <script src="js/materialize/materialize.min.js"></script>
+
+
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.2/html5shiv.js"></script>
+      <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+</head>
+
+
+<body style="padding:0; margin:0;">
+    <div style="height: 100vh; " id="map"></div>
+
+    <!-- Date Slider -->
+    <div class="slider-container">
+        <div class="overlay">
+            <div id="overlayButton" class="button-overlay show-button-overlay">
+                <!-- <button id="showOverlay" onclick="toggleSliderDisplay()">Click Me</button> -->
+                <a class="waves-effect waves-light btn grey lighten-5 semi-circle-button" onclick="toggleSliderDisplay()"><i class="icon ion-android-calendar custom-icon-color"></i></a>
+            </div>
+            <div class="overlay-container">
+                <div id="slider" class="slider overlay-slider"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- My Location Button -->
+    <div class="locate-container">
+        <!-- <a class="waves-effect waves-light btn-floating grey lighten-5" onclick="centerOnLocation()"><i class="icon ion-android-locate custom-icon-color"></i></a> -->
+        <a class="waves-effect waves-light btn-floating grey lighten-5" onclick="centerOnLocation()"><i class="icon ion-android-locate custom-icon-color"></i></a>
+
+    </div>
+
+
+
+
+    <!-- Page Javascript (TODO: Move to its own JS file) -->
+    <script>
+        // var map = L.map('map').setView([39.2743511, -76.60643290000002], 16);
+        // var map = L.map('map').setView([37.88870327915568, -76.81609005707618], 16);
+        // var map = L.map('map').setView([0, 0], 2);
+        // var marker = L.marker([39.2743511, -76.60643290000002]).addTo(map);
+        var bounds = new L.LatLngBounds(
+            new L.LatLng(37.888704, -76.816090),
+            new L.LatLng(37.891677, -76.811757));
+        var map = L.map('map').fitBounds(bounds);
+        var layer = L.tileLayer.provider('Esri.WorldImagery').addTo(map);
+        var GeoTiff = L.tileLayer('originalTiles/{z}/{x}/{y}.png', {
+            maxZoom: 20,
+            minZoom: 16,
+            tms: true,
+            opacity: 1,
+        }).addTo(map);
+        var latlngs = [];
+        // var polyline = L.polyline(latlngs, {color: 'red'}).addTo(map);
+    </script>
+
+
+    <!-- Button Scripts -->
+    <script>
+        function toggleSliderDisplay() {
+            if ($('#overlayButton').hasClass('show-button-overlay')) {
+                $('#overlayButton').removeClass('show-button-overlay');
+                $('#overlayButton').addClass('hide-button-overlay');
+
+                $('.overlay-slider').css('display', 'none');
+                $('.overlay-container').css('display', 'none');
+            } else {
+                $('#overlayButton').removeClass('hide-button-overlay');
+                $('#overlayButton').addClass('show-button-overlay');
+
+                $('.overlay-slider').css('display', '');
+                $('.overlay-container').css('display', '');
+            }
+        }
+
+        function centerOnLocation() {
+            alert('TODO: Center on Location...')
+        }
+    </script>
+
+
+    <script>
+        $("#slider").dateRangeSlider({
+            bounds: {
+                min: new Date(2016, 0, 1), // YYYY, M, D
+                max: new Date(2016, 1, 9) // YYYY, M, D
+            },
+            defaultValues: {
+                min: new Date(2016, 0, 15),
+                max: new Date(2016, 1, 1)
+            },
+            valueLabels: 'show', // 'show' for default to on, 'change' for on change
+            delayOut: 4000,
+            formatter: function(val) {
+                var days = val.getDate(),
+                    month = val.getMonth() + 1,
+                    year = val.getFullYear();
+                return month + " / " + days + " / " + year;
+            }
+        });
+
+
+        $("#slider").bind("valuesChanged", function(e, data){
+          alert("Values just changed. min: " + data.values.min + " max: " + data.values.max);
+        });
+    </script>
+
+</body>
+
+</html>

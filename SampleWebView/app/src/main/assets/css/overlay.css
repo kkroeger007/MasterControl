@@ -1,0 +1,59 @@
+body {
+    overflow: hidden;
+}
+.custom-icon-color {
+    font-size: 2em !important;
+    color: black !important;
+}
+.overlay-slider {
+    position: relative;
+    top: 35%;
+    left: 2%;
+    width: 95%;
+    transform: translateY(-50%);
+}
+.overlay-container {
+    height: 13vh;
+    background: rgba(25, 25, 25, .5);
+    border-top-right-radius: 2em;
+    border-top-left-radius: 2em;
+    flex: 1;
+}
+.slider-container {
+    /*position: absolute;*/
+    height: 100vh;
+    width: 100%;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    top: 0;
+}
+.overlay {
+    left: 0;
+    right: 0;
+    bottom: 0;
+    margin: auto;
+    width: 95%;
+    position: absolute;
+}
+
+.button-overlay {
+    text-align: center;
+}
+
+.semi-circle-button {
+    border-top-right-radius: 5em;
+    border-top-left-radius: 5em;
+    flex: 1;
+}
+
+#showOverlay {
+    margin: 0 auto;
+    display: block;
+}
+
+.locate-container {
+    position:absolute;
+    top: 5em;
+    left: 0.3em;
+}
