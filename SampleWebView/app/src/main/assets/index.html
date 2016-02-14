@@ -48,6 +48,14 @@
     <!-- Materialize JS -->
     <script src="js/materialize/materialize.min.js"></script>
 
+    <!-- Custom JS -->
+    <script type="text/javascript" src="parseJS/parseLeaflet.js"></script>
+    <script type="text/javascript" src="androidJS/callbackAndroid.js"></script>
+    <script type="text/javascript" src="leafletJS/mapHandling.js"></script>
+    <script type="text/javascript" src="leafletJS/markerHandling.js"></script>
+    <script type="text/javascript" src="leafletJS/serverMaps.js"></script>
+    <script type="text/javascript" src="leafletJS/userHandling.js"></script>
+
 
 
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
@@ -68,7 +76,7 @@
         <div class="overlay">
             <div id="overlayButton" class="button-overlay show-button-overlay">
                 <!-- <button id="showOverlay" onclick="toggleSliderDisplay()">Click Me</button> -->
-                <a class="waves-effect waves-light btn grey lighten-5 semi-circle-button" onclick="toggleSliderDisplay()"><i class="icon ion-android-calendar custom-icon-color"></i></a>
+                <a class="waves-effect waves-light btn grey lighten-5 semi-circle-button" onclick="toggleSliderDisplay()"><i class="icon ion-android-calendar custom-date-icon-color"></i></a>
             </div>
             <div class="overlay-container">
                 <div id="slider" class="slider overlay-slider"></div>
@@ -79,7 +87,7 @@
     <!-- My Location Button -->
     <div class="locate-container">
         <!-- <a class="waves-effect waves-light btn-floating grey lighten-5" onclick="centerOnLocation()"><i class="icon ion-android-locate custom-icon-color"></i></a> -->
-        <a class="waves-effect waves-light btn-floating grey lighten-5" onclick="centerOnLocation()"><i class="icon ion-android-locate custom-icon-color"></i></a>
+        <a class="waves-effect waves-light btn-floating grey lighten-5" onclick="centerOnLocation()"><i class="icon ion-android-locate custom-locate-icon-color"></i></a>
 
     </div>
 
@@ -96,6 +104,8 @@
             new L.LatLng(37.888704, -76.816090),
             new L.LatLng(37.891677, -76.811757));
         var map = L.map('map').fitBounds(bounds);
+        map.options.maxZoom = 20;
+        map.options.minZoom = 1;
         var layer = L.tileLayer.provider('Esri.WorldImagery').addTo(map);
         var GeoTiff = L.tileLayer('originalTiles/{z}/{x}/{y}.png', {
             maxZoom: 20,
@@ -104,8 +114,22 @@
             opacity: 1,
         }).addTo(map);
         var latlngs = [];
+
+        map.on('click', parseClickEvent(addMarkerAtLocation));
+        androidDoneLoading();
+
         // var polyline = L.polyline(latlngs, {color: 'red'}).addTo(map);
     </script>
+
+    <script type="text/javascript">
+    function showAndroidToast(toastmsg) {
+        Android.showToast(toastmsg);
+    }
+
+ function moveToScreenTwo() {
+        Android.moveToNextScreen();
+    }
+</script>
 
 
     <!-- Button Scripts -->
@@ -154,7 +178,7 @@
 
 
         $("#slider").bind("valuesChanged", function(e, data){
-          alert("Values just changed. min: " + data.values.min + " max: " + data.values.max);
+          //alert("Values just changed. min: " + data.values.min + " max: " + data.values.max);
         });
     </script>
 

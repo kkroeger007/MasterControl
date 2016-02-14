@@ -48,5 +48,55 @@
         Android.moveToNextScreen();
     }
 </script>
+
+<!-- Button Scripts -->
+<script>
+        function toggleSliderDisplay() {
+            if ($('#overlayButton').hasClass('show-button-overlay')) {
+                $('#overlayButton').removeClass('show-button-overlay');
+                $('#overlayButton').addClass('hide-button-overlay');
+
+                $('.overlay-slider').css('display', 'none');
+                $('.overlay-container').css('display', 'none');
+            } else {
+                $('#overlayButton').removeClass('hide-button-overlay');
+                $('#overlayButton').addClass('show-button-overlay');
+
+                $('.overlay-slider').css('display', '');
+                $('.overlay-container').css('display', '');
+            }
+        }
+
+        function centerOnLocation() {
+            alert('TODO: Center on Location...')
+        }
+    </script>
+
+
+<script>
+        $("#slider").dateRangeSlider({
+            bounds: {
+                min: new Date(2016, 0, 1), // YYYY, M, D
+                max: new Date(2016, 1, 9) // YYYY, M, D
+            },
+            defaultValues: {
+                min: new Date(2016, 0, 15),
+                max: new Date(2016, 1, 1)
+            },
+            valueLabels: 'show', // 'show' for default to on, 'change' for on change
+            delayOut: 4000,
+            formatter: function(val) {
+                var days = val.getDate(),
+                    month = val.getMonth() + 1,
+                    year = val.getFullYear();
+                return month + " / " + days + " / " + year;
+            }
+        });
+
+
+        $("#slider").bind("valuesChanged", function(e, data){
+          alert("Values just changed. min: " + data.values.min + " max: " + data.values.max);
+        });
+    </script>
 </body>
 </html>

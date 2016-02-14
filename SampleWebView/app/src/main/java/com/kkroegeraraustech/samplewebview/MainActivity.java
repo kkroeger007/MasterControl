@@ -300,7 +300,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     String tmpString = "<!doctype html>\n<html>\n<head>\n\t</head>\n\t<body>\n\t\t<center>\n\t\t\t<div id='msg'>Hello World!</div>\n\t\t</center>\n\t</body>\n</html>";
-    private static final String URL = "file:///android_asset/test3.html";
+    private static final String URL = "file:///android_asset/index.html";
     private WebView mWebView;
 
     //Button b1;

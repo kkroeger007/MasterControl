@@ -1,13 +1,17 @@
 body {
     overflow: hidden;
 }
-.custom-icon-color {
+.custom-date-icon-color {
+    font-size: 3em !important;
+    color: black !important;
+}
+.custom-locate-icon-color {
     font-size: 2em !important;
     color: black !important;
 }
 .overlay-slider {
     position: relative;
-    top: 35%;
+    top: 40%;
     left: 2%;
     width: 95%;
     transform: translateY(-50%);
@@ -44,6 +48,8 @@ body {
 .semi-circle-button {
     border-top-right-radius: 5em;
     border-top-left-radius: 5em;
+    height: 3.5em;
+    //height: 50px;
     flex: 1;
 }
 
@@ -53,7 +59,7 @@ body {
 }
 
 .locate-container {
-    position:absolute;
-    top: 5em;
-    left: 0.3em;
+    position: absolute;
+    top: 6em;
+    left: 0.6em;
 }
