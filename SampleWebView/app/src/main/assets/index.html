@@ -103,7 +103,7 @@
         <!-- Layers Button -->
         <div class="layers-container">
             <!-- <a class="waves-effect btn-floating btn-large grey lighten-5"><i class="icon ion-social-buffer float-large-custom-icon-color"></i></a> -->
-            <a id="layersButton" class="dropdown-button waves-effect btn-floating btn-large grey lighten-5" data-gutter="110" data-activates='dropdown1'><i class="icon ion-social-buffer float-large-custom-icon-color"></i></a>
+            <a id="layersButton" class="dropdown-button waves-effect btn-floating btn-large grey lighten-5" data-activates='dropdown1'><i class="icon ion-social-buffer float-large-custom-icon-color"></i></a>
             <ul id='dropdown1' class='dropdown-content keep_open'>
                 <form action="#" style="padding: 5px" class="keep_open">
                     <p>
@@ -248,6 +248,15 @@
             $(document).on('click', '#layersButton', function(e) {
                 document.getElementById("dropdown1").style.width = "150px";
             });
+
+            $('.dropdown-button').dropdown({
+              inDuration: 100,
+              outDuration: 100,
+              gutter: 110, // Spacing from edge
+              alignment: 'left' // Displays dropdown with edge aligned to the left of button
+            }
+          );
+
         });
     </script>
 
