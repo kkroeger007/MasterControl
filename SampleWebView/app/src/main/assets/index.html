@@ -23,19 +23,20 @@
     <!-- Font Awesome -->
     <link rel="stylesheet" href="css/font-awesome-4.5.0/css/font-awesome.min.css" />
 
+    <!-- Slick CSS -->
+    <link rel="stylesheet" type="text/css" href="slick/slick.css" />
+    <link rel="stylesheet" type="text/css" href="slick/slick-theme.css" />
+
     <!-- Leaflet CSS -->
     <link rel="stylesheet" href="leaflet.css" />
 
     <!-- Custom CSS -->
     <link rel="stylesheet" href="css/overlay.css" />
 
-
     <!-- **** JavaScript **** -->
-
     <!-- jQuery and jQuery-UI JS -->
     <script src="js/jquery/dist/jquery.min.js"></script>
     <script src="jquery-ui/jquery-ui.min.js"></script>
-
 
     <!-- Leaflet JS -->
     <script src="leaflet.js"></script>
@@ -45,10 +46,11 @@
     <!-- <script src="js/jquery-ui-slider-pips/jquery-ui-slider-pips.min.js"></script> -->
     <script src="jQRangeSlider-5.7.2/jQDateRangeSlider-min.js"></script>
 
+    <!-- Slick JS -->
+    <script src="slick/slick.min.js"></script>
+
     <!-- Materialize JS -->
     <script src="js/materialize/materialize.min.js"></script>
-
-
 
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -61,27 +63,85 @@
 
 
 <body style="padding:0; margin:0;">
+
+    <!-- Map -->
     <div style="height: 100vh; " id="map"></div>
 
-    <!-- Date Slider -->
-    <div class="slider-container">
-        <div class="overlay">
-            <div id="overlayButton" class="button-overlay show-button-overlay">
-                <!-- <button id="showOverlay" onclick="toggleSliderDisplay()">Click Me</button> -->
-                <a class="waves-effect waves-light btn grey lighten-5 semi-circle-button" onclick="toggleSliderDisplay()"><i class="icon ion-android-calendar custom-icon-color"></i></a>
-            </div>
-            <div class="overlay-container">
-                <div id="slider" class="slider overlay-slider"></div>
+
+    <div class="top-container">
+        <!-- Menu Button -->
+        <!-- <div class="sidebar-container">
+            <a class="waves-effect btn btn-large grey lighten-5"><i class="icon ion-social-buffer float-large-custom-icon-color"></i></a>
+        </div> -->
+        <!-- <div class="sidebar-container">
+
+
+        </div> -->
+
+        <!-- Date Slider Button -->
+        <div class="date-slider-button-container">
+            <a id="dateOverlayButton" class="waves-effect btn-floating btn-large grey lighten-5 hide-button-overlay" onclick="toggleDateSlider()"><i class="icon ion-android-calendar float-large-custom-icon-color"></i></a>
+        </div>
+        <!-- Date Slider -->
+        <div class="date-slider-container">
+            <div class="date-overlay">
+                <div class="date-overlay-container">
+                    <div id="slider" class="slider date-overlay-slider"></div>
+                </div>
             </div>
         </div>
-    </div>
-
-    <!-- My Location Button -->
-    <div class="locate-container">
-        <!-- <a class="waves-effect waves-light btn-floating grey lighten-5" onclick="centerOnLocation()"><i class="icon ion-android-locate custom-icon-color"></i></a> -->
-        <a class="waves-effect waves-light btn-floating grey lighten-5" onclick="centerOnLocation()"><i class="icon ion-android-locate custom-icon-color"></i></a>
 
     </div>
+
+
+    <div class="bottom-container">
+        <!-- Layers Button -->
+        <div class="layers-container">
+            <!-- <a class="waves-effect btn-floating btn-large grey lighten-5"><i class="icon ion-social-buffer float-large-custom-icon-color"></i></a> -->
+            <a id="layersButton" class="dropdown-button waves-effect btn-floating btn-large grey lighten-5" data-gutter="110" data-activates='dropdown1'><i class="icon ion-social-buffer float-large-custom-icon-color"></i></a>
+            <ul id='dropdown1' class='dropdown-content keep_open'>
+                <form action="#" style="padding: 5px" class="keep_open">
+                    <p>
+                        <input name="layers-group" class="with-gap" type="radio" id="rgb" onclick="toggleLayers('rgb')" />
+                        <label for="rgb">RGB</label>
+                    </p>
+                    <p>
+                        <input name="layers-group" class="with-gap" type="radio" id="ndvi" onclick="toggleLayers('ndvi')" />
+                        <label for="ndvi">NDVI</label>
+                    </p>
+                    <p>
+                        <input name="layers-group" class="with-gap" type="radio" id="groundSample" onclick="toggleLayers('groundSample')" />
+                        <label for="groundSample">Ground Sample</label>
+                    </p>
+                </form>
+            </ul>
+        </div>
+
+        <!-- My Location Button -->
+        <div class="locate-container">
+            <a class="waves-effect btn-floating btn-large grey lighten-5" onclick="centerOnLocation()"><i class="icon ion-android-locate float-large-custom-icon-color"></i></a>
+        </div>
+
+        <!-- Info Collapse -->
+        <div class="info-collapse-container">
+            <ul class="collapsible" data-collapsible="accordion">
+                <li>
+                    <div class="collapsible-header waves-effect grey lighten-5"><i class="icon ion-information-circled float-custom-icon-color"></i>
+                        <font size="5">Info</font>
+                    </div>
+                    <div class="collapsible-body">
+                        <p>
+                            Field Name? Other field data? Last flight? Typical output?
+                        </p>
+                    </div>
+                </li>
+            </ul>
+        </div>
+
+    </div>
+
+
+
 
 
 
@@ -95,7 +155,9 @@
         var bounds = new L.LatLngBounds(
             new L.LatLng(37.888704, -76.816090),
             new L.LatLng(37.891677, -76.811757));
-        var map = L.map('map').fitBounds(bounds);
+        var map = L.map('map', {
+            zoomControl: false
+        }).fitBounds(bounds);
         var layer = L.tileLayer.provider('Esri.WorldImagery').addTo(map);
         var GeoTiff = L.tileLayer('originalTiles/{z}/{x}/{y}.png', {
             maxZoom: 20,
@@ -107,28 +169,68 @@
         // var polyline = L.polyline(latlngs, {color: 'red'}).addTo(map);
     </script>
 
-
-    <!-- Button Scripts -->
     <script>
-        function toggleSliderDisplay() {
-            if ($('#overlayButton').hasClass('show-button-overlay')) {
-                $('#overlayButton').removeClass('show-button-overlay');
-                $('#overlayButton').addClass('hide-button-overlay');
+        function centerOnLocation() {
+            alert('TODO: Center on Location...');
+        }
+    </script>
 
-                $('.overlay-slider').css('display', 'none');
-                $('.overlay-container').css('display', 'none');
+
+    <script>
+        function toggleDateSlider() {
+
+            var display = $('.date-overlay-container').css("display");
+
+            if (display === 'block') {
+                $('#dateOverlayButton').removeClass('show-button-overlay');
+                $('#dateOverlayButton').addClass('hide-button-overlay');
+
+                $('.date-overlay-slider').css('display', 'none');
+                $('.date-overlay-container').css('display', 'none');
+
             } else {
-                $('#overlayButton').removeClass('hide-button-overlay');
-                $('#overlayButton').addClass('show-button-overlay');
+                $('#dateOverlayButton').removeClass('hide-button-overlay');
+                $('#dateOverlayButton').addClass('show-button-overlay');
 
-                $('.overlay-slider').css('display', '');
-                $('.overlay-container').css('display', '');
+                $('.date-overlay-slider').css('display', '');
+                $('.date-overlay-container').css('display', '');
+
             }
         }
+    </script>
 
-        function centerOnLocation() {
-            alert('TODO: Center on Location...')
+    <script>
+        function toggleLayers(layer)
+        {
+            // layer is passed as a string. So to do various things for each layer,
+            //      put code in corresponding if statement.
+            if(layer === 'rgb')
+            {
+                alert('rgb');
+            }
+            else if(layer === 'ndvi')
+            {
+                alert('ndvi');
+            }
+            else if(layer === 'groundSample')
+            {
+                alert('groundSample');
+            }
+
         }
+    </script>
+
+
+    <script>
+        $(document).ready(function() {
+            // $(document).on('click', '#dropdown1', function(e) {
+            //     $(this).hasClass('keep_open') && e.stopPropagation(); // This replace if conditional.
+            // });
+
+            $(document).on('click', '#layersButton', function(e) {
+                document.getElementById("dropdown1").style.width = "150px";
+            });
+        });
     </script>
 
 
@@ -136,11 +238,11 @@
         $("#slider").dateRangeSlider({
             bounds: {
                 min: new Date(2016, 0, 1), // YYYY, M, D
-                max: new Date(2016, 1, 9) // YYYY, M, D
+                max: new Date() // YYYY, M, D
             },
             defaultValues: {
                 min: new Date(2016, 0, 15),
-                max: new Date(2016, 1, 1)
+                max: new Date()
             },
             valueLabels: 'show', // 'show' for default to on, 'change' for on change
             delayOut: 4000,
@@ -153,10 +255,11 @@
         });
 
 
-        $("#slider").bind("valuesChanged", function(e, data){
-          alert("Values just changed. min: " + data.values.min + " max: " + data.values.max);
+        $("#slider").bind("valuesChanged", function(e, data) {
+            alert("Values just changed. min: " + data.values.min + " max: " + data.values.max);
         });
     </script>
+
 
 </body>
 
