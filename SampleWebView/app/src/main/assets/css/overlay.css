@@ -1,11 +1,10 @@
 /* ************ */
-
-
 /* General CSS */
 
 body {
     overflow: hidden;
 }
+
 .float-large-custom-icon-color {
     font-size: 2.5em !important;
     color: black !important;
@@ -16,8 +15,6 @@ body {
 }
 
 /* ************ */
-
-
 /* Top Container CSS */
 /*.top-container {
     position: absolute;
@@ -70,8 +67,6 @@ body {
 
 
 /* ************ */
-
-
 /* Bottom Container CSS */
 
 .bottom-container {
@@ -82,8 +77,6 @@ body {
 }
 
 /* ************ */
-
-
 /* Layers CSS */
 
 .layers-container {
@@ -97,8 +90,6 @@ body {
 }
 
 /* ************ */
-
-
 /* "Locate Me" CSS */
 
 .locate-container {
@@ -107,8 +98,6 @@ body {
 }
 
 /* ************ */
-
-
 /* Info Bar CSS */
 
 .collapsible-body {
