@@ -6,6 +6,7 @@ package com.kkroegeraraustech.samplewebview.services;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentSender;
 import android.location.Location;
 import android.os.Binder;
 import android.os.Bundle;
@@ -17,9 +18,15 @@ import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.GoogleApiClient.ConnectionCallbacks;
 import com.google.android.gms.common.api.GoogleApiClient.OnConnectionFailedListener;
+import com.google.android.gms.common.api.PendingResult;
+import com.google.android.gms.common.api.Status;
 import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.location.LocationSettingsRequest;
+import com.google.android.gms.location.LocationSettingsResult;
+import com.google.android.gms.location.LocationSettingsStates;
+import com.google.android.gms.location.LocationSettingsStatusCodes;
 import com.kkroegeraraustech.samplewebview.R;
 
 import java.text.DateFormat;
@@ -43,6 +50,25 @@ public class GPSTrackingService extends Service implements GoogleApiClient.Conne
         return mIBinder;
     }
 
+    @Override
+    public boolean onUnbind(Intent intent) {
+        stopLocationUpdates();
+        mGoogleApiClient.disconnect();
+        return false;
+        //return super.onUnbind(intent);
+    }
+
+    @Override
+    public void onRebind(Intent intent) {
+        super.onRebind(intent);
+    }
+
+    @Override
+    public void onDestroy() {
+        stopLocationUpdates();
+        super.onDestroy();
+    }
+
     public class LocalBinder extends Binder {
         public GPSTrackingService getService(){
             return GPSTrackingService.this;
@@ -54,13 +80,7 @@ public class GPSTrackingService extends Service implements GoogleApiClient.Conne
         mHandler = handler;
     }
 
-    @Override
-    public boolean onUnbind(Intent intent) {
-        stopLocationUpdates();
-        mGoogleApiClient.disconnect();
-        return false;
-        //return super.onUnbind(intent);
-    }
+
 
     public void setOnServiceListener(UpdateGPSListener serviceListener) {
         mOnServiceListenerGPS_Remote = serviceListener;
@@ -133,6 +153,8 @@ public class GPSTrackingService extends Service implements GoogleApiClient.Conne
             mCurrentLocation = new Location("");
             mLastUpdateTime = "";
             buildGoogleApiClient();
+//            forceStopLocationUpdates();
+//            mGoogleApiClient.disconnect();
             mGoogleApiClient.connect();
         } catch (Exception e) {
             e.printStackTrace();
@@ -140,11 +162,7 @@ public class GPSTrackingService extends Service implements GoogleApiClient.Conne
         super.onCreate();
     }
 
-    @Override
-    public void onDestroy() {
-        stopLocationUpdates();
-        super.onDestroy();
-    }
+
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
@@ -204,7 +222,49 @@ public class GPSTrackingService extends Service implements GoogleApiClient.Conne
         // application will never receive updates faster than this value.
         mLocationRequest.setFastestInterval(TIME_UPDATE_FASTEST_INTERVAL);
         mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+
+//        LocationSettingsRequest.Builder builder = new LocationSettingsRequest.Builder()
+//                .addLocationRequest(mLocationRequest);
+//
+//        //**************************
+//        builder.setAlwaysShow(true); //this is the key ingredient
+//        //**************************
+//
+//        PendingResult<LocationSettingsResult> result =
+//                LocationServices.SettingsApi.checkLocationSettings(mGoogleApiClient, builder.build());
+//        result.setResultCallback(new ResultCallback<LocationSettingsResult>() {
+//            @Override
+//            public void onResult(LocationSettingsResult result) {
+//                final Status status = result.getStatus();
+//                final LocationSettingsStates state = result.getLocationSettingsStates();
+//                switch (status.getStatusCode()) {
+//                    case LocationSettingsStatusCodes.SUCCESS:
+//                        // All location settings are satisfied. The client can initialize location
+//                        // requests here.
+//                        break;
+//                    case LocationSettingsStatusCodes.RESOLUTION_REQUIRED:
+//                        // Location settings are not satisfied. But could be fixed by showing the user
+//                        // a dialog.
+//                        try {
+//                            // Show the dialog by calling startResolutionForResult(),
+//                            // and check the result in onActivityResult().
+//                            status.startResolutionForResult(
+//                                    getActivity(), 1000);
+//                        } catch (IntentSender.SendIntentException e) {
+//                            // Ignore the error.
+//                        }
+//                        break;
+//                    case LocationSettingsStatusCodes.SETTINGS_CHANGE_UNAVAILABLE:
+//                        // Location settings are not satisfied. However, we have no way to fix the
+//                        // settings so we won't show the dialog.
+//                        break;
+//                }
+//            }
+//        });
     }
+
+
+
 
 
     @Override
@@ -258,6 +318,10 @@ public class GPSTrackingService extends Service implements GoogleApiClient.Conne
             LocationServices.FusedLocationApi.removeLocationUpdates(mGoogleApiClient, this);
     }
 
+    protected void forceStopLocationUpdates(){
+        LocationServices.FusedLocationApi.removeLocationUpdates(mGoogleApiClient, this);
+    }
+
     /**
      * Callback that fires when the location changes.
      */
@@ -266,8 +330,8 @@ public class GPSTrackingService extends Service implements GoogleApiClient.Conne
         mCurrentLocation = location;
         mLastUpdateTime = DateFormat.getTimeInstance().format(new Date());
         mOnServiceListenerGPS_Remote.onUpdateLocation(mCurrentLocation);
-        Toast.makeText(this, getResources().getString(R.string.location_updated_message),
-                Toast.LENGTH_SHORT).show();
+        //Toast.makeText(this, getResources().getString(R.string.location_updated_message),
+                //Toast.LENGTH_SHORT).show();
     }
 
     @Override

@@ -36,6 +36,7 @@
         opacity:1,
       }).addTo(map);
       map.on('click', parseClickEvent(addMarkerAtLocation));
+
       androidDoneLoading();
     </script>
 
@@ -68,7 +69,7 @@
         }
 
         function centerOnLocation() {
-            alert('TODO: Center on Location...')
+            map.panTo(new L.LatLng(40.737, -73.923));
         }
     </script>
 

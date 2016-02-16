@@ -142,7 +142,7 @@
                 </li>
             </ul>
         </div>
-
+    </div>
 
 
 
@@ -163,15 +163,16 @@
             zoomControl: false
         }).fitBounds(bounds);
         var layer = L.tileLayer.provider('Esri.WorldImagery').addTo(map);
-        var GeoTiff = L.tileLayer('originalTiles/{z}/{x}/{y}.png', {
-            maxZoom: 20,
-            minZoom: 16,
-            tms: true,
-            opacity: 1,
-        }).addTo(map);
+        <!--var GeoTiff = L.tileLayer('originalTiles/B72South/{z}/{x}/{y}.png', {-->
+            <!--maxZoom: 20,-->
+            <!--minZoom: 16,-->
+            <!--tms: true,-->
+            <!--opacity: 1,-->
+        <!--}).addTo(map);-->
         var latlngs = [];
-
         map.on('click', parseClickEvent(addMarkerAtLocation));
+        initializeUserMarker();
+        initializeLayers();
         androidDoneLoading();
 
         // var polyline = L.polyline(latlngs, {color: 'red'}).addTo(map);
@@ -179,7 +180,7 @@
 
     <script>
         function centerOnLocation() {
-            alert('TODO: Center on Location...');
+            map.panTo(userLocation);
         }
     </script>
 
@@ -264,7 +265,7 @@
     <script>
         $("#slider").dateRangeSlider({
             bounds: {
-                min: new Date(2016, 0, 1), // YYYY, M, D
+                min: new Date(2015, 0, 1), // YYYY, M, D
                 max: new Date() // YYYY, M, D
             },
             defaultValues: {
@@ -283,7 +284,8 @@
 
 
         $("#slider").bind("valuesChanged", function(e, data) {
-            alert("Values just changed. min: " + data.values.min + " max: " + data.values.max);
+            layerModification(data);
+            //alert("Values just changed. min: " + data.values.min.getMonth() + " max: " + data.values.max);
         });
     </script>
 

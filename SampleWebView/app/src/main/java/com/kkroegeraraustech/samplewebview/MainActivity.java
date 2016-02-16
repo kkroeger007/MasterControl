@@ -112,6 +112,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void doBindServices() {
         Intent intent = new Intent(this, GPSTrackingService.class);
+        startService(intent);
         mGPSServiceBounded = bindService(intent, mConnectionGPS, Context.BIND_AUTO_CREATE);
     }
 
@@ -127,19 +128,17 @@ public class MainActivity extends AppCompatActivity {
 
     protected void onResume() {
         super.onResume();
-        if(mGPSServiceBounded) {
-            startService(new Intent(this, GPSTrackingService.class));
-        }
     }
     @Override
     protected void onPause() {
         super.onPause();
-        doUnbindService();
+
     }
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        //doUnbindService();
+        doUnbindService();
+        stopService(new Intent(this, GPSTrackingService.class));
     }
 
     @Override
@@ -170,31 +169,44 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void onActivityResult(int requestCode, int resultCode, Intent resultData) {
-        String TAG = "onActivityResult";
-        if (resultCode == RESULT_OK) {
-            Uri treeUri = resultData.getData();
-            SharedPreferences.Editor editor = mSharedPreferences.edit();
-            editor.putString("URI",treeUri.toString());
-            editor.commit();
-            Log.d(null,treeUri.toString());
-            DocumentFile pickedDir = DocumentFile.fromTreeUri(this, treeUri);
-            // List all existing files inside picked directory
-            for (DocumentFile file : pickedDir.listFiles()) {
-                Log.d(TAG, "Found file " + file.getName() + " with size " + file.length());
-            }
-
-            // Create a new file and write into it
-            DocumentFile newFile = pickedDir.createFile("text/plain", "My Novel");
-            try {
-                OutputStream out = getContentResolver().openOutputStream(newFile.getUri());
-                out.write("A long time ago...".getBytes());
-                out.close();
-            } catch (FileNotFoundException e) {
-                Log.d(TAG, "File Not Found, reason: ", e);
-            } catch (IOException e) {
-                Log.d(TAG,"IOException, reason: ", e);
-            }
-        }
+//        switch (requestCode) {
+//// Check for the integer request code originally supplied to startResolutionForResult().
+//            case REQUEST_CHECK_SETTINGS:
+//                switch (resultCode) {
+//                    case Activity.RESULT_OK:
+//                        startLocationUpdates();
+//                        break;
+//                    case Activity.RESULT_CANCELED
+//                        settingsrequest();//keep asking if imp or do whatever
+//                        break;
+//                }
+//                break;
+//        }
+//        String TAG = "onActivityResult";
+//        if (resultCode == RESULT_OK) {
+//            Uri treeUri = resultData.getData();
+//            SharedPreferences.Editor editor = mSharedPreferences.edit();
+//            editor.putString("URI",treeUri.toString());
+//            editor.commit();
+//            Log.d(null,treeUri.toString());
+//            DocumentFile pickedDir = DocumentFile.fromTreeUri(this, treeUri);
+//            // List all existing files inside picked directory
+//            for (DocumentFile file : pickedDir.listFiles()) {
+//                Log.d(TAG, "Found file " + file.getName() + " with size " + file.length());
+//            }
+//
+//            // Create a new file and write into it
+//            DocumentFile newFile = pickedDir.createFile("text/plain", "My Novel");
+//            try {
+//                OutputStream out = getContentResolver().openOutputStream(newFile.getUri());
+//                out.write("A long time ago...".getBytes());
+//                out.close();
+//            } catch (FileNotFoundException e) {
+//                Log.d(TAG, "File Not Found, reason: ", e);
+//            } catch (IOException e) {
+//                Log.d(TAG,"IOException, reason: ", e);
+//            }
+//        }
     }
 
     /**
@@ -406,7 +418,8 @@ public class MainActivity extends AppCompatActivity {
             mWebView.post(new Runnable() {
                 @Override
                 public void run() {
-                    String locString ="javascript:addMarkerAtLocation(["+ String.valueOf(userLocation.getLatitude()) + "," +String.valueOf(userLocation.getLongitude())+ "])";
+                    Log.d("LOC",String.valueOf(userLocation.getLatitude()) + "," +String.valueOf(userLocation.getLongitude()));
+                    String locString ="javascript:updateUserLocation(["+ String.valueOf(userLocation.getLatitude()) + "," +String.valueOf(userLocation.getLongitude())+ "])";
                     mWebView.loadUrl(locString);
                 }
             });
