@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title></title>
+    <link rel="stylesheet" href="leaflet.css" />
+    <script type="text/javascript" src="leaflet.js"></script>
+    <script type="text/javascript" src="leaflet-providers.js"></script>
+    <script type="text/javascript" src="parseJS/parseLeaflet.js"></script>
+    <script type="text/javascript" src="androidJS/callbackAndroid.js"></script>
+    <script type="text/javascript" src="leafletJS/mapHandling.js"></script>
+    <script type="text/javascript" src="leafletJS/markerHandling.js"></script>
+    <script type="text/javascript" src="leafletJS/serverMaps.js"></script>
+</head>
+<body style="padding:0; margin:0;">
+<div style="height: 100vh; " id="map"></div>
+<script>
+      var bounds = new L.LatLngBounds(
+        new L.LatLng(37.888704, -76.816090),
+        new L.LatLng(37.891677, -76.811757));
+      var map = L.map('map').fitBounds(bounds);
+      map.options.maxZoom = 20;
+      map.options.minZoom = 18;
+
+      var layer = L.tileLayer.provider('Esri.WorldImagery').addTo(map);
+
+      var GeoTiff = L.tileLayer('originalTiles/{z}/{x}/{y}.png', {
+        maxZoom: 20,
+        minZoom:16,
+        tms: true,
+        opacity:1,
+      }).addTo(map);
+
+      map.on('click', parseClickEvent(addMarker));
+
+    </script>
+
+<script type="text/javascript">
+    function showAndroidToast(toastmsg) {
+        Android.showToast(toastmsg);
+    }
+
+ function moveToScreenTwo() {
+        Android.moveToNextScreen();
+    }
+</script>
+</body>
+</html>
