@@ -1,4 +1,4 @@
-package com.kkroegeraraustech.samplewebview.utils.Preferences;
+package com.kkroegeraraustech.Hawkeye_Android.utils.Preferences;
 
 import android.content.Context;
 import android.content.SharedPreferences;

@@ -1,21 +1,15 @@
-package com.kkroegeraraustech.samplewebview.utils.Preferences;
+package com.kkroegeraraustech.Hawkeye_Android.utils.Preferences;
 
 /**
  * Created by Ken Heron Systems on 2/20/2016.
  */
 
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.Camera;
 import android.preference.PreferenceManager;
 import android.support.v4.content.LocalBroadcastManager;
-import android.text.TextUtils;
 
-import com.kkroegeraraustech.samplewebview.utils.CameraPanMode;
-
-import java.util.HashMap;
-import java.util.Map;
+import com.kkroegeraraustech.Hawkeye_Android.utils.CameraPanMode;
 
 /**
  * Provides structured access to Droidplanner preferences

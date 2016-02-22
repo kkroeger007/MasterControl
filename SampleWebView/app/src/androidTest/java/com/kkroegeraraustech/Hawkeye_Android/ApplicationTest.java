@@ -1,4 +1,4 @@
-package com.kkroegeraraustech.samplewebview;
+package com.kkroegeraraustech.Hawkeye_Android;
 
 import android.app.Application;
 import android.test.ApplicationTestCase;

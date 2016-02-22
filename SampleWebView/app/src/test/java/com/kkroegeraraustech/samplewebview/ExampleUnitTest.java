@@ -1,4 +1,4 @@
-package com.kkroegeraraustech.samplewebview;
+package com.kkroegeraraustech.Hawkeye_Android;
 
 import org.junit.Test;
 

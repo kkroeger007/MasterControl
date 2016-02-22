@@ -1,12 +1,9 @@
-package com.kkroegeraraustech.samplewebview.utils.Preferences;
+package com.kkroegeraraustech.Hawkeye_Android.utils.Preferences;
 
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.support.v4.content.LocalBroadcastManager;
-
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * Created by Ken Heron Systems on 2/20/2016.

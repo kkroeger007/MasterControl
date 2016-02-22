@@ -1,4 +1,4 @@
-package com.kkroegeraraustech.samplewebview.utils;
+package com.kkroegeraraustech.Hawkeye_Android.utils;
 
 /**
  * Created by Ken Heron Systems on 2/20/2016.

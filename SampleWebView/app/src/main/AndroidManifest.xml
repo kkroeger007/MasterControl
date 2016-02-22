@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.kkroegeraraustech.samplewebview">
+    package="com.kkroegeraraustech.Hawkeye_Android">
 
 
     <uses-permission android:name="android.permission.INTERNET"/>
@@ -57,7 +57,7 @@
             android:value="@integer/google_play_services_version" />
 
         <activity
-            android:name=".MainActivity"
+            android:name="com.kkroegeraraustech.Hawkeye_Android.MainActivity"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
@@ -67,7 +67,7 @@
             </intent-filter>
         </activity>
         <service
-            android:name=".services.GPSTrackingService"
+            android:name="com.kkroegeraraustech.Hawkeye_Android.services.GPSTrackingService"
             android:enabled="true"
             android:exported="true" >
         </service>

@@ -1,4 +1,4 @@
-package com.kkroegeraraustech.samplewebview.utils.Preferences;
+package com.kkroegeraraustech.Hawkeye_Android.utils.Preferences;
 
 /**
  * Created by Ken Heron Systems on 2/21/2016.
