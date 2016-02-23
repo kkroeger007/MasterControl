@@ -162,13 +162,17 @@
         var map = L.map('map', {
             zoomControl: false
         }).fitBounds(bounds);
-        var layer = L.tileLayer.provider('Esri.WorldImagery').addTo(map);
-        <!--var GeoTiff = L.tileLayer('originalTiles/B72South/{z}/{x}/{y}.png', {-->
-            <!--maxZoom: 20,-->
-            <!--minZoom: 16,-->
-            <!--tms: true,-->
-            <!--opacity: 1,-->
-        <!--}).addTo(map);-->
+	
+        var layer = L.tileLayer.provider('OpenStreetMap.DE',{
+			maxZoom: 24,
+			maxNativeZoom: 20
+		}).addTo(map);
+        var GeoTiff = L.tileLayer('originalTiles/B72South/{z}/{x}/{y}.png', {
+            maxZoom: 20,
+            minZoom: 16,
+            tms: true,
+            opacity: 1,
+        }).addTo(map);
         var latlngs = [];
         map.on('click', parseClickEvent(addMarkerAtLocation));
         initializeUserMarker();

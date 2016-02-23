@@ -1,11 +1,11 @@
-package org.droidplanner.android.utils.unit;
+package com.kkroegeraraustech.Hawkeye_Android.utils.unit;
 
 import android.content.Context;
 
-import org.droidplanner.android.utils.prefs.DroidPlannerPrefs;
-import org.droidplanner.android.utils.unit.systems.ImperialUnitSystem;
-import org.droidplanner.android.utils.unit.systems.MetricUnitSystem;
-import org.droidplanner.android.utils.unit.systems.UnitSystem;
+import com.kkroegeraraustech.Hawkeye_Android.utils.Preferences.plannerPreferences;
+import com.kkroegeraraustech.Hawkeye_Android.utils.unit.systems.ImperialUnitSystem;
+import com.kkroegeraraustech.Hawkeye_Android.utils.unit.systems.MetricUnitSystem;
+import com.kkroegeraraustech.Hawkeye_Android.utils.unit.systems.UnitSystem;
 
 import java.util.Locale;
 
@@ -14,13 +14,13 @@ import java.util.Locale;
  */
 public class UnitManager {
 
-    private static DroidPlannerPrefs dpPrefs;
+    private static plannerPreferences dpPrefs;
     private static MetricUnitSystem metricUnitSystem;
     private static ImperialUnitSystem imperialUnitSystem;
 
     public static UnitSystem getUnitSystem(Context context){
         if(dpPrefs == null)
-            dpPrefs = new DroidPlannerPrefs(context);
+            dpPrefs = new plannerPreferences(context);
 
         final int unitSystemType = dpPrefs.getUnitSystemType();
         switch(unitSystemType){

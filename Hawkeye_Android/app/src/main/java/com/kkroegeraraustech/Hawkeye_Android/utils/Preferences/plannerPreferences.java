@@ -5,6 +5,8 @@ import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.support.v4.content.LocalBroadcastManager;
 
+import com.kkroegeraraustech.Hawkeye_Android.utils.unit.systems.UnitSystem;
+
 /**
  * Created by Ken Heron Systems on 2/20/2016.
  * This class handles all of the preferences of the planner itself. These are more generic that

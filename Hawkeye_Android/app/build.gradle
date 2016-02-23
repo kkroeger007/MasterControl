@@ -27,13 +27,23 @@ ext {
 }
 
 dependencies {
+
+    compile files('libs/droneapi-java-0.3-SNAPSHOT.jar')
+//    compile files('libs/protobuf-java-2.5.0.jar')
+//    compile files('libs/jeromq-0.3.4.jar')
+    compile files('libs/sius-0.3.0-SNAPSHOT.jar')
+    compile 'com.github.felHR85:UsbSerial:4.0'
+
     //DroneKit-Android client library.
     compile 'com.o3dr.android:dronekit-android:2.6.8-beta2'
+
+    //compile 'com.github.felHR85:UsbSerial:3.3'
 
     compile fileTree(dir: 'libs', include: ['*.jar'])
     testCompile 'junit:junit:4.12'
     compile 'com.android.support:appcompat-v7:23.1.1'
     compile 'com.android.support:design:23.1.1'
+
 
     compile "com.google.android.gms:play-services-maps:${play_services_version}"
     compile "com.google.android.gms:play-services-location:${play_services_version}"

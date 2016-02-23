@@ -5,6 +5,7 @@
 
     <string name="farmingPreferences">Preferences</string>
     <string name="location_updated_message">Location Updated </string>
+    <string name="title_activity_usbgps">USBGPSActivity</string>
 
 
 </resources>

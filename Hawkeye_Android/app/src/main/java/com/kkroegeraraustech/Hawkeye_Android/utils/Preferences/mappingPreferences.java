@@ -54,7 +54,7 @@ public class mappingPreferences {
 
 
     public static final String PREF_MAPS_PROVIDERS = "pref_maps_providers_key";
-    private static final String DEFAULT_MAPS_PROVIDER = DPMapProvider.DEFAULT_MAP_PROVIDER.name();
+    //private static final String DEFAULT_MAPS_PROVIDER = DPMapProvider.DEFAULT_MAP_PROVIDER.name();
     public static final String PREF_MAPS_PROVIDER_SETTINGS = "pref_map_provider_settings";
 
     private static final CameraPanMode DEFAULT_AUTO_PAN_MODE = CameraPanMode.DISABLED;
@@ -150,7 +150,8 @@ public class mappingPreferences {
     }
 
     public String getMapProviderName() {
-        return prefs.getString(PREF_MAPS_PROVIDERS, DEFAULT_MAPS_PROVIDER);
+        return("BAD");
+        //return prefs.getString(PREF_MAPS_PROVIDERS, DEFAULT_MAPS_PROVIDER);
     }
 
     /**
@@ -158,12 +159,12 @@ public class mappingPreferences {
      *
      * @return selected map provider
      */
-    public DPMapProvider getMapProvider() {
-        final String mapProviderName = getMapProviderName();
-
-        return mapProviderName == null ? DPMapProvider.DEFAULT_MAP_PROVIDER : DPMapProvider.getMapProvider
-                (mapProviderName);
-    }
+//    public DPMapProvider getMapProvider() {
+//        final String mapProviderName = getMapProviderName();
+//
+//        return mapProviderName == null ? DPMapProvider.DEFAULT_MAP_PROVIDER : DPMapProvider.getMapProvider
+//                (mapProviderName);
+//    }
 
 
 

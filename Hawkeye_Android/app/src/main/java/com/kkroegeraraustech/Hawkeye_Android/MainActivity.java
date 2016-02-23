@@ -34,7 +34,7 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 
-import com.kkroegeraraustech.Hawkeye_Android.services.GPSTrackingService;
+import com.kkroegeraraustech.Hawkeye_Android.services.Service_GPSInternal;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -43,13 +43,13 @@ public class MainActivity extends AppCompatActivity {
      * Create a GPS Service Listener that updates the user location
      */
     private boolean mGPSServiceBounded = false;
-    private GPSTrackingService mGPSTrackingService = new GPSTrackingService(MainActivity.this);
+    private Service_GPSInternal mGPSTrackingService = new Service_GPSInternal(MainActivity.this);
     private Location mCurrentLOC;
     public ServiceConnection mConnectionGPS = new ServiceConnection() {
         @Override
         public void onServiceConnected(ComponentName name, IBinder service) {
             // We've bound to LocalService, cast the IBinder and get LocalService instance
-            GPSTrackingService.LocalBinder binder = (GPSTrackingService.LocalBinder) service;
+            Service_GPSInternal.LocalBinder binder = (Service_GPSInternal.LocalBinder) service;
             mGPSTrackingService = binder.getService();
             mGPSServiceBounded = true;
             mGPSTrackingService.setOnServiceListener(mGPSListener);
@@ -63,7 +63,7 @@ public class MainActivity extends AppCompatActivity {
     };
 
 
-    private GPSTrackingService.UpdateGPSListener mGPSListener = new GPSTrackingService.UpdateGPSListener() {
+    private Service_GPSInternal.UpdateGPSListener mGPSListener = new Service_GPSInternal.UpdateGPSListener() {
         @Override
         public void onUpdateLocation(final Location newLocation) {
             if(newLocation != null) {
@@ -81,7 +81,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void doBindServices() {
-        Intent intent = new Intent(this, GPSTrackingService.class);
+        Intent intent = new Intent(this, Service_GPSInternal.class);
         startService(intent);
         mGPSServiceBounded = bindService(intent, mConnectionGPS, Context.BIND_AUTO_CREATE);
     }
@@ -108,7 +108,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onDestroy() {
         super.onDestroy();
         doUnbindService();
-        stopService(new Intent(this, GPSTrackingService.class));
+        stopService(new Intent(this, Service_GPSInternal.class));
     }
 
     @Override

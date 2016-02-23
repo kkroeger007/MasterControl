@@ -22,12 +22,12 @@ import java.text.DateFormat;
 import java.util.Date;
 import java.util.logging.Handler;
 
-public class GPSTrackingService extends Service implements GoogleApiClient.ConnectionCallbacks,GoogleApiClient.OnConnectionFailedListener,LocationListener{
+public class Service_GPSInternal extends Service implements GoogleApiClient.ConnectionCallbacks,GoogleApiClient.OnConnectionFailedListener,LocationListener{
 
-    public GPSTrackingService(){
+    public Service_GPSInternal(){
 
     }
-    public static String TAG = "GPS_TRACKING_SERVICE";
+    public static String CLASS_NAME = "Service_GPSInternal";
 
     Context mContext;
     private final IBinder mIBinder = new LocalBinder();
@@ -59,8 +59,8 @@ public class GPSTrackingService extends Service implements GoogleApiClient.Conne
     }
 
     public class LocalBinder extends Binder {
-        public GPSTrackingService getService(){
-            return GPSTrackingService.this;
+        public Service_GPSInternal getService(){
+            return Service_GPSInternal.this;
         }
     }
 
@@ -129,7 +129,7 @@ public class GPSTrackingService extends Service implements GoogleApiClient.Conne
      */
     protected String mLastUpdateTime;
 
-    public  GPSTrackingService(Context context){
+    public Service_GPSInternal(Context context){
         mContext = context;
     }
 
@@ -176,7 +176,7 @@ public class GPSTrackingService extends Service implements GoogleApiClient.Conne
      * LocationServices API.
      */
     protected synchronized void buildGoogleApiClient() {
-        Log.i(TAG, "Building GoogleApiClient");
+        Log.i(CLASS_NAME, "Building GoogleApiClient");
         mGoogleApiClient = new GoogleApiClient.Builder(this)
                 .addConnectionCallbacks(this)
                 .addOnConnectionFailedListener(this)
@@ -258,7 +258,7 @@ public class GPSTrackingService extends Service implements GoogleApiClient.Conne
 
     @Override
     public void onConnected(Bundle connectionHint){
-        Log.i(TAG,"Connected to GoogleAPIClient");
+        Log.i(CLASS_NAME,"Connected to GoogleAPIClient");
 
         // If the initial location was never previously requested, we use
         // FusedLocationApi.getLastLocation() to get it. If it was previously requested, we store
@@ -327,7 +327,7 @@ public class GPSTrackingService extends Service implements GoogleApiClient.Conne
     public void onConnectionSuspended(int cause) {
         // The connection to Google Play services was lost for some reason. We call connect() to
         // attempt to re-establish the connection.
-        Log.i(TAG, "Connection suspended");
+        Log.i(CLASS_NAME, "Connection suspended");
         mGoogleApiClient.connect();
     }
 
@@ -335,7 +335,7 @@ public class GPSTrackingService extends Service implements GoogleApiClient.Conne
     public void onConnectionFailed(ConnectionResult result) {
         // Refer to the javadoc for ConnectionResult to see what error codes might be returned in
         // onConnectionFailed.
-        Log.i(TAG, "Connection failed: ConnectionResult.getErrorCode() = " + result.getErrorCode());
+        Log.i(CLASS_NAME, "Connection failed: ConnectionResult.getErrorCode() = " + result.getErrorCode());
     }
 
 

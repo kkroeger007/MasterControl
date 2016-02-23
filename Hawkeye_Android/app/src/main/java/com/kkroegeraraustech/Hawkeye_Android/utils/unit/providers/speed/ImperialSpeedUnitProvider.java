@@ -1,4 +1,4 @@
-package org.droidplanner.android.utils.unit.providers.speed;
+package com.kkroegeraraustech.Hawkeye_Android.utils.unit.providers.speed;
 
 import org.beyene.sius.operation.Operation;
 import org.beyene.sius.unit.UnitIdentifier;
