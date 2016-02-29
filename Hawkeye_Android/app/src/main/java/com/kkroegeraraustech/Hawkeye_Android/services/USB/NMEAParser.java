@@ -1,4 +1,4 @@
-package com.kkroegeraraustech.Hawkeye_Android.services.USB;
+package com.kkroegeraraustech.Hawkeye_Android.Services.USB;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -14,7 +14,6 @@ import android.location.LocationProvider;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.text.TextUtils.SimpleStringSplitter;
-import android.util.Log;
 
 /**
  * Created by Ken Heron Systems on 2/23/2016.

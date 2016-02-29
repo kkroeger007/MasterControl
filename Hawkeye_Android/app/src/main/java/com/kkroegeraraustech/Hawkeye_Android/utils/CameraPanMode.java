@@ -1,4 +1,4 @@
-package com.kkroegeraraustech.Hawkeye_Android.utils;
+package com.kkroegeraraustech.Hawkeye_Android.Utils;
 
 /**
  * Created by Ken Heron Systems on 2/20/2016.

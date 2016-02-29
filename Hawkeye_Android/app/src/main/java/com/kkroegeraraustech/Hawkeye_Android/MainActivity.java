@@ -34,7 +34,7 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 
-import com.kkroegeraraustech.Hawkeye_Android.services.Service_GPSInternal;
+import com.kkroegeraraustech.Hawkeye_Android.Services.Service_GPSInternal;
 
 public class MainActivity extends AppCompatActivity {
 

@@ -1,4 +1,4 @@
-package com.kkroegeraraustech.Hawkeye_Android.utils.Preferences;
+package com.kkroegeraraustech.Hawkeye_Android.Utils.Preferences;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -13,12 +13,12 @@ import java.util.Map;
  * This class handles the speech preferences of the device. This would often be
  * periodic readouts and callouts in either emergencies, changes, and/or alerts to an operator.
  */
-public class speechPreferences {
+public class PreferencesSpeech {
 
     private final SharedPreferences prefs;
     private final LocalBroadcastManager lbm;
 
-    public speechPreferences(Context context) {
+    public PreferencesSpeech(Context context) {
         prefs = PreferenceManager.getDefaultSharedPreferences(context);
         lbm = LocalBroadcastManager.getInstance(context);
     }

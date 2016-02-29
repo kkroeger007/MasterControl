@@ -21,7 +21,7 @@ import android.widget.Toast;
 import java.lang.ref.WeakReference;
 import java.util.Set;
 
-import com.kkroegeraraustech.Hawkeye_Android.services.USB.Service_USBGPS;
+import com.kkroegeraraustech.Hawkeye_Android.Services.USB.Service_USBGPS;
 
 public class USBGPSActivity extends AppCompatActivity {
 

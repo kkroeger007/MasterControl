@@ -1,6 +1,6 @@
-package com.kkroegeraraustech.Hawkeye_Android.services.USB.usbserial;
+package com.kkroegeraraustech.Hawkeye_Android.Services.USB.usbserial;
 
-import com.kkroegeraraustech.Hawkeye_Android.services.USB.utils.HexData;
+import com.kkroegeraraustech.Hawkeye_Android.Services.USB.utils.HexData;
 
 import android.util.Log;
 

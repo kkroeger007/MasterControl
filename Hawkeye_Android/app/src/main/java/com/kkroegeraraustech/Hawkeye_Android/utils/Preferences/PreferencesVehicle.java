@@ -1,4 +1,4 @@
-package com.kkroegeraraustech.Hawkeye_Android.utils.Preferences;
+package com.kkroegeraraustech.Hawkeye_Android.Utils.Preferences;
 
 import android.content.Context;
 import android.content.Intent;
@@ -11,14 +11,16 @@ import com.o3dr.services.android.lib.util.Utils;
 
 /**
  * Created by Ken Heron Systems on 2/21/2016.
+ * This class contains vehicle preferences that should be agnostic to vehicle autopilot type and/or
+ * configuration generally
  */
-public class vehiclePreferences {
+public class PreferencesVehicle {
 
     // Public for legacy usage
     public final SharedPreferences prefs;
     private final LocalBroadcastManager lbm;
 
-    public vehiclePreferences(Context context) {
+    public PreferencesVehicle(Context context) {
         prefs = PreferenceManager.getDefaultSharedPreferences(context);
         lbm = LocalBroadcastManager.getInstance(context);
     }

@@ -1,23 +1,23 @@
-package com.kkroegeraraustech.Hawkeye_Android.utils.Preferences;
+package com.kkroegeraraustech.Hawkeye_Android.Utils.Preferences;
 
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.support.v4.content.LocalBroadcastManager;
 
-import com.kkroegeraraustech.Hawkeye_Android.utils.unit.systems.UnitSystem;
+import com.kkroegeraraustech.Hawkeye_Android.Utils.unit.systems.UnitSystem;
 
 /**
  * Created by Ken Heron Systems on 2/20/2016.
  * This class handles all of the preferences of the planner itself. These are more generic that
  * cannot fit within any of the other preference classes currently configured.
  */
-public class plannerPreferences {
+public class PreferencesPlanner {
 
     private final SharedPreferences prefs;
     private final LocalBroadcastManager lbm;
 
-    public plannerPreferences(Context context) {
+    public PreferencesPlanner(Context context) {
         prefs = PreferenceManager.getDefaultSharedPreferences(context);
         lbm = LocalBroadcastManager.getInstance(context);
     }
@@ -80,6 +80,21 @@ public class plannerPreferences {
             return DEFAULT_UNIT_SYSTEM;
 
         return Integer.parseInt(unitSystem);
+    }
+
+    /**
+     * These members dictate whether or not to use the internal/external GPS system. This is
+     * particulary useful for individuals using devices that may not have internal systems,
+     * or prefer systems that may have more accuracy or active antennas. This will dictate
+     * what service to fire when using applications requiring the user location.
+     */
+    public static final String PREF_GPS_USAGE = "pref_gps_address";
+    private static final boolean DEFAULT_GPS_INTERNAL = true;
+    public boolean getDeviceGPSPreference(){
+        return prefs.getBoolean(PREF_GPS_USAGE, DEFAULT_GPS_INTERNAL);
+    }
+    public void setDeviceGPSPreference(boolean useInternalGPS){
+        prefs.edit().putBoolean(PREF_GPS_USAGE,useInternalGPS);
     }
 
 

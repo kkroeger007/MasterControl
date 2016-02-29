@@ -1,11 +1,11 @@
-package com.kkroegeraraustech.Hawkeye_Android.services.USB.usbserial;
+package com.kkroegeraraustech.Hawkeye_Android.Services.USB.usbserial;
 
 import java.util.concurrent.atomic.AtomicBoolean;
 
-import com.kkroegeraraustech.Hawkeye_Android.services.USB.deviceids.CH34xIds;
-import com.kkroegeraraustech.Hawkeye_Android.services.USB.deviceids.CP210xIds;
-import com.kkroegeraraustech.Hawkeye_Android.services.USB.deviceids.FTDISioIds;
-import com.kkroegeraraustech.Hawkeye_Android.services.USB.deviceids.PL2303Ids;
+import com.kkroegeraraustech.Hawkeye_Android.Services.USB.deviceids.CH34xIds;
+import com.kkroegeraraustech.Hawkeye_Android.Services.USB.deviceids.CP210xIds;
+import com.kkroegeraraustech.Hawkeye_Android.Services.USB.deviceids.FTDISioIds;
+import com.kkroegeraraustech.Hawkeye_Android.Services.USB.deviceids.PL2303Ids;
 
 import android.hardware.usb.UsbConstants;
 import android.hardware.usb.UsbDevice;

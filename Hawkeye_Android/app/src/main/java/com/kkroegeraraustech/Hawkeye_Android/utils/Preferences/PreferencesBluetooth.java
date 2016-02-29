@@ -1,4 +1,4 @@
-package com.kkroegeraraustech.Hawkeye_Android.utils.Preferences;
+package com.kkroegeraraustech.Hawkeye_Android.Utils.Preferences;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -11,12 +11,12 @@ import android.support.v4.content.LocalBroadcastManager;
  * The thought is that the bluetooth connection would be to manage peripheral devices
  * on the aircraft or to enable communications between the pilot and suboperators
  */
-public class bluetoothPreferences {
+public class PreferencesBluetooth {
 
     private final SharedPreferences prefs;
     private final LocalBroadcastManager lbm;
 
-    public bluetoothPreferences(Context context) {
+    public  PreferencesBluetooth(Context context) {
         prefs = PreferenceManager.getDefaultSharedPreferences(context);
         lbm = LocalBroadcastManager.getInstance(context);
     }

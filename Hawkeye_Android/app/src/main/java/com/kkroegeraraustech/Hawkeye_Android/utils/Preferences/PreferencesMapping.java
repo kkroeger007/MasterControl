@@ -1,4 +1,4 @@
-package com.kkroegeraraustech.Hawkeye_Android.utils.Preferences;
+package com.kkroegeraraustech.Hawkeye_Android.Utils.Preferences;
 
 /**
  * Created by Ken Heron Systems on 2/20/2016.
@@ -9,7 +9,7 @@ import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.support.v4.content.LocalBroadcastManager;
 
-import com.kkroegeraraustech.Hawkeye_Android.utils.CameraPanMode;
+import com.kkroegeraraustech.Hawkeye_Android.Utils.CameraPanMode;
 
 /**
  * Provides structured access to Droidplanner preferences
@@ -20,7 +20,7 @@ import com.kkroegeraraustech.Hawkeye_Android.utils.CameraPanMode;
  * This is called the DRY (don't repeat yourself) principle of software
  * development.
  */
-public class mappingPreferences {
+public class PreferencesMapping {
     /*
   * Default preference value
   */
@@ -85,7 +85,7 @@ public class mappingPreferences {
     public final SharedPreferences prefs;
     private final LocalBroadcastManager lbm;
 
-    public mappingPreferences(Context context) {
+    public PreferencesMapping(Context context) {
         prefs = PreferenceManager.getDefaultSharedPreferences(context);
         lbm = LocalBroadcastManager.getInstance(context);
     }

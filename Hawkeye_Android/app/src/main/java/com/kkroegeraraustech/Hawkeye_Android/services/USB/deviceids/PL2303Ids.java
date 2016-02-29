@@ -1,4 +1,4 @@
-package com.kkroegeraraustech.Hawkeye_Android.services.USB.deviceids;
+package com.kkroegeraraustech.Hawkeye_Android.Services.USB.deviceids;
 
 public class PL2303Ids
 {

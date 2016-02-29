@@ -1,7 +1,6 @@
-package com.kkroegeraraustech.Hawkeye_Android.services.USB.usbserial;
+package com.kkroegeraraustech.Hawkeye_Android.Services.USB.usbserial;
 
 import java.io.OutputStream;
-import java.util.Arrays;
 
 public class SerialOutputStream extends OutputStream
 {

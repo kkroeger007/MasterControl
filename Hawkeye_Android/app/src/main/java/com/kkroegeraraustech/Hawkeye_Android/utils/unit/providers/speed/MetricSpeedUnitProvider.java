@@ -1,4 +1,4 @@
-package com.kkroegeraraustech.Hawkeye_Android.utils.unit.providers.speed;
+package com.kkroegeraraustech.Hawkeye_Android.Utils.unit.providers.speed;
 
 import org.beyene.sius.unit.composition.speed.MeterPerSecond;
 import org.beyene.sius.unit.composition.speed.SpeedUnit;

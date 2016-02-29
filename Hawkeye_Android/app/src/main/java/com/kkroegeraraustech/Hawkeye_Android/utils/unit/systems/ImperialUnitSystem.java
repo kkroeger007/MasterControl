@@ -1,11 +1,11 @@
-package com.kkroegeraraustech.Hawkeye_Android.utils.unit.systems;
+package com.kkroegeraraustech.Hawkeye_Android.Utils.unit.systems;
 
-import com.kkroegeraraustech.Hawkeye_Android.utils.unit.providers.area.AreaUnitProvider;
-import com.kkroegeraraustech.Hawkeye_Android.utils.unit.providers.area.ImperialAreaUnitProvider;
-import com.kkroegeraraustech.Hawkeye_Android.utils.unit.providers.length.ImperialLengthUnitProvider;
-import com.kkroegeraraustech.Hawkeye_Android.utils.unit.providers.length.LengthUnitProvider;
-import com.kkroegeraraustech.Hawkeye_Android.utils.unit.providers.speed.ImperialSpeedUnitProvider;
-import com.kkroegeraraustech.Hawkeye_Android.utils.unit.providers.speed.SpeedUnitProvider;
+import com.kkroegeraraustech.Hawkeye_Android.Utils.unit.providers.area.AreaUnitProvider;
+import com.kkroegeraraustech.Hawkeye_Android.Utils.unit.providers.area.ImperialAreaUnitProvider;
+import com.kkroegeraraustech.Hawkeye_Android.Utils.unit.providers.length.ImperialLengthUnitProvider;
+import com.kkroegeraraustech.Hawkeye_Android.Utils.unit.providers.length.LengthUnitProvider;
+import com.kkroegeraraustech.Hawkeye_Android.Utils.unit.providers.speed.ImperialSpeedUnitProvider;
+import com.kkroegeraraustech.Hawkeye_Android.Utils.unit.providers.speed.SpeedUnitProvider;
 
 /**
  * Created by Fredia Huya-Kouadio on 1/20/15.

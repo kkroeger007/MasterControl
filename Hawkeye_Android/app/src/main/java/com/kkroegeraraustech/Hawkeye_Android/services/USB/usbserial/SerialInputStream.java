@@ -1,4 +1,4 @@
-package com.kkroegeraraustech.Hawkeye_Android.services.USB.usbserial;
+package com.kkroegeraraustech.Hawkeye_Android.Services.USB.usbserial;
 
 import java.io.InputStream;
 import java.util.concurrent.ArrayBlockingQueue;

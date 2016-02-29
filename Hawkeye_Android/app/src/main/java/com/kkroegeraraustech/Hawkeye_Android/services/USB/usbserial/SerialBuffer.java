@@ -1,4 +1,4 @@
-package com.kkroegeraraustech.Hawkeye_Android.services.USB.usbserial;
+package com.kkroegeraraustech.Hawkeye_Android.Services.USB.usbserial;
 
 import java.nio.BufferOverflowException;
 import java.nio.ByteBuffer;

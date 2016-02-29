@@ -1,4 +1,4 @@
-package com.kkroegeraraustech.Hawkeye_Android.services.USB.utils;
+package com.kkroegeraraustech.Hawkeye_Android.Services.USB.utils;
 
 public class HexData
 {

@@ -20,8 +20,9 @@
         android:required="false" />
 
     <!-- Support devices without USB host mode since there are other connection types -->
-    <uses-feature android:name="android.hardware.usb.host"
-        android:required="true"/>
+    <uses-feature
+        android:name="android.hardware.usb.host"
+        android:required="true" />
 
     <!-- Support devices that don't have location services -->
     <uses-feature
@@ -64,18 +65,20 @@
         </activity>
 
         <service
-            android:name=".services.Service_GPSInternal"
+            android:name=".Services.Service_GPSInternal"
             android:enabled="true"
-            android:exported="true"></service>
-
+            android:exported="true" />
         <service
-            android:name=".services.USB.Service_USBGPS"
-            android:enabled="true">
-        </service>
+            android:name=".Services.USB.Service_USBGPS"
+            android:enabled="true"></service>
 
         <activity
             android:name=".MainActivity"
             android:label="@string/title_activity_usbgps"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".Activities.Activities_Flight.Activity_Flight"
+            android:label="@string/title_activity_activity__flight"
             android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 

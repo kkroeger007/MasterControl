@@ -1,10 +1,9 @@
-package com.kkroegeraraustech.Hawkeye_Android.utils.unit.providers.length;
+package com.kkroegeraraustech.Hawkeye_Android.Utils.unit.providers.length;
 
 import org.beyene.sius.operation.Operation;
 import org.beyene.sius.unit.UnitIdentifier;
 import org.beyene.sius.unit.impl.FactoryLength;
 import org.beyene.sius.unit.length.Constants;
-import org.beyene.sius.unit.length.Foot;
 import org.beyene.sius.unit.length.LengthUnit;
 import org.beyene.sius.unit.length.Meter;
 

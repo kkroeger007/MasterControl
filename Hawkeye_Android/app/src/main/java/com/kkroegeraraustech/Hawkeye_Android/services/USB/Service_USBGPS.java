@@ -1,4 +1,4 @@
-package com.kkroegeraraustech.Hawkeye_Android.services.USB;
+package com.kkroegeraraustech.Hawkeye_Android.Services.USB;
 
 import android.app.PendingIntent;
 import android.app.Service;

@@ -6,6 +6,13 @@
     <string name="farmingPreferences">Preferences</string>
     <string name="location_updated_message">Location Updated </string>
     <string name="title_activity_usbgps">USBGPSActivity</string>
+    <string name="title_activity_activity__flight">Activity_Flight</string>
 
+    <string name="bluetooth_device_list">Bluetooth Devices</string>
+    <string name="bluetooth_scanning">Scanning</string>
+    <string name="bluetooth_none_paired">None Paired</string>
+    <string name="bluetooth_paired">Paried Devices</string>
+    <string name="bluetooth_none_found">None Found</string>
+    <string name="bluetooth_other">Other Devices</string>
 
 </resources>

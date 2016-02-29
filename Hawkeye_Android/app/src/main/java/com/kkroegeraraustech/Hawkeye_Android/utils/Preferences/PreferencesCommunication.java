@@ -1,4 +1,4 @@
-package com.kkroegeraraustech.Hawkeye_Android.utils.Preferences;
+package com.kkroegeraraustech.Hawkeye_Android.Utils.Preferences;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -12,12 +12,12 @@ import com.o3dr.services.android.lib.drone.connection.ConnectionType;
  * This class handles the general communication preferences required for communication with the
  * external radios or network based devices.
  */
-public class communicationPreferences {
+public class PreferencesCommunication {
 
     private final SharedPreferences prefs;
     private final LocalBroadcastManager lbm;
 
-    public communicationPreferences(Context context) {
+    public PreferencesCommunication(Context context) {
         prefs = PreferenceManager.getDefaultSharedPreferences(context);
         lbm = LocalBroadcastManager.getInstance(context);
     }

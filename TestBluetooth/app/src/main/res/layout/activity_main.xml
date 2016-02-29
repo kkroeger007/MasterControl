@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+    <LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/sample_main_layout">
+
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:text="New Button"
+            android:id="@+id/checkBluetooth"
+            android:clickable="true"
+            android:enabled="true" />
+
+        <ListView
+            android:id="@+id/in"
+            android:layout_width="match_parent"
+            android:layout_height="150dp"
+            android:stackFromBottom="true"
+            android:transcriptMode="alwaysScroll" />
+
+        <EditText
+            android:id="@+id/edit_text_out"
+            android:layout_width="match_parent"
+            android:layout_height="150dp"/>
+
+        <Button
+            android:id="@+id/button_send"
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:text="@string/send" />
+
+    </LinearLayout>
+
+
