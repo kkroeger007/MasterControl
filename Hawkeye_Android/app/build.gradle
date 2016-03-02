@@ -29,8 +29,8 @@ ext {
 dependencies {
 
     compile files('libs/droneapi-java-0.3-SNAPSHOT.jar')
-//    compile files('libs/protobuf-java-2.5.0.jar')
-//    compile files('libs/jeromq-0.3.4.jar')
+    compile files('libs/protobuf-java-2.5.0.jar')
+    compile files('libs/jeromq-0.3.4.jar')
     compile files('libs/sius-0.3.0-SNAPSHOT.jar')
     compile 'com.github.felHR85:UsbSerial:4.0'
 

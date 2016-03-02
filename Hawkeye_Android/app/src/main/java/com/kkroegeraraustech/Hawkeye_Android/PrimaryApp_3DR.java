@@ -13,6 +13,7 @@ import android.util.Log;
 import android.widget.Toast;
 
 import com.kkroegeraraustech.Hawkeye_Android.Utils.Preferences.PreferencesApplicaiton;
+import com.kkroegeraraustech.Hawkeye_Android.Utils.file.IO.ExceptionWriter;
 import com.o3dr.android.client.ControlTower;
 import com.o3dr.android.client.Drone;
 import com.o3dr.android.client.apis.VehicleApi;
@@ -134,12 +135,10 @@ public class PrimaryApp_3DR extends Application implements DroneListener, TowerL
         preferencesApplication = new PreferencesApplicaiton(context);
 
         lbm = LocalBroadcastManager.getInstance(context);
-        mapDownloader = new MapDownloader(context);
 
         //ControlTower handles the specific communications with 3DR related autopilot systems
         controlTower = new ControlTower(context);
         drone = new Drone(context);
-        missionProxy = new MissionProxy(context, this.drone);
 
         final Thread.UncaughtExceptionHandler dpExceptionHandler = new Thread.UncaughtExceptionHandler() {
             @Override
@@ -152,26 +151,10 @@ public class PrimaryApp_3DR extends Application implements DroneListener, TowerL
         exceptionHandler = Thread.getDefaultUncaughtExceptionHandler();
         Thread.setDefaultUncaughtExceptionHandler(dpExceptionHandler);
 
-        GAUtils.initGATracker(this);
-        GAUtils.startNewSession(context);
-
-        if(BuildConfig.ENABLE_CRASHLYTICS) {
-            Fabric.with(context, new Crashlytics());
-        }
-
-        if (BuildConfig.WRITE_LOG_FILE) {
-            logToFileTree = new LogToFileTree();
-        } else if (BuildConfig.DEBUG) {
-        }
-
         final IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction(ACTION_TOGGLE_DRONE_CONNECTION);
 
         registerReceiver(broadcastReceiver, intentFilter);
-    }
-
-    public MapDownloader getMapDownloader() {
-        return mapDownloader;
     }
 
     public void addApiListener(ApiListener listener) {
@@ -263,9 +246,10 @@ public class PrimaryApp_3DR extends Application implements DroneListener, TowerL
         return this.drone;
     }
 
-    public MissionProxy getMissionProxy() {
-        return this.missionProxy;
-    }
+    //TODO: Determine how to implement mission proxy
+    // public MissionProxy getMissionProxy() {
+//        return this.missionProxy;
+//    }
 
     private ConnectionParameter retrieveConnectionParameters() {
         final int connectionType = preferencesApplication.preferencesCommunication.getConnectionParameterType();
@@ -295,17 +279,18 @@ public class PrimaryApp_3DR extends Application implements DroneListener, TowerL
                 break;
 
             case ConnectionType.TYPE_BLUETOOTH:
-                String btAddress = preferencesApplication.preferencesBluetooth.getBluetoothDeviceAddress();
-                if (TextUtils.isEmpty(btAddress)) {
-                    connParams = null;
-                    startActivity(new Intent(getApplicationContext(),
-                            BluetoothDevicesActivity.class)
-                            .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
-
-                } else {
-                    extraParams.putString(ConnectionType.EXTRA_BLUETOOTH_ADDRESS, btAddress);
-                    connParams = new ConnectionParameter(connectionType, extraParams, null);
-                }
+//                String btAddress = preferencesApplication.preferencesBluetooth.getBluetoothDeviceAddress();
+//                if (TextUtils.isEmpty(btAddress)) {
+//                    connParams = null;
+//                    startActivity(new Intent(getApplicationContext(),
+//                            BluetoothDevicesActivity.class)
+//                            .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
+//
+//                } else {
+//                    extraParams.putString(ConnectionType.EXTRA_BLUETOOTH_ADDRESS, btAddress);
+//                    connParams = new ConnectionParameter(connectionType, extraParams, null);
+//                }
+                connParams = null;
                 break;
 
             default:
@@ -333,22 +318,22 @@ public class PrimaryApp_3DR extends Application implements DroneListener, TowerL
         switch (event) {
             case AttributeEvent.STATE_CONNECTED:
                 handler.removeCallbacks(disconnectionTask);
-                startService(new Intent(getApplicationContext(), AppService.class));
+                //startService(new Intent(getApplicationContext(), AppService.class));
 
-                final boolean isReturnToMeOn = dpPrefs.isReturnToMeEnabled();
-                VehicleApi.getApi(drone).enableReturnToMe(isReturnToMeOn, new AbstractCommandListener() {
-                    @Override
-                    public void onSuccess() {
-                    }
-
-                    @Override
-                    public void onError(int i) {
-                    }
-
-                    @Override
-                    public void onTimeout() {
-                    }
-                });
+                //final boolean isReturnToMeOn = dpPrefs.isReturnToMeEnabled();
+//                VehicleApi.getApi(drone).enableReturnToMe(isReturnToMeOn, new AbstractCommandListener() {
+//                    @Override
+//                    public void onSuccess() {
+//                    }
+//
+//                    @Override
+//                    public void onError(int i) {
+//                    }
+//
+//                    @Override
+//                    public void onTimeout() {
+//                    }
+//                });
                 break;
 
             case AttributeEvent.STATE_DISCONNECTED:
@@ -380,15 +365,4 @@ public class PrimaryApp_3DR extends Application implements DroneListener, TowerL
         return isCellularNetworkOn.get();
     }
 
-    public void createFileStartLogging() {
-        if (logToFileTree != null) {
-            //logToFileTree.createFileStartLogging(getApplicationContext());
-        }
-    }
-
-    public void closeLogFile() {
-        if(logToFileTree != null) {
-            //logToFileTree.stopLoggingThread();
-        }
-    }
 }

@@ -113,6 +113,8 @@ public class BluetoothService extends Service {
         mState = STATE_NONE;
     }
 
+
+    //The next four states should be consolidated into a handler method return
     /**
      * The purpose of this class is to determine if the android device natively supports bluetooth
      * This should be called and managed at the activity that is going to fire the service
@@ -136,11 +138,18 @@ public class BluetoothService extends Service {
      * Once this is called and if the return is true, we can begin the service
      * @return
      */
-    public boolean deteermineBluetoothOn(){
+    public boolean determineBluetoothOn(){
         if(mBluetoothSupported == true){
             mBluetoothOn = mBluetoothAdapter.isEnabled();
         }
         return(mBluetoothOn);
+    }
+
+    public int determineServieState(){
+        return mState;
+    }
+    public String connectedDeviceName(){
+        return(mDeviceName);
     }
 
 
@@ -299,6 +308,7 @@ public class BluetoothService extends Service {
         bundle.putString(Constants.TOAST, "Device connection was lost");
         msg.setData(bundle);
         mHandler.sendMessage(msg);
+
         //TODO Start the service over to restart listening mode
         //BluetoothService.this.start();
 
