@@ -1,28 +1,46 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title></title>
+
+    <!-- **** CSS **** -->
+    <!-- Ionicons -->
+    <link rel="stylesheet" href="css/ionicons/ionicons.min.css" />
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="css/font-awesome-4.5.0/css/font-awesome.min.css" />
+
+    <!-- Leaflet CSS -->
     <link rel="stylesheet" href="leaflet.css" />
-    <script type="text/javascript" src="leaflet.js"></script>
-    <script type="text/javascript" src="leaflet-providers.js"></script>
 
-    <!-- Custom JS -->
-    <script type="text/javascript" src="parseJS/parseLeaflet.js"></script>
-    <script type="text/javascript" src="androidJS/callbackAndroid.js"></script>
-    <script type="text/javascript" src="leafletJS/mapHandling.js"></script>
-    <script type="text/javascript" src="leafletJS/markerHandling.js"></script>
-    <script type="text/javascript" src="leafletJS/serverMaps.js"></script>
-    <script type="text/javascript" src="leafletJS/userHandling.js"></script>
-    <script type="text/javascript" src="leafletJS/mapBackgroundLayer.js"></script>
-    <script type="text/javascript" src="leafletJS/initializeLeaflet.js"></script>
-    <script type="text/javascript" src="leafletJS/WPPathHandler.js"></script>
+    <!-- Material Design Lite CSS -->
+    <link rel="stylesheet" href="material_design_lite/material-teal-blue.min.css" />
+    <!-- <link rel="stylesheet" href="material_design_lite/material-default.min.css.map" /> -->
+    <!-- <link rel="stylesheet" href="material_design_lite/material-default.min.css" /> -->
 
-    <!-- Context Menu Leaflet JS -->
-    <script type="text/javascript" src="leafletJS/contextMenu/leaflet.contextmenu.js"></script>
-    <link rel="stylesheet" href="leafletJS/contextMenu/leaflet.contextmenu.css" />
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="css/custom_material.css" />
+    <link rel="stylesheet" href="material_design_lite/google_icons.css">
+    <link rel="stylesheet" href="css/mdl-collapse.css" />
+
+
+    <!-- **** JavaScript **** -->
+    <!-- jQuery and jQuery-UI JS -->
+    <script src="js/jquery/dist/jquery.min.js"></script>
+
+
+    <!-- Leaflet JS -->
+    <script src="leaflet.js"></script>
+    <script src="leaflet-providers.js"></script>
+
+    <!-- Material Design Lite JS -->
+    <script src="material_design_lite/material.min.js"></script>
+    <!-- <script src="material_design_lite/material.min.js.map"></script> -->
+
 
     <!-- Drawing Leaflet JS -->
     <script type="text/javascript" src="leafletJS/polygonDrawing/Leaflet.draw.js"></script>
@@ -60,11 +78,312 @@
     <script type="text/javascript" src="leafletJS/polygonDrawing/edit/handler/Edit.Rectangle.js"></script>
     <script type="text/javascript" src="leafletJS/polygonDrawing/edit/handler/Edit.Marker.js"></script>
 
+    <!-- Context Menu Leaflet JS -->
+    <script type="text/javascript" src="leafletJS/contextMenu/leaflet.contextmenu.js"></script>
+    <link rel="stylesheet" href="leafletJS/contextMenu/leaflet.contextmenu.css" />
+
+
+    <!-- Custom JS -->
+    <script type="text/javascript" src="parseJS/parseLeaflet.js"></script>
+    <script type="text/javascript" src="androidJS/callbackAndroid.js"></script>
+    <script type="text/javascript" src="leafletJS/mapHandling.js"></script>
+    <script type="text/javascript" src="leafletJS/markerHandling.js"></script>
+    <script type="text/javascript" src="leafletJS/serverMaps.js"></script>
+    <script type="text/javascript" src="leafletJS/userHandling.js"></script>
+    <script type="text/javascript" src="leafletJS/mapBackgroundLayer.js"></script>
+    <script type="text/javascript" src="leafletJS/initializeLeaflet.js"></script>
+    <script type="text/javascript" src="leafletJS/WPPathHandler.js"></script>
+    <script type="text/javascript" src="js/index_page.js"></script>
+
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.2/html5shiv.js"></script>
+      <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
 </head>
+
+
 <body style="padding:0; margin:0;">
-<div style="height: 100vh; " id="map"></div>
-<script>
-  initializeLeaflet();
-</script>
+
+
+    <div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
+        <header class="mdl-layout__header">
+            <div class="mdl-layout__header-row">
+                <!-- Add spacer, to align navigation to the right -->
+                <div class="mdl-layout-spacer"></div>
+                <!-- Navigation -->
+                <nav class="mdl-navigation">
+
+
+                    <!-- Right aligned menu below button -->
+                    <!-- <a class="mdl-navigation__link">
+                        <button id="fields-menu-lower-right" class="mdl-button mdl-js-button mdl-js-ripple-effect">
+                            <i class="material-icons md-light md-36">view_list</i>
+                        </button>
+                        <ul id="fields-menu" class="mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect keep-open" for="fields-menu-lower-right">
+                            <li class="mdl-list__item keep_open">
+                                <span class="mdl-list__item-secondary-action">
+                                    <label class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect" for="checkbox-1">
+                                        <input type="checkbox" id="checkbox-1" class="mdl-checkbox__input" />
+                                    </label>
+                                </span>
+                                <span class="mdl-list__item-primary-content">
+                                    Field 1
+                                </span>
+                            </li>
+                            <li class="mdl-list__item">
+                                <span class="mdl-list__item-secondary-action">
+                                    <label class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect" for="checkbox-2">
+                                        <input type="checkbox" id="checkbox-2" class="mdl-checkbox__input" />
+                                    </label>
+                                </span>
+                                <span class="mdl-list__item-primary-content">
+                                    Field 2
+                                </span>
+                            </li>
+                            <li class="mdl-list__item">
+                                <span class="mdl-list__item-secondary-action">
+                                    <label class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect" for="checkbox-3">
+                                        <input type="checkbox" id="checkbox-3" class="mdl-checkbox__input" />
+                                    </label>
+                                </span>
+                                <span class="mdl-list__item-primary-content">
+                                    Field 3
+                                </span>
+                            </li>
+                        </ul>
+                    </a> -->
+
+
+                </nav>
+            </div>
+        </header>
+        <div class="mdl-layout__drawer">
+            <span class="mdl-layout-title">Hawkeye</span>
+            <nav class="mdl-navigation">
+                <div class="mdl-collapse">
+                    <a class="mdl-navigation__link mdl-collapse__button">
+                        <i class="material-icons mdl-collapse__icon mdl-animation--default">expand_more</i> Preferences
+                    </a>
+                    <div class="mdl-collapse__content-wrapper">
+                        <div class="mdl-collapse__content mdl-animation--default">
+                            <a class="mdl-navigation__link" onclick="return openPreferences()">Application</a>
+                            <a class="mdl-navigation__link" onclick="return openPreferences()">Bluetooth</a>
+                            <a class="mdl-navigation__link" onclick="return openPreferences()">Communication</a>
+                            <a class="mdl-navigation__link" onclick="return openPreferences()">HSI Companion Module</a>
+                            <a class="mdl-navigation__link" onclick="return openPreferences()">Mapping</a>
+                            <a class="mdl-navigation__link" onclick="return openPreferences()">Planning</a>
+                            <a class="mdl-navigation__link" onclick="return openPreferences()">Speech</a>
+                            <a class="mdl-navigation__link" onclick="return openPreferences()">Vehicle</a>
+                        </div>
+                    </div>
+                </div>
+                <a class="mdl-navigation__link" onclick="return openMapLayers()">Manage Layers</a>
+                <a class="mdl-navigation__link" href="flighteditor.html">Flight Editor</a>
+
+            </nav>
+        </div>
+
+        <!-- Map -->
+        <div id="map"></div>
+
+        <!-- Center on Location -->
+        <div class="center-location-button">
+            <button class="mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect mdl-button--colored" onclick="centerOnLocation()">
+                <i class="material-icons">my_location</i>
+            </button>
+        </div>
+
+
+        <!-- ************************************ -->
+        <!-- ******* Preferences Container ****** -->
+        <!-- ************************************ -->
+        <div class="preferences-outer-container" style="display: none;">
+            <div class="preferences-inner-container">
+
+                <div class="mdl-grid">
+                    <div class="mdl-cell mdl-cell--6-col">
+                        <button class="mdl-button mdl-js-button mdl-button--icon back-button">
+                            <i class="material-icons">keyboard_backspace</i>
+                        </button>
+                    </div>
+                    <div class="mdl-cell mdl-cell--6-col check-button-div">
+                        <button class="mdl-button mdl-js-button mdl-button--icon check-button">
+                            <i class="material-icons">check</i>
+                        </button>
+                    </div>
+                </div>
+
+
+
+                <div class="mdl-card">
+                    <div class="mdl-card__title">
+                        <h2 class="mdl-card__title-text">Application</h2>
+                    </div>
+                    <div class="mdl-card__supporting-text">
+                        This text might describe the photo and provide further information, such as where and when it was taken.
+                    </div>
+                    <div class="mdl-card__actions">
+                        <a href="(URL or function)">Related Action</a>
+                    </div>
+                </div>
+
+                <div class="mdl-card">
+                    <div class="mdl-card__title">
+                        <h2 class="mdl-card__title-text">Bluetooth</h2>
+                    </div>
+                    <div class="mdl-card__supporting-text">
+                        This text might describe the photo and provide further information, such as where and when it was taken.
+                    </div>
+                    <div class="mdl-card__actions">
+                        <a href="(URL or function)">Related Action</a>
+                    </div>
+                </div>
+
+                <div class="mdl-card">
+                    <div class="mdl-card__title">
+                        <h2 class="mdl-card__title-text">Communication</h2>
+                    </div>
+                    <div class="mdl-card__supporting-text">
+                        This text might describe the photo and provide further information, such as where and when it was taken.
+                    </div>
+                    <div class="mdl-card__actions">
+                        <a href="(URL or function)">Related Action</a>
+                    </div>
+                </div>
+
+                <div class="mdl-card">
+                    <div class="mdl-card__title">
+                        <h2 class="mdl-card__title-text">HSI Companion Module</h2>
+                    </div>
+                    <div class="mdl-card__supporting-text">
+                        This text might describe the photo and provide further information, such as where and when it was taken.
+                    </div>
+                    <div class="mdl-card__actions">
+                        <a href="(URL or function)">Related Action</a>
+                    </div>
+                </div>
+
+                <div class="mdl-card">
+                    <div class="mdl-card__title">
+                        <h2 class="mdl-card__title-text">Mapping</h2>
+                    </div>
+                    <div class="mdl-card__supporting-text">
+                        This text might describe the photo and provide further information, such as where and when it was taken.
+                    </div>
+                    <div class="mdl-card__actions">
+                        <a href="(URL or function)">Related Action</a>
+                    </div>
+                </div>
+
+                <div class="mdl-card">
+                    <div class="mdl-card__title">
+                        <h2 class="mdl-card__title-text">Planning</h2>
+                    </div>
+                    <div class="mdl-card__supporting-text">
+                        This text might describe the photo and provide further information, such as where and when it was taken.
+                    </div>
+                    <div class="mdl-card__actions">
+                        <a href="(URL or function)">Related Action</a>
+                    </div>
+                </div>
+
+                <div class="mdl-card">
+                    <div class="mdl-card__title">
+                        <h2 class="mdl-card__title-text">Speech</h2>
+                    </div>
+                    <div class="mdl-card__supporting-text">
+                        This text might describe the photo and provide further information, such as where and when it was taken.
+                    </div>
+                    <div class="mdl-card__actions">
+                        <a href="(URL or function)">Related Action</a>
+                    </div>
+                </div>
+
+                <div class="mdl-card">
+                    <div class="mdl-card__title">
+                        <h2 class="mdl-card__title-text">Vehicle</h2>
+                    </div>
+                    <div class="mdl-card__supporting-text">
+                        This text might describe the photo and provide further information, such as where and when it was taken.
+                    </div>
+                    <div class="mdl-card__actions">
+                        <a href="(URL or function)">Related Action</a>
+                    </div>
+                </div>
+
+
+                <div class="mdl-grid">
+                    <div class="mdl-cell mdl-cell--6-col">
+                        <button class="mdl-button mdl-js-button mdl-button--icon back-button">
+                            <i class="material-icons">keyboard_backspace</i>
+                        </button>
+                    </div>
+                    <div class="mdl-cell mdl-cell--6-col check-button-div">
+                        <button class="mdl-button mdl-js-button mdl-button--icon check-button">
+                            <i class="material-icons">check</i>
+                        </button>
+                    </div>
+                </div>
+
+
+            </div>
+        </div>
+
+
+        <!-- ************************************ -->
+        <!-- ******* Map Layers Container ******* -->
+        <!-- ************************************ -->
+        <div class="maplayers-outer-container" style="display: none;">
+            <div class="maplayers-inner-container">
+
+                <!-- TODO: 1) Expandable chevron for multiple layers
+                           2) On "turn-on" event, show latest-and-greatest layer with
+                                opacity slider.
+                           3) On chevron click, expand rest of layer for the field
+                -->
+
+                <div class="mdl-grid">
+                    <div class="mdl-cell mdl-cell--6-col">
+                        <button class="mdl-button mdl-js-button mdl-button--icon back-button">
+                            <i class="material-icons">keyboard_backspace</i>
+                        </button>
+                    </div>
+                    <div class="mdl-cell mdl-cell--6-col check-button-div">
+                        <button class="mdl-button mdl-js-button mdl-button--icon check-button">
+                            <i class="material-icons">check</i>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="map-layers-cards">
+                </div>
+
+
+                <!-- Arrow and Check -->
+                <div class="manage-layers-end mdl-grid">
+                    <div class="mdl-cell mdl-cell--6-col">
+                        <button class="mdl-button mdl-js-button mdl-button--icon back-button">
+                            <i class="material-icons">keyboard_backspace</i>
+                        </button>
+                    </div>
+                    <div class="mdl-cell mdl-cell--6-col check-button-div">
+                        <button class="mdl-button mdl-js-button mdl-button--icon check-button">
+                            <i class="material-icons">check</i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+      initializeLeaflet();
+    </script>
+
 </body>
+
 </html>
