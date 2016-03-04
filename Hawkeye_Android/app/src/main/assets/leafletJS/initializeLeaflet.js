@@ -23,6 +23,7 @@ function initializeLeaflet(){
     initializeUserLocation();
     initializeMarker();
     initializeWPPathHandler();
+    initializeLayerMaps();
 
     map.on('click', parseClickEvent(addMarkerAtLocation_OnClick));
 
@@ -38,4 +39,15 @@ function initializeLeaflet(){
     //
 		// 	drawnItems.addLayer(layer);
 		// });
+}
+
+function centerOnLocation() {
+    alert('TODO: Center on Location...');
+}
+function showAndroidToast(toastmsg) {
+    Android.showToast(toastmsg);
+}
+
+function moveToScreenTwo() {
+    Android.moveToNextScreen();
 }

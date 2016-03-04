@@ -1,7 +1,7 @@
 function parseClickEvent(returnFn){
                 return function(e){
                     marker = returnFn(e.latlng);
-                    marker.addTo(map);
+                    //marker.addTo(map);
                     }
 }
 

@@ -1,120 +1,119 @@
-var JULYLayer;
-var JULYDate;
-var SEPLayer;
-var SEPDate;
-var AUGLayer;
-var AUGDate;
+/*
+* Created: Kenneth Kroeger
+* Updated Date: 3/4/2016
+*
+* Description: The purpose of this class is to handle the establishment and
+* relevant operations of the mapping overlays. This class is specific to the
+* tile layers that an operator may have loaded.
+*/
 
-function initializeLayers(){
-    JULYDate = new Date(2015, 6, 29);
-    AUGDate = new Date(2015, 7, 26);
-    SEPDate = new Date(2015, 8, 9);
+//The purpose of layersMap is to store a dynamic object of the available layers
+//based on the images that the operator has loaded.
+var layersMap = new Object(); // or var map = {};
 
-    var H7_JUL29 = L.tileLayer('originalTiles/JUL29/H7/{z}/{x}/{y}.png', {
-        maxZoom: 20,
-        minZoom: 16,
-        tms: true,
-        opacity: 1,
-        });
-    var O3_JUL29 = L.tileLayer('originalTiles/JUL29/O3/{z}/{x}/{y}.png', {
-        maxZoom: 20,
-        minZoom: 16,
-        tms: true,
-        opacity: 1,
-        });
-    var B721_JUL29 = L.tileLayer('originalTiles/JUL29/B721/{z}/{x}/{y}.png', {
-        maxZoom: 20,
-        minZoom: 16,
-        tms: true,
-        opacity: 1,
-        });
-    var B722_JUL29 = L.tileLayer('originalTiles/JUL29/B722/{z}/{x}/{y}.png', {
-        maxZoom: 20,
-        minZoom: 16,
-        tms: true,
-        opacity: 1,
-        });
-
-    JULYLayer = L.layerGroup()
-            .addLayer(H7_JUL29)
-            .addLayer(O3_JUL29)
-            .addLayer(B721_JUL29)
-            .addLayer(B722_JUL29);
+//The purpose of the layersKey is to be an array containing the relevant
+//for the layers window panel.
+var layersKey = [];
 
 
-    var B3_AUG26 = L.tileLayer('originalTiles/AUG26/B3/{z}/{x}/{y}.png', {
-        maxZoom: 20,
-        minZoom: 16,
-        tms: true,
-        opacity: 1,
-        });
-    var B5_AUG26 = L.tileLayer('originalTiles/AUG26/B5/{z}/{x}/{y}.png', {
-        maxZoom: 20,
-        minZoom: 16,
-        tms: true,
-        opacity: 1,
-        });
-    var BJ614_AUG26 = L.tileLayer('originalTiles/AUG26/BJ6_14/{z}/{x}/{y}.png', {
-        maxZoom: 20,
-        minZoom: 16,
-        tms: true,
-        opacity: 1,
-        });
-    var P1012_AUG26 = L.tileLayer('originalTiles/AUG26/P10_12/{z}/{x}/{y}.png', {
-        maxZoom: 20,
-        minZoom: 16,
-        tms: true,
-        opacity: 1,
-        });
+/*
+* The purpose of this function is to initializeLayerMaps. This will establish
+* the available layers for rendering and get all of the tiles located and ready
+* to operate.
+*/
+function initializeLayerMaps(){
 
-    var B72_South_AUG26 = L.tileLayer('originalTiles/AUG26/B72South/{z}/{x}/{y}.png', {
-        maxZoom: 20,
-        minZoom: 16,
-        tms: true,
-        opacity: 1,
-        });
+  //TODO: Update this class to be a dynamic load based on the files listed in
+  //the folder rather than a hardcoding
+  /*
+  * Addition of the July 29 Dates
+  */
+  var mapLayerObject = L.tileLayer('originalTiles/JUL29/H7/{z}/{x}/{y}.png', {maxZoom: 20,minZoom: 16,tms: true,opacity: 1});
+  var objectInitialize = {filePath: 'originalTiles/JUL29/H7', currentOpacity: 0, currentlyDrawn: false, layerObject: mapLayerObject};
+  layersMap['H7/July 29 2015/1200'] = objectInitialize;
+  layersKey.push('H7/July 29 2015/1200');
 
+  mapLayerObject = L.tileLayer('originalTiles/JUL29/O3/{z}/{x}/{y}.png', {maxZoom: 20,minZoom: 16,tms: true,opacity: 1});
+  objectInitialize = {filePath: 'originalTiles/JUL29/O3', currentOpacity: 0, currentlyDrawn: false, layerObject: mapLayerObject};
+  layersMap['O3/July 29 2015/1200'] = objectInitialize;
+  layersKey.push('O3/July 29 2015/1200');
 
-    AUGLayer = L.layerGroup()
-            .addLayer(B3_AUG26)
-            .addLayer(B5_AUG26)
-            .addLayer(BJ614_AUG26)
-            .addLayer(P1012_AUG26)
-            .addLayer(B72_South_AUG26);
+  mapLayerObject = L.tileLayer('originalTiles/JUL29/B721/{z}/{x}/{y}.png', {maxZoom: 20,minZoom: 16,tms: true,opacity: 1});
+  objectInitialize = {filePath: 'originalTiles/JUL29/B721', currentOpacity: 0, currentlyDrawn: false, layerObject: mapLayerObject};
+  layersMap['B72 Part1/July 29 2015/1200'] = objectInitialize;
+  layersKey.push('B72 Part1/July 29 2015/1200');
+
+  mapLayerObject = L.tileLayer('originalTiles/JUL29/B722/{z}/{x}/{y}.png', {maxZoom: 20,minZoom: 16,tms: true,opacity: 1});
+  objectInitialize = {filePath: 'originalTiles/JUL29/B722', currentOpacity: 0, currentlyDrawn: false, layerObject: mapLayerObject};
+  layersMap['B72 Part2/July 29 2015/1200'] = objectInitialize;
+  layersKey.push('B72 Part2/July 29 2015/1200');
 
 
-    var B72_SEP9 = L.tileLayer('originalTiles/SEP9/{z}/{x}/{y}.png', {
-       maxZoom: 20,
-       minZoom: 16,
-       tms: true,
-       opacity: 1,
-       });
+  /*
+  * Addition of the Aug 26 Dates
+  */
+  mapLayerObject = L.tileLayer('originalTiles/AUG26/B3/{z}/{x}/{y}.png', {maxZoom: 20,minZoom: 16,tms: true,opacity: 1});
+  objectInitialize = {filePath: 'originalTiles/AUG26/B3', currentOpacity: 0, currentlyDrawn: false, layerObject: mapLayerObject};
+  layersMap['B3/Aug 26 2015/1200'] = objectInitialize;
+  layersKey.push('B3/Aug 26 2015/1200');
 
-   SEPLayer = L.layerGroup()
-           .addLayer(B72_SEP9);
+  mapLayerObject = L.tileLayer('originalTiles/AUG26/B5/{z}/{x}/{y}.png', {maxZoom: 20,minZoom: 16,tms: true,opacity: 1});
+  objectInitialize = {filePath: 'originalTiles/AUG26/B5', currentOpacity: 0, currentlyDrawn: false, layerObject: mapLayerObject};
+  layersMap['B5/Aug 26 2015/1200'] = objectInitialize;
+  layersKey.push('B5/Aug 26 2015/1200');
 
+  mapLayerObject = L.tileLayer('originalTiles/AUG26/BJ6_14/{z}/{x}/{y}.png', {maxZoom: 20,minZoom: 16,tms: true,opacity: 1});
+  objectInitialize = {filePath: 'originalTiles/AUG26/BJ6_14', currentOpacity: 0, currentlyDrawn: false, layerObject: mapLayerObject};
+  layersMap['BJ6/Aug 26 2015/1200'] = objectInitialize;
+  layersKey.push('BJ6/Aug 26 2015/1200');
 
+  mapLayerObject = L.tileLayer('originalTiles/AUG26/P10_12/{z}/{x}/{y}.png', {maxZoom: 20,minZoom: 16,tms: true,opacity: 1});
+  objectInitialize = {filePath: 'originalTiles/AUG26/P10_12', currentOpacity: 0, currentlyDrawn: false, layerObject: mapLayerObject};
+  layersMap['P10_12/Aug 26 2015/1200'] = objectInitialize;
+  layersKey.push('P10_12/Aug 26 2015/1200');
+
+  mapLayerObject = L.tileLayer('originalTiles/AUG26/B72South/{z}/{x}/{y}.png', {maxZoom: 20,minZoom: 16,tms: true,opacity: 1});
+  objectInitialize = {filePath: 'originalTiles/AUG26/B72South', currentOpacity: 0, currentlyDrawn: false, layerObject: mapLayerObject};
+  layersMap['B72 South/Aug 26 2015/1200'] = objectInitialize;
+  layersKey.push('B72 South/Aug 26 2015/1200');
+
+  /*
+  * Addition of the Sep 9 Dates
+  */
+  mapLayerObject = L.tileLayer('originalTiles/SEP9/{z}/{x}/{y}.png', {maxZoom: 20,minZoom: 16,tms: true,opacity: 1});
+  objectInitialize = {filePath: 'originalTiles/SEP9', currentOpacity: 0, currentlyDrawn: false, layerObject: mapLayerObject};
+  layersMap['B72/Sep 9 2015/1200'] = objectInitialize;
+  layersKey.push('B72/Sep 9 2015/1200');
 }
 
-function layerModification(dateRange){
-var dateMin = dateRange.values.min.getTime();
-var dateMax = dateRange.values.max.getTime();
 
-    if(dateMin<=JULYDate && JULYDate<=dateMax){
-        map.addLayer(JULYLayer);
-    } else{
-        map.removeLayer(JULYLayer);
-    }
+/*
+* The purpose of this function is to get the array object that contains the
+* mapping layers available for the operator to use.
+*/
+function getAvailableLayers(){
+  return(layersKey);
+}
 
-    if(dateMin<=AUGDate && AUGDate<=dateMax){
-        map.addLayer(AUGLayer);
-    } else{
-       map.removeLayer(AUGLayer);
-    }
+/*
+* The function updates whether the layer object should be on/off
+*/
+function updateLayerOnOff(keyObject, booleanOnOff){
+  if(booleanOnOff == true){
+    //add the appropriate layer to the map
+    map.addLayer(layersMap[keyObject].layerObject);
+  }else{
+    //remove the appropriate layer to the map
+    map.removeLayer(layersMap[keyObject].layerObject);
+    //restore the initial map
+    layersMap[keyObject].layerObject.setOpacity(1);
+  }
+}
 
-    if(dateMin<=SEPDate && SEPDate<=dateMax){
-        map.addLayer(SEPLayer);
-    } else{
-        map.removeLayer(SEPLayer);
-    }
+/*
+* The function updates the layer opactity of an object.
+*/
+function updateLayerOpacity(keyObject, newOpacity){
+  layersMap[keyObject].layerObject.setOpacity(newOpacity);
+  layersMap[keyObject].layerObject.redraw();
 }

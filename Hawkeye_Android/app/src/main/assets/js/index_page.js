@@ -2,12 +2,14 @@
 
     // Global layers object:
     var g_layersObj = [];
+    //TODO: This was added to handle the stripped index value
+    var g_layersArray = [];
     $(document).ready(function() {
 
         // TODO: Pass the array in (from KEN):
-        var layerArray = ['LayerName1/Date1/Time1', 'LayerName1/Date2/Time2', 'Layername2/Date1/Time1', 'Layername2/Date2/Time2', 'Layername2/Date3/Time3', 'Layername3/Date1/Time1'];
-
-
+        //var layerArray = ['LayerName1/Date1/Time1', 'LayerName1/Date2/Time2', 'Layername2/Date1/Time1', 'Layername2/Date2/Time2', 'Layername2/Date3/Time3', 'Layername3/Date1/Time1'];
+        var layerArray = getAvailableLayers();
+        g_layersArray = layerArray;
         // Create the layers object to be used later:
         var layersObj = [];
         var layersIndex = 0;
@@ -118,17 +120,6 @@
     });
 
 
-    function centerOnLocation() {
-        alert('TODO: Center on Location...');
-    }
-    function showAndroidToast(toastmsg) {
-        Android.showToast(toastmsg);
-    }
-
-    function moveToScreenTwo() {
-        Android.moveToNextScreen();
-    }
-
 
     function openMapLayers() {
         $("#map").css("width", "75%");
@@ -153,12 +144,6 @@
 
         $(".mdl-layout__drawer-button").click();
     }
-
-
-    function centerOnLocation() {
-        alert('TODO: Center on location...');
-    }
-
 
     window.onload = function() {
         $(function() {
@@ -211,15 +196,20 @@
             if (expandDiv.height() > 0 && button.prop('disabled') === true) {
                 expandDiv.height(0);
             }
-
+            //TODO: We need a better from getting layer from checkbox change event....would like to be more dynamic rather than hardcoding field-toggle talk to Ben
+            var forid = $(this).attr('for');
+            var checkbox = $('#'+$(this).attr('for'));
+            var sliderVal = checkbox.prop('checked');
+            var sliderID = checkbox.attr('id').replace('field-toggle-','');
+            updateLayerOnOff(g_layersArray[sliderID],sliderVal);
         });
 
         $('.opacity-slider').change(function() {
             var sliderVal = $(this).val();
             var sliderID = $(this).attr('id');
-
-            var changedObj = {layer: sliderID, opacity: sliderVal/100};
-            console.log(changedObj);
+            updateLayerOpacity(sliderID,sliderVal/100);
+            //var changedObj = {layer: sliderID, opacity: sliderVal/100};
+            //console.log(changedObj);
         });
 
 
