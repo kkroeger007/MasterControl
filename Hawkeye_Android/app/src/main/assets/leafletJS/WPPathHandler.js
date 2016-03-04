@@ -1,6 +1,6 @@
 /*
 * Created: Kenneth Kroeger
-* Updated Date: 3/3/2016
+* Updated Date: 3/4/2016
 *
 * Description: The purpose of this class is to handle the drawing of a path
 * line between waypoint locaitons. This line will represent the best estimated
@@ -46,9 +46,7 @@ function onClickWPPath(event){
   for	(index = 0; index < WPPolylineArray.length; index++) {
     if(selectedPolyline == WPPolylineArray[index]){
       var indexLocation = index + 1;
-      var markerRTN = addMarkerAtLocationClean(clickLocation);
-      markerArray.splice(indexLocation,0,markerRTN);
-      console.log("I clicked on path" + index + "at location" + clickLocation);
+      addMarkerAtLocation(clickLocation,false,indexLocation,0);
       redrawPath();
       break;
     }
@@ -69,6 +67,7 @@ function redrawPath(){
     WPPolylineArray.push(WPPolyline);
   }
 }
+
 function addWPValue(){
   var tempMarkerSize = markerArray.length;
   if(tempMarkerSize>=2)
@@ -83,7 +82,7 @@ function addWPValue(){
 }
 
 function WPMarkerDrag(movedMarker){
-  var tmpIndex = movedMarker.UniqueID;
+  var tmpIndex = markerArray.indexOf(movedMarker);
   var WPPolyline;
 
   if((tmpIndex == 0)&&(WPPolylineArray.length>0)){

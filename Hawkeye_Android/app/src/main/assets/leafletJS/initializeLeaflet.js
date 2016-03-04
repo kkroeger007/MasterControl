@@ -1,3 +1,11 @@
+/*
+* Created: Kenneth Kroeger
+* Updated Date: 3/4/2016
+*
+* Description: The purpose of this class is to initialize all of the leaflet
+* properties, maps, and associated classes.
+*/
+
 var map;
 function initializeLeaflet(){
   var bounds = new L.LatLngBounds(
@@ -12,14 +20,11 @@ function initializeLeaflet(){
 
     setMapBaseLayer('GS');
 
-    markerIndex = 0;
-
-
     initializeUserLocation();
     initializeMarker();
     initializeWPPathHandler();
 
-    map.on('click', parseClickEvent(addMarkerAtLocation));
+    map.on('click', parseClickEvent(addMarkerAtLocation_OnClick));
 
 
     // var drawnItems = L.featureGroup().addTo(map);

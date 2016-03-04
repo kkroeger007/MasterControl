@@ -1,6 +1,6 @@
 /*
 * Created: Kenneth Kroeger
-* Updated Date: 3/2/2016
+* Updated Date: 3/4/2016
 *
 * Description: The purpose of this class is to handle the establishment of the
 * waypoint marker layer. These markers will represent ONLY waypoints within
@@ -8,7 +8,6 @@
 * and switch case to determine the type of marker.
 */
 
-var markerIndex = 0;
 var markers = new Map();
 var markerArray = [];
 var markerLocationIcon;
@@ -31,57 +30,33 @@ function initializeMarker(){
 //TODO: of the mission object as a custom tag identifying the correct picutre to display.
 
 
-function addMarkerAtLocationClean(markerLoc){
-    var marker = new L.marker(markerLoc,
-      {
-        markerLocationIcon,
-        draggable:'true',
-        clickable:'true',
-        title: 'HOME'
-      });
-
-    marker.on('click',markerClickEvent);
-    marker.on('drag', markerDrag);
-
-    // marker.on('dragend', function(event){
-    //         var marker = event.target;
-    //         var position = marker.getLatLng();
-    //         marker.setLatLng(new L.LatLng(position.lat, position.lng),{markerLocationIcon,draggable:'true',clickable:'true'});
-    // });
-    marker.UniqueID = markerIndex;
-
-    marker.setIcon(markerLocationIcon);
-    marker.addTo(map);
-    return marker;
+function addMarkerAtLocation_OnClick(markerLoc){
+  addMarkerAtLocation(markerLoc,true,0,0);
 }
 
-function addMarkerAtLocation(markerLoc){
-    var marker = new L.marker(markerLoc,
-      {
-        markerLocationIcon,
-        draggable:'true',
-        clickable:'true',
-        title: 'HOME'
-      });
+function addMarkerAtLocation(markerLoc , appendMarker, locationStartIndex, removeLength){
+  var marker = new L.marker(markerLoc,
+    {
+      markerLocationIcon,
+      draggable:'true',
+      clickable:'true',
+      title: 'HOME'
+    });
 
-    marker.on('click',markerClickEvent);
-    marker.on('drag', markerDrag);
+  marker.on('click',markerClickEvent);
+  marker.on('drag', markerDrag);
 
-    // marker.on('dragend', function(event){
-    //         var marker = event.target;
-    //         var position = marker.getLatLng();
-    //         marker.setLatLng(new L.LatLng(position.lat, position.lng),{markerLocationIcon,draggable:'true',clickable:'true'});
-    // });
-    marker.UniqueID = markerIndex;
+  marker.setIcon(markerLocationIcon);
+  marker.addTo(map);
 
-    marker.setIcon(markerLocationIcon);
-    marker.addTo(map);
-
+  if(appendMarker == false){
+    markerArray.splice(locationStartIndex,removeLength,marker);
+  }else{
     markerArray.push(marker);
-
     addWPValue();
-    markerIndex = markerIndex + 1;
-    return marker;
+  }
+
+  return marker;
 }
 
 function markerDrag(event){
@@ -105,13 +80,9 @@ function addWaypointAtLocation(markerLoc){
             var position = marker.getLatLng();
             marker.setLatLng(new L.LatLng(position.lat, position.lng),{markerLocationIcon,draggable:'true',clickable:'true'});
     });
-    marker.UniqueID = markerIndex;
 
     marker.setIcon(markerLocationIcon);
     marker.addTo(map);
-
-    console.log("You clicked the marker " + marker.UniqueID);
-    markerIndex = markerIndex + 1;
 
     return marker;
 }
