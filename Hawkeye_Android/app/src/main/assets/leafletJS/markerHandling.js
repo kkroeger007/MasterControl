@@ -38,8 +38,8 @@ function addMarkerAtLocation(markerLoc , appendMarker, locationStartIndex, remov
   var marker = new L.marker(markerLoc,
     {
       markerLocationIcon,
-      draggable:'true',
-      clickable:'true',
+      draggable: true,
+      clickable: true,
       title: 'HOME'
     });
 

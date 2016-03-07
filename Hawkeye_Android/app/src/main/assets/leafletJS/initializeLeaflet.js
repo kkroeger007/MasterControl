@@ -25,20 +25,13 @@ function initializeLeaflet(){
     initializeWPPathHandler();
     initializeLayerMaps();
 
-    map.on('click', parseClickEvent(addMarkerAtLocation_OnClick));
+    //map.on('click', parseClickEvent(addMarkerAtLocation_OnClick));
+    initializeWPMarker_Circle();
+    var tmpLocation = new L.LatLng(37.890499,-76.814185);
+    computeFinalLocation(tmpLocation,50);
+    //map.off('click', parseClickEvent(addMarkerAtLocation_OnClick));
 
-
-    // var drawnItems = L.featureGroup().addTo(map);
-    //
-		// map.addControl(new L.Control.Draw({
-		// 	edit: { featureGroup: drawnItems }
-		// }));
-    //
-		// map.on('draw:created', function(event) {
-		// 	var layer = event.layer;
-    //
-		// 	drawnItems.addLayer(layer);
-		// });
+    initializeDrawBoundaries();
 }
 
 function centerOnLocation() {
