@@ -31,12 +31,14 @@ function initializeDrawBoundaries(){
 map.on('draw:created', function(event) {
   var layer = event.layer;
   var type = event.layerType;
+  //console.log(layer.getLatLngs());
+
   drawnItems.addLayer(layer);
   if (type === 'polygon')
   {
-    console.log(layer);
+    //console.log(layer);
     var area = L.GeometryUtil.geodesicArea(layer.getLatLngs()); //this value will be in sq meters
-    console.log(area);
+    //console.log(area);
   }
 });
 

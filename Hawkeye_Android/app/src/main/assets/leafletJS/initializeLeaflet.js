@@ -26,9 +26,10 @@ function initializeLeaflet(){
     initializeLayerMaps();
 
     //map.on('click', parseClickEvent(addMarkerAtLocation_OnClick));
-    initializeWPMarker_Circle();
+    //initializeWPMarker_Circle();
     var tmpLocation = new L.LatLng(37.890499,-76.814185);
-    computeFinalLocation(tmpLocation,50);
+    var testWPG = new WPGeneral(tmpLocation);
+    //computeFinalLocation(tmpLocation,50);
     //map.off('click', parseClickEvent(addMarkerAtLocation_OnClick));
 
     initializeDrawBoundaries();
