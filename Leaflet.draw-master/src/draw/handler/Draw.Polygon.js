@@ -6,7 +6,7 @@ L.Draw.Polygon = L.Draw.Polyline.extend({
 	Poly: L.Polygon,
 
 	options: {
-		showArea: true,
+		showArea: false,
 		shapeOptions: {
 			stroke: true,
 			color: '#f06eaa',
@@ -77,8 +77,6 @@ L.Draw.Polygon = L.Draw.Polyline.extend({
 	},
 
 	_vertexChanged: function (latlng, added) {
-
-		console.log('The vertex changed in the draw polygon function');
 		var latLngs;
 
 		// Check to see if we should show the area

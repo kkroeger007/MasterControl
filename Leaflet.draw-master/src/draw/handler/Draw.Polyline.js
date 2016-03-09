@@ -6,7 +6,7 @@ L.Draw.Polyline = L.Draw.Feature.extend({
 	Poly: L.Polyline,
 
 	options: {
-		allowIntersection: false,
+		allowIntersection: true,
 		repeatMode: false,
 		drawError: {
 			color: '#b00b00',
@@ -147,7 +147,7 @@ L.Draw.Polyline = L.Draw.Feature.extend({
 		this._markers.push(this._createMarker(latlng));
 
 		this._poly.addLatLng(latlng);
-		console.log(this._poly);
+
 		if (this._poly.getLatLngs().length === 2) {
 			this._map.addLayer(this._poly);
 		}
@@ -157,9 +157,6 @@ L.Draw.Polyline = L.Draw.Feature.extend({
 
 	_finishShape: function () {
 		var intersects = this._poly.newLatLngIntersects(this._poly.getLatLngs()[0], true);
-
-		//KEN added this to update the last length of the polyline when the area is closed
-		this._updateRunningMeasure(this._poly.getLatLngs()[0],true);
 
 		if ((!this.options.allowIntersection && intersects) || !this._shapeIsValid()) {
 			this._showErrorTooltip();
@@ -184,8 +181,6 @@ L.Draw.Polyline = L.Draw.Feature.extend({
 	},
 
 	_onMouseMove: function (e) {
-		console.log('The onMouseMove polyline function');
-
 		var newPos = e.layerPoint,
 			latlng = e.latlng;
 
@@ -252,6 +247,7 @@ L.Draw.Polyline = L.Draw.Feature.extend({
 		});
 
 		this._markerGroup.addLayer(marker);
+
 		return marker;
 	},
 
@@ -260,6 +256,7 @@ L.Draw.Polyline = L.Draw.Feature.extend({
 
 		if (markerCount > 0) {
 			newPos = newPos || this._map.latLngToLayerPoint(this._currentLatLng);
+
 			// draw the guide line
 			this._clearGuides();
 			this._drawGuide(
@@ -380,6 +377,7 @@ L.Draw.Polyline = L.Draw.Feature.extend({
 
 		// calculate the distance from the last fixed point to the mouse position
 		distance = this._measurementRunningTotal + currentLatLng.distanceTo(previousLatLng);
+
 		return L.GeometryUtil.readableDistance(distance, this.options.metric);
 	},
 

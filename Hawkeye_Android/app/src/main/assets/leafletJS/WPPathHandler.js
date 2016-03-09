@@ -123,7 +123,7 @@ function WPMarkerDrag(movedMarker){
 
 
   function WPMarkerInsert(){
-
+  
   }
 
   // WPPolylineArray[Marker]

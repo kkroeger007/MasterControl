@@ -19,6 +19,8 @@
 
     <!-- Material Design Lite CSS -->
     <link rel="stylesheet" href="material_design_lite/material-teal-blue.min.css" />
+    <!-- <link rel="stylesheet" href="material_design_lite/material-default.min.css.map" /> -->
+    <!-- <link rel="stylesheet" href="material_design_lite/material-default.min.css" /> -->
 
     <!-- Custom CSS -->
     <link rel="stylesheet" href="css/custom_material.css" />
@@ -46,7 +48,6 @@
 
     <script type="text/javascript" src="leafletJS/polygonDrawing/Toolbar.js"></script>
     <script type="text/javascript" src="leafletJS/polygonDrawing/Tooltip.js"></script>
-    <script type="text/javascript" src="leafletJS/polygonDrawing/TextPolyline.js"></script>
 
     <script type="text/javascript" src="leafletJS/polygonDrawing/ext/GeometryUtil.js"></script>
     <script type="text/javascript" src="leafletJS/polygonDrawing/ext/LatLngUtil.js"></script>
@@ -81,8 +82,6 @@
     <script type="text/javascript" src="leafletJS/contextMenu/leaflet.contextmenu.js"></script>
     <link rel="stylesheet" href="leafletJS/contextMenu/leaflet.contextmenu.css" />
 
-    <!-- Custom JS Class Helper -->
-    <script type="text/javascript" src="js/classHelper/extend.js"></script>
 
     <!-- Custom JS -->
     <script type="text/javascript" src="parseJS/parseLeaflet.js"></script>
@@ -96,7 +95,6 @@
     <script type="text/javascript" src="leafletJS/WPPathHandler.js"></script>
     <script type="text/javascript" src="leafletJS/WPMarker_Circle.js"></script>
     <script type="text/javascript" src="leafletJS/drawBoundaries.js"></script>
-    <script type="text/javascript" src="leafletJS/WPGeneral.js"></script>
     <script type="text/javascript" src="js/index_page.js"></script>
 
 
@@ -110,7 +108,7 @@
 </head>
 
 
-<body style="padding:0; margin:0;" class="pushmenu-push">
+<body style="padding:0; margin:0;">
 
 
     <div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
@@ -144,6 +142,7 @@
                         </div>
                     </div>
                 </div>
+                <a class="mdl-navigation__link" onclick="return openMapLayers()">Manage Layers</a>
                 <a class="mdl-navigation__link" href="flighteditor.html">Flight Editor</a>
 
             </nav>
@@ -151,13 +150,6 @@
 
         <!-- Map -->
         <div id="map"></div>
-
-        <!-- Manage Layers Button -->
-        <div class="manage-layers-button">
-            <button class="mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect mdl-button--colored" onclick="openMapLayers()">
-                <i class="material-icons">layers</i>
-            </button>
-        </div>
 
         <!-- Center on Location -->
         <div class="center-location-button">
@@ -306,47 +298,44 @@
         <!-- ************************************ -->
         <!-- ******* Map Layers Container ******* -->
         <!-- ************************************ -->
-        <div class="pushmenu pushmenu-left">
-            <div class="maplayers-outer-container pushmenu pushmenu-left" style="display: ;">
-                <div class="maplayers-inner-container">
-                    <div class="mdl-grid">
-                        <!-- <div class="mdl-cell mdl-cell--6-col">
-                            <button class="mdl-button mdl-js-button mdl-button--icon back-button">
-                                <i class="material-icons">keyboard_backspace</i>
-                            </button>
-                        </div> -->
-                        <div class="mdl-cell mdl-cell--12-col check-button-div">
-                            <button class="mdl-button mdl-js-button mdl-button--icon map-layers-check">
-                                <i class="material-icons">check</i>
-                            </button>
-                        </div>
+        <div class="maplayers-outer-container" style="display: none;">
+            <div class="maplayers-inner-container">
+                <div class="mdl-grid">
+                    <div class="mdl-cell mdl-cell--6-col">
+                        <button class="mdl-button mdl-js-button mdl-button--icon back-button">
+                            <i class="material-icons">keyboard_backspace</i>
+                        </button>
                     </div>
-
-                    <div class="map-layers-cards">
+                    <div class="mdl-cell mdl-cell--6-col check-button-div">
+                        <button class="mdl-button mdl-js-button mdl-button--icon check-button">
+                            <i class="material-icons">check</i>
+                        </button>
                     </div>
+                </div>
+
+                <div class="map-layers-cards">
+                </div>
 
 
-                    <!-- Arrow and Check -->
-                    <!-- <div class="manage-layers-end mdl-grid">
-                        <div class="mdl-cell mdl-cell--6-col">
-                            <button class="mdl-button mdl-js-button mdl-button--icon back-button">
-                                <i class="material-icons">keyboard_backspace</i>
-                            </button>
-                        </div>
-                        <div class="mdl-cell mdl-cell--6-col check-button-div">
-                            <button class="mdl-button mdl-js-button mdl-button--icon check-button">
-                                <i class="material-icons">check</i>
-                            </button>
-                        </div>
-                    </div> -->
+                <!-- Arrow and Check -->
+                <div class="manage-layers-end mdl-grid">
+                    <div class="mdl-cell mdl-cell--6-col">
+                        <button class="mdl-button mdl-js-button mdl-button--icon back-button">
+                            <i class="material-icons">keyboard_backspace</i>
+                        </button>
+                    </div>
+                    <div class="mdl-cell mdl-cell--6-col check-button-div">
+                        <button class="mdl-button mdl-js-button mdl-button--icon check-button">
+                            <i class="material-icons">check</i>
+                        </button>
+                    </div>
                 </div>
             </div>
         </div>
-
     </div>
 
     <script>
-        initializeLeaflet();
+      initializeLeaflet();
     </script>
 
 </body>
