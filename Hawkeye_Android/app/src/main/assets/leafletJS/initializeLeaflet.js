@@ -21,9 +21,9 @@ function initializeLeaflet(){
     setMapBaseLayer('GS');
 
     //initializeUserLocation();
-    initializeMarker();
-    initializeWPPathHandler();
-    initializeLayerMaps();
+    // initializeMarker();
+    // initializeWPPathHandler();
+    // initializeLayerMaps();
 
     map.on('click', clickEventChecker);
     this.wpQueue = new WPQueue(map);

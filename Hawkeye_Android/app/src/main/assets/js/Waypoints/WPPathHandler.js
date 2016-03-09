@@ -92,7 +92,7 @@ var WPPathHandler = Class.extend(function() {
 
     if ((tmpIndex == 0) && (this._WPPolylineArray.length > 0)) {
       map.removeLayer(this._WPPolylineArray[0]);
-      WPPolyline = new L.polyline(WPPathObject).addTo(map);
+      WPPolyline = new L.polyline(this.polyLineProp).addTo(map);
       WPPolyline.on('click',onClickWPPath);
       WPPolyline.addLatLng(this._WPQueue[tmpIndex].getOriginLoc()); //The second in at the end of the array
       WPPolyline.addLatLng(this._WPQueue[tmpIndex + 1].getOriginLoc()); //The first in at the end of the array
@@ -100,7 +100,7 @@ var WPPathHandler = Class.extend(function() {
       this._WPPolylineArray[0] = WPPolyline;
     } else if (tmpIndex == this._WPPolylineArray.length) {
       map.removeLayer(this._WPPolylineArray[tmpIndex - 1]);
-      WPPolyline = new L.polyline(WPPathObject).addTo(map);
+      WPPolyline = new L.polyline(this.polyLineProp).addTo(map);
       WPPolyline.on('click',onClickWPPath);
       WPPolyline.addLatLng(this._WPQueue[tmpIndex - 1].getOriginLoc()); //The first in at the end of the array
       WPPolyline.addLatLng(this._WPQueue[tmpIndex].getOriginLoc()); //The second in at the end of the array
@@ -109,7 +109,7 @@ var WPPathHandler = Class.extend(function() {
     } else if ((tmpIndex != 0) && (tmpIndex - 1 != this._WPQueue.length) && (this._WPPolylineArray.length > 0)) {
       //Update the same level one
       map.removeLayer(this._WPPolylineArray[tmpIndex]);
-      WPPolyline = new L.polyline(WPPathObject).addTo(map);
+      WPPolyline = new L.polyline(this.polyLineProp).addTo(map);
       WPPolyline.on('click',onClickWPPath);
       WPPolyline.addLatLng(this._WPQueue[tmpIndex].getOriginLoc()); //The second in at the end of the array
       WPPolyline.addLatLng(this._WPQueue[tmpIndex + 1].getOriginLoc()); //The first in at the end of the array
@@ -118,7 +118,7 @@ var WPPathHandler = Class.extend(function() {
 
       //Update the same level one
       map.removeLayer(this._WPPolylineArray[tmpIndex - 1]);
-      WPPolyline = new L.polyline(WPPathObject).addTo(map);
+      WPPolyline = new L.polyline(this.polyLineProp).addTo(map);
       WPPolyline.on('click',onClickWPPath);
       WPPolyline.addLatLng(this._WPQueue[tmpIndex - 1].getOriginLoc()); //The first in at the end of the array
       WPPolyline.addLatLng(this._WPQueue[tmpIndex].getOriginLoc()); //The second in at the end of the array
@@ -134,7 +134,7 @@ var WPPathHandler = Class.extend(function() {
     }
     this._WPPolylineArray = [];
     for	(index = 0; index < this._WPQueue.length-1; index++) {
-      var WPPolyline = new L.polyline(WPPathObject).addTo(map);
+      var WPPolyline = new L.polyline(this.polyLineProp).addTo(map);
       WPPolyline.on('click',onClickWPPath);
       WPPolyline.addLatLng(this._WPQueue[index].getOriginLoc()); //The first in
       WPPolyline.addLatLng(this._WPQueue[index+1].getOriginLoc()); //The second in
