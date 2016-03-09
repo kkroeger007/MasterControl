@@ -1,15 +1,15 @@
 /*
-* Created: Kenneth Kroeger
-* Updated Date: 3/9/2016
-*
-* Description: The purpose of this class is to handle the establishment of the
-* user location layer. This will store and update the user location data on the
-* leaflet layer.
-*/
+ * Created: Kenneth Kroeger
+ * Updated Date: 3/9/2016
+ *
+ * Description: The purpose of this class is to handle the establishment of the
+ * user location layer. This will store and update the user location data on the
+ * leaflet layer.
+ */
 
 var userLocationHandler = Class.extend(function() {
 
-  var _leafletMap;   //The leaflet map object passed into this class
+  var _leafletMap; //The leaflet map object passed into this class
   var userLocationIcon;
   var userMarker;
   var userCircle;
@@ -20,9 +20,9 @@ var userLocationHandler = Class.extend(function() {
    * specific to the userLocationHandler Class.
    * @type {Object}
    */
-   var options = {
-    displayerUserLocation: true,   //Display a user marker on the map
-    displayConfidenceCircle: true  //Display a user confidence position on the map
+  var options = {
+    displayerUserLocation: true, //Display a user marker on the map
+    displayConfidenceCircle: true //Display a user confidence position on the map
   };
 
   /**
@@ -32,20 +32,20 @@ var userLocationHandler = Class.extend(function() {
    */
   this.iconProp = {
     iconUrl: 'images/bluedot.png', //default icon
-    iconSize:     [34, 34], // size of the icon
-    iconAnchor:   [19, 19], // point of the icon which will correspond to marker's location
-    popupAnchor:  [-19, 38] // point from which the popup should open relative to the iconAnchor
+    iconSize: [34, 34], // size of the icon
+    iconAnchor: [19, 19], // point of the icon which will correspond to marker's location
+    popupAnchor: [-19, 38] // point from which the popup should open relative to the iconAnchor
   };
 
-/**
- * [markerProp description]The purpose of this object is to store the properties
- * related to the user marker.
- * @type {Object}
- */
+  /**
+   * [markerProp description]The purpose of this object is to store the properties
+   * related to the user marker.
+   * @type {Object}
+   */
   this.markerProp = {
     userLocationIcon,
-    draggable: false,   //whether or not to allow user draggable
-    clickable: false,   //whether or not to allow user clickable
+    draggable: false, //whether or not to allow user draggable
+    clickable: false, //whether or not to allow user clickable
     title: 'USER'
   };
 
@@ -79,26 +79,26 @@ var userLocationHandler = Class.extend(function() {
     userLocationIcon = new L.icon(this.iconProp);
 
     userLocationInfo = new Object();
-    userLocationInfo.HDOP = 0.0;    //Horizontal dillution of posiution
-    userLocationInfo.VDOP = 0.0;    //Vertical dillution of posiution
-    userLocationInfo.SAT = 0;   //Satellites used to estimate position
-    userLocationInfo.FIX = 0;   //The fix code of the user position
+    userLocationInfo.HDOP = 0.0; //Horizontal dillution of position
+    userLocationInfo.VDOP = 0.0; //Vertical dillution of position
+    userLocationInfo.SAT = 0; //Satellites used to estimate position
+    userLocationInfo.FIX = 0; //The fix code of the user position
 
   };
 
 
-/**
- * [function description] The purpose of this function is to handle the default
- * constructor of the userHandling class.
- * @param  {[Leaflet Map]} map [description] Update the object to display on.
- * @param  {[LatLng (DEG)]} locationLatLng    [description] Central location of user.
- * @param  {[Bool]} displayUser       [description] Display user marker.
- * @param  {[Bool]} displayConfidence [description] Display confidence circle.
- * @return {[type]}                   [description]
- */
+  /**
+   * [function description] The purpose of this function is to handle the default
+   * constructor of the userHandling class.
+   * @param  {[Leaflet Map]} map [description] Update the object to display on.
+   * @param  {[LatLng (DEG)]} locationLatLng    [description] Central location of user.
+   * @param  {[Bool]} displayUser       [description] Display user marker.
+   * @param  {[Bool]} displayConfidence [description] Display confidence circle.
+   * @return {[type]}                   [description]
+   */
   this.constructor = function(leafletMap, locationLatLng, displayUser, displayConfidence) {
     userMarker = new L.marker(locationLatLng, this.markerProp);
-    userCircle = new L.circle(locationLatLng,100,this.circlePathProp);
+    userCircle = new L.circle(locationLatLng, 100, this.circlePathProp);
     _leafletMap = leafletMap;
 
     options.displayerUserLocation = displayUser;
@@ -107,7 +107,7 @@ var userLocationHandler = Class.extend(function() {
     if (displayUser == true) {
       userMarker.addTo(_leafletMap);
     }
-    if(displayConfidence == true){
+    if (displayConfidence == true) {
       userCircle.addTo(_leafletMap);
     }
   };
@@ -118,31 +118,31 @@ var userLocationHandler = Class.extend(function() {
    * @param  {[Leaflet Map]} leafletMap [description]
    * @return {[type]}            [description]
    */
-    this.updateMap = function(leafletMap){
-      _leafletMap = leafletMap;
+  this.updateMap = function(leafletMap) {
+    _leafletMap = leafletMap;
 
-      if(this.options.displayerUserLocation == true){
-        userMarker.addTo(_leafletMap);
-      }
+    if (this.options.displayerUserLocation == true) {
+      userMarker.addTo(_leafletMap);
+    }
 
-      if(this.options.displayConfidenceCircle == true){
-        userCircle.addTo(_leafletMap);
-      }
-    };
+    if (this.options.displayConfidenceCircle == true) {
+      userCircle.addTo(_leafletMap);
+    }
+  };
 
-/**
- * [function description] The purpose of this object is to update the display
- * properties of the marker and circle representing the user position.
- * @param  {[Bool]} displayUser       [description]
- * @param  {[Bool]} displayConfidence [description]
- * @return {[type]}                   [description]
- */
-  this.updateUserDisplayProperies = function(displayUser, displayConfidence){
+  /**
+   * [function description] The purpose of this object is to update the display
+   * properties of the marker and circle representing the user position.
+   * @param  {[Bool]} displayUser       [description]
+   * @param  {[Bool]} displayConfidence [description]
+   * @return {[type]}                   [description]
+   */
+  this.updateUserDisplayProperies = function(displayUser, displayConfidence) {
     if (options.displayerUserLocation != displayUser) {
       options.displayerUserLocation = displayUser;
-      if(displayUser == true){
+      if (displayUser == true) {
         userMarker.addTo(_leafletMap);
-      }else{
+      } else {
         _leafletMap.removeLayer(userMarker);
         _leafletMap.removeLayer(userCircle);
       }
@@ -150,40 +150,40 @@ var userLocationHandler = Class.extend(function() {
 
     if (options.displayConfidenceCircle != displayConfidence) {
       options.displayerUserLocation = displayConfidence;
-      if(displayConfidence == true){
+      if (displayConfidence == true) {
         userCircle.addTo(_leafletMap);
-      }else{
+      } else {
         _leafletMap.removeLayer(userCircle);
       }
     }
   };
 
 
-/**
- * [function description] The purpose of this function is to make a generic
- * common call updating GPS stuff.
- * @param  {[LatLng (DEG)]} userLocation [description]
- * @param  {[Float (m)]} userAccuracy [description]
- * @return {[type]}              [description]
- */
-  this.updateUserLocationAll = function(userLocation, userAccuracy){
-      this.updateUserLocation(userLocation);
-      this.updateUserAccuracy(userAccuracy);
+  /**
+   * [function description] The purpose of this function is to make a generic
+   * common call updating GPS stuff.
+   * @param  {[LatLng (DEG)]} userLocation [description]
+   * @param  {[Float (m)]} userAccuracy [description]
+   * @return {[type]}              [description]
+   */
+  this.updateUserLocationAll = function(userLocation, userAccuracy) {
+    this.updateUserLocation(userLocation);
+    this.updateUserAccuracy(userAccuracy);
   };
 
 
-/**
- * [function description] The purpose of this funciton is to update the user
- * circle and marker location.
- * @param  {[LatLng (DEG)]} userLocation [description]
- * @return {[type]}              [description]
- */
-  this.updateUserLocation = function(userLocation){
-      userMarker.setLatLng(userLocation);
-      userMarker.update();
+  /**
+   * [function description] The purpose of this funciton is to update the user
+   * circle and marker location.
+   * @param  {[LatLng (DEG)]} userLocation [description]
+   * @return {[type]}              [description]
+   */
+  this.updateUserLocation = function(userLocation) {
+    userMarker.setLatLng(userLocation);
+    userMarker.update();
 
-      userCircle.setLatLng(userLocation);
-      userCircle.redraw();
+    userCircle.setLatLng(userLocation);
+    userCircle.redraw();
   };
 
 
@@ -193,8 +193,8 @@ var userLocationHandler = Class.extend(function() {
    * @param  {[Float (m)]} userAccuracy [description]
    * @return {[type]}              [description]
    */
-  this.updateUserAccuracy = function(userAccuracy){
-      userCircle.setRadius(userAccuracy);
+  this.updateUserAccuracy = function(userAccuracy) {
+    userCircle.setRadius(userAccuracy);
   };
 
 
@@ -206,7 +206,7 @@ var userLocationHandler = Class.extend(function() {
    * @param  {[Int]} FIX  [description] Satellite GPS fix code.
    * @return {[type]}      [description]
    */
-  this.updateUserLocationInfo = function(HDOP, VDOP, SAT, FIX){
+  this.updateUserLocationInfo = function(HDOP, VDOP, SAT, FIX) {
     userLocationInfo.HDOP = HDOP;
     userLocationInfo.VDOP = VDOP;
     userLocationInfo.SAT = SAT;
