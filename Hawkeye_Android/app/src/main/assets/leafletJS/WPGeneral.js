@@ -9,8 +9,9 @@
 
 var WPGeneral = Class.extend(function() {
 
-  var marker;
-  var markerLocationIcon;
+  var _marker;
+  var _markerLocationIcon;
+  var _leafletMap;
 
   /**
    * [options description] The purpose of this object is to set specific options
@@ -41,7 +42,7 @@ var WPGeneral = Class.extend(function() {
    * @type {Object}
    */
   this.markerProp = {
-    markerLocationIcon,
+    _markerLocationIcon,
     draggable: true,
     clickable: true,
     title: 'WP'
@@ -53,7 +54,7 @@ var WPGeneral = Class.extend(function() {
    * @return {[type]} [description]
    */
   this.initializer = function() {
-    markerLocationIcon = L.icon(this.iconProp);
+    _markerLocationIcon = new L.icon(this.iconProp);
   };
 
   /**
@@ -64,18 +65,31 @@ var WPGeneral = Class.extend(function() {
    * @param  {[type]} display        [description]
    * @return {[type]}                [description]
    */
-  this.constructor = function(locationLatLng, display) {
+  this.constructor = function(lefaletMap, locationLatLng, display) {
+    _leafletMap = leafletMap;
     originLocation = locationLatLng;
-    marker = new L.marker(originLocation, this.markerProp);
+    _marker = new L.marker(originLocation, this.markerProp);
 
-    marker.on('click', markerClickEvent);
-    marker.on('drag', markerDrag);
+    _marker.on('click', markerClickEvent);
+    _marker.on('drag', markerDrag);
 
     this.options.displayOriginMarker = display;
     if (display == true) {
-      marker.addTo(map);
+      _marker.addTo(_leafletMap);
     }
-  }
+  };
+
+  this.updateMap = function(leafletMap){
+    _leafletMap = leafletMap;
+    if(this.options.displayOriginMarker == true){
+      _marker.addTo(_leafletMap);
+    }
+  };
+
+//TODO: figure out how to handle a proper remove....for now remove layer from map
+  this.removeWP = function(){
+    _leafletMap.removeLayer(_marker);
+  };
 
   /**
    * [function markerClickEvent]
@@ -84,7 +98,7 @@ var WPGeneral = Class.extend(function() {
    */
   markerClickEvent = function(event) {
 
-  }
+  };
 
   /**
    * [function markerDragEvent]
@@ -94,8 +108,8 @@ var WPGeneral = Class.extend(function() {
   markerDragEvent = function(event) {
     var marker = event.target;
     var position = marker.getLatLng();
-    marker.setLatLng(new L.LatLng(position.lat, position.lng));
-    WPMarkerDrag(marker);
-  }
+    _marker.setLatLng(new L.LatLng(position.lat, position.lng));
+    WPMarkerDrag(_marker);
+  };
 
 });

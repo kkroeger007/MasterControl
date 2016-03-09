@@ -20,19 +20,22 @@ function initializeLeaflet(){
 
     setMapBaseLayer('GS');
 
-    initializeUserLocation();
+    //initializeUserLocation();
     initializeMarker();
     initializeWPPathHandler();
     initializeLayerMaps();
 
-    //map.on('click', parseClickEvent(addMarkerAtLocation_OnClick));
+    map.on('click', parseClickEvent(addMarkerAtLocation_OnClick));
     //initializeWPMarker_Circle();
     var tmpLocation = new L.LatLng(37.890499,-76.814185);
-    var testWPG = new WPGeneral(tmpLocation);
+    //var testWPG = new WPGeneral(tmpLocation,true);
+    var userTemp = new userLocationHandler(map,tmpLocation,true,true);
+    userTemp.updateUserLocationInfo(0,0,0,2);
+
     //computeFinalLocation(tmpLocation,50);
     //map.off('click', parseClickEvent(addMarkerAtLocation_OnClick));
 
-    initializeDrawBoundaries();
+    //initializeDrawBoundaries();
 }
 
 function centerOnLocation() {
