@@ -1,6 +1,6 @@
 /*
  * Created: Kenneth Kroeger
- * Updated Date: 3/8/2016
+ * Updated Date: 3/9/2016
  *
  * Description: The purpose of this class is be the basic WPGeneral class that
  * is inherited/extended by all other waypoint type classes. This will OOP
@@ -9,8 +9,9 @@
 
 var WPGeneral = Class.extend(function() {
 
-  var marker;
-  var markerLocationIcon;
+  var _marker;  //This holds the marker object.
+  var _markerLocationIcon;  //This holds the marker icon.
+  var _leafletMap;  //This holds the leaflet map object.
 
   /**
    * [options description] The purpose of this object is to set specific options
@@ -41,7 +42,6 @@ var WPGeneral = Class.extend(function() {
    * @type {Object}
    */
   this.markerProp = {
-    markerLocationIcon,
     draggable: true,
     clickable: true,
     title: 'WP'
@@ -53,49 +53,107 @@ var WPGeneral = Class.extend(function() {
    * @return {[type]} [description]
    */
   this.initializer = function() {
-    markerLocationIcon = L.icon(this.iconProp);
+    _markerLocationIcon = new L.icon(this.iconProp);
+    this.markerProp.icon = _markerLocationIcon;
   };
 
   /**
    * [function this.constructor] This is the default constructor for the
    * WPGeneral class.
-   * @param  {[type]} locationLatLng [description] Origin location of the general
+   * @param  {[Leaflet Map]} Leaflet map to display things on.
+   * @param  {[LatLng (DEG)]} locationLatLng [description] Origin location of the general
    * waypoint. Passed as a LatLng leaflet datatype.
-   * @param  {[type]} display        [description]
+   * @param  {[Bool]} display        [description]
    * @return {[type]}                [description]
    */
-  this.constructor = function(locationLatLng, display) {
+  this.constructor = function(leafletMap, locationLatLng, display) {
+    _leafletMap = leafletMap;
     originLocation = locationLatLng;
-    marker = new L.marker(originLocation, this.markerProp);
+    _marker = new L.marker(originLocation, this.markerProp);
 
-    marker.on('click', markerClickEvent);
-    marker.on('drag', markerDrag);
+    _marker.on('click', markerClickEvent);
+    _marker.on('drag', markerDrag);
 
     this.options.displayOriginMarker = display;
     if (display == true) {
-      marker.addTo(map);
+      _marker.addTo(_leafletMap);
     }
-  }
+  };
+
+  /**
+   * [function description]
+   * @param  {[Leaflet Map]} leafletMap [description]
+   * @return {[type]}            [description]
+   */
+  this.updateMap = function(leafletMap) {
+    _leafletMap = leafletMap;
+    if (this.options.displayOriginMarker == true) {
+      _marker.addTo(_leafletMap);
+    }
+  };
+
+  //TODO: figure out how to handle a proper remove....for now remove layer from map
+  this.removeWP = function() {
+    _leafletMap.removeLayer(_marker);
+  };
 
   /**
    * [function markerClickEvent]
-   * @param  {[type]} event [description]
+   * @param  {[event]} event [description]
    * @return {[type]}       [description]
    */
   markerClickEvent = function(event) {
 
-  }
+  };
 
   /**
    * [function markerDragEvent]
-   * @param  {[type]} event [description]
+   * @param  {[event]} event [description]
    * @return {[type]}       [description]
    */
   markerDragEvent = function(event) {
     var marker = event.target;
     var position = marker.getLatLng();
-    marker.setLatLng(new L.LatLng(position.lat, position.lng));
-    WPMarkerDrag(marker);
+    _marker.setLatLng(new L.LatLng(position.lat, position.lng));
+    WPMarkerDrag(_marker);
+  };
+
+
+/**
+ * [function description] This function acts as both a get and set function for
+ * the marker object. Call the function with no arguements and it
+ * is a get, or with arguements and it is a set.
+ * @param  {[Leaflet Marker]} value [description] The desried marker set value.
+ * @return {[type]}       [description]
+ */
+  this.marker = function(value){
+    if(value === undefined) return(_marker);
+    _marker = value;
   }
+
+/**
+ * [function description] This function acts as both a get and set function for
+ * the markerLocationIcon object. Call the function with no arguements and it
+ * is a get, or with arguements and it is a set.
+ * @param  {[markerLocationIcon Obj]} value [description] The desried icon set value.
+ * @return {[type]}       [description]
+ */
+  this.markerLocationIcon = function(value){
+    if(value === undefined) return(_markerLocationIcon);
+    _markerLocationIcon = value;
+  }
+
+/**
+ * [function description] This function acts as both a get and set function for
+ * the leafletMap object. Call the function with no arguements and it
+ * is a get, or with arguements and it is a set.
+ * @param  {[Leaflet Map]} value [description] The desried map set value.
+ * @return {[type]}       [description]
+ */
+  this.leafletMap = function(value){
+    if(value === undefined) return(_leafletMap);
+    _leafletMap = value;
+  }
+
 
 });
