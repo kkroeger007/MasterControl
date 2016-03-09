@@ -15,6 +15,12 @@ body {
     right: 1%;
 }
 
+.manage-layers-button {
+    position: absolute;
+    bottom: 12%;
+    right: 1%;
+}
+
 #fields-menu {
     width: 15em;
 }
@@ -22,7 +28,7 @@ body {
 .maplayers-outer-container {
     position: absolute;
     top: 0;
-    left: 0;
+    right: 0;
     height: 100vh;
     width: 25%;
     background-color: rgba(0,0,0,0.15);
@@ -32,7 +38,7 @@ body {
 
 .maplayers-inner-container {
     position: relative;
-    top: 7vh;
+    /*top: 7vh;*/
     /*left: 2em;*/
 }
 
@@ -65,11 +71,81 @@ body {
     margin-bottom: 5%;
 }
 
+.maplayers-inner-container .mdl-card .mdl-cell {
+    padding: 0;
+    margin-top: 0;
+    margin-bottom: -10px;
+    margin-top: -10px;
+}
+
+.maplayers-inner-container .more-layers {
+    margin-top: -20px;
+}
+
+
 .preferences-inner-container .back-button {
     /*margin-bottom: 5%;
     margin-left: 5%;*/
 }
 
 .check-button-div {
-    text-align: right;
+    text-align: left;
+}
+
+
+/* Push Menu -- From Right */
+.pushmenu {
+    /*this is the nav*/
+    width: 25%;
+    height: 100%;
+    top: 0;
+    z-index: 1000;
+    position: fixed;
+}
+
+.pushmenu-left {
+    right: -25%;
+}
+
+.pushmenu-left.pushmenu-open {
+    right: 0;
+}
+
+.pushmenu-push {
+    overflow-x: hidden;
+    position: relative;
+    right: 0;
+}
+
+.pushmenu-push-toright {
+    width: 75%;
+}
+/*Transition*/
+
+.pushmenu,
+.pushmenu-push {
+    -webkit-transition: all 0.3s ease;
+    -moz-transition: all 0.3s ease;
+    transition: all 0.3s ease;
+}
+
+
+h1.mdl-card__title-text {
+    font-size: 2em;
+}
+h2.mdl-card__title-text {
+    font-size: 1.5em;
+}
+h3.mdl-card__title-text {
+    font-size: 1.17em;
+}
+h4.mdl-card__title-text {
+    font-size: 1.33em;
+}
+h5.mdl-card__title-text {
+    /*font-size: .83em;*/
+    font-size: 1em;
+}
+h6.mdl-card__title-text {
+    font-size: .67em;
 }

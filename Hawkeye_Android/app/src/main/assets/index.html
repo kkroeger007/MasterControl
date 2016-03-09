@@ -106,7 +106,7 @@
 </head>
 
 
-<body style="padding:0; margin:0;">
+<body style="padding:0; margin:0;" class="pushmenu-push">
 
 
     <div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
@@ -181,7 +181,6 @@
                         </div>
                     </div>
                 </div>
-                <a class="mdl-navigation__link" onclick="return openMapLayers()">Manage Layers</a>
                 <a class="mdl-navigation__link" href="flighteditor.html">Flight Editor</a>
 
             </nav>
@@ -189,6 +188,13 @@
 
         <!-- Map -->
         <div id="map"></div>
+
+        <!-- Manage Layers Button -->
+        <div class="manage-layers-button">
+            <button class="mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect mdl-button--colored" onclick="openMapLayers()">
+                <i class="material-icons">layers</i>
+            </button>
+        </div>
 
         <!-- Center on Location -->
         <div class="center-location-button">
@@ -337,51 +343,47 @@
         <!-- ************************************ -->
         <!-- ******* Map Layers Container ******* -->
         <!-- ************************************ -->
-        <div class="maplayers-outer-container" style="display: none;">
-            <div class="maplayers-inner-container">
-
-                <!-- TODO: 1) Expandable chevron for multiple layers
-                           2) On "turn-on" event, show latest-and-greatest layer with
-                                opacity slider.
-                           3) On chevron click, expand rest of layer for the field
-                -->
-
-                <div class="mdl-grid">
-                    <div class="mdl-cell mdl-cell--6-col">
-                        <button class="mdl-button mdl-js-button mdl-button--icon back-button">
-                            <i class="material-icons">keyboard_backspace</i>
-                        </button>
+        <div class="pushmenu pushmenu-left">
+            <div class="maplayers-outer-container pushmenu pushmenu-left" style="display: ;">
+                <div class="maplayers-inner-container">
+                    <div class="mdl-grid">
+                        <!-- <div class="mdl-cell mdl-cell--6-col">
+                            <button class="mdl-button mdl-js-button mdl-button--icon back-button">
+                                <i class="material-icons">keyboard_backspace</i>
+                            </button>
+                        </div> -->
+                        <div class="mdl-cell mdl-cell--12-col check-button-div">
+                            <button class="mdl-button mdl-js-button mdl-button--icon map-layers-check">
+                                <i class="material-icons">check</i>
+                            </button>
+                        </div>
                     </div>
-                    <div class="mdl-cell mdl-cell--6-col check-button-div">
-                        <button class="mdl-button mdl-js-button mdl-button--icon check-button">
-                            <i class="material-icons">check</i>
-                        </button>
-                    </div>
-                </div>
 
-                <div class="map-layers-cards">
-                </div>
+                    <div class="map-layers-cards">
+                    </div>
 
 
-                <!-- Arrow and Check -->
-                <div class="manage-layers-end mdl-grid">
-                    <div class="mdl-cell mdl-cell--6-col">
-                        <button class="mdl-button mdl-js-button mdl-button--icon back-button">
-                            <i class="material-icons">keyboard_backspace</i>
-                        </button>
-                    </div>
-                    <div class="mdl-cell mdl-cell--6-col check-button-div">
-                        <button class="mdl-button mdl-js-button mdl-button--icon check-button">
-                            <i class="material-icons">check</i>
-                        </button>
-                    </div>
+                    <!-- Arrow and Check -->
+                    <!-- <div class="manage-layers-end mdl-grid">
+                        <div class="mdl-cell mdl-cell--6-col">
+                            <button class="mdl-button mdl-js-button mdl-button--icon back-button">
+                                <i class="material-icons">keyboard_backspace</i>
+                            </button>
+                        </div>
+                        <div class="mdl-cell mdl-cell--6-col check-button-div">
+                            <button class="mdl-button mdl-js-button mdl-button--icon check-button">
+                                <i class="material-icons">check</i>
+                            </button>
+                        </div>
+                    </div> -->
                 </div>
             </div>
         </div>
+
     </div>
 
     <script>
-      initializeLeaflet();
+        initializeLeaflet();
     </script>
 
 </body>
