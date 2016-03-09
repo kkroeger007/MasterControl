@@ -25,11 +25,13 @@ function initializeLeaflet(){
     initializeWPPathHandler();
     initializeLayerMaps();
 
-    map.on('click', parseClickEvent(addMarkerAtLocation_OnClick));
+    map.on('click', clickEventChecker);
+    this.wpQueue = new WPQueue(map);
+
     //initializeWPMarker_Circle();
-    var tmpLocation = new L.LatLng(37.890499,-76.814185);
+    //var tmpLocation = new L.LatLng(37.890499,-76.814185);
     //var testWPG = new WPGeneral(map,tmpLocation,true);
-    var userTemp = new WPLand(map,tmpLocation,true);
+    //var userTemp = new WPLand(map,tmpLocation,true);
     //userTemp.updateUserLocationInfo(0,0,0,2);
 
     //computeFinalLocation(tmpLocation,50);

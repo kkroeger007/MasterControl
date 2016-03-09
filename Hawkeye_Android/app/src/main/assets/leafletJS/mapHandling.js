@@ -5,6 +5,12 @@ function parseClickEvent(returnFn){
                     }
 }
 
+function clickEventChecker(e){
+  var tempPosition = e.latlng;
+  var tempObj = new WPGeneral(map,tempPosition,true);
+  wpQueue.appendMarker(tempObj);
+}
+
 function addMarker(e){
   parse_ClickEvent_LatLon(e);
 }
