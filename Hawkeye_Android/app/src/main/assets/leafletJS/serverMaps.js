@@ -59,8 +59,8 @@ function initializeLayerMaps(){
 
   mapLayerObject = L.tileLayer('originalTiles/AUG26/B5/{z}/{x}/{y}.png', {maxZoom: 20,minZoom: 16,tms: true,opacity: 1});
   objectInitialize = {filePath: 'originalTiles/AUG26/B5', currentOpacity: 0, currentlyDrawn: false, layerObject: mapLayerObject};
-  layersMap['B5/Aug 26 2015/1200'] = objectInitialize;
-  layersKey.push('B5/Aug 26 2015/1200');
+  layersMap['B3/Aug 26 2015/1205'] = objectInitialize;
+  layersKey.push('B3/Aug 26 2015/1205');
 
   mapLayerObject = L.tileLayer('originalTiles/AUG26/BJ6_14/{z}/{x}/{y}.png', {maxZoom: 20,minZoom: 16,tms: true,opacity: 1});
   objectInitialize = {filePath: 'originalTiles/AUG26/BJ6_14', currentOpacity: 0, currentlyDrawn: false, layerObject: mapLayerObject};
@@ -69,8 +69,8 @@ function initializeLayerMaps(){
 
   mapLayerObject = L.tileLayer('originalTiles/AUG26/P10_12/{z}/{x}/{y}.png', {maxZoom: 20,minZoom: 16,tms: true,opacity: 1});
   objectInitialize = {filePath: 'originalTiles/AUG26/P10_12', currentOpacity: 0, currentlyDrawn: false, layerObject: mapLayerObject};
-  layersMap['P10_12/Aug 26 2015/1200'] = objectInitialize;
-  layersKey.push('P10_12/Aug 26 2015/1200');
+  layersMap['B3/Aug 26 2015/1210'] = objectInitialize;
+  layersKey.push('B3/Aug 26 2015/1210');
 
   mapLayerObject = L.tileLayer('originalTiles/AUG26/B72South/{z}/{x}/{y}.png', {maxZoom: 20,minZoom: 16,tms: true,opacity: 1});
   objectInitialize = {filePath: 'originalTiles/AUG26/B72South', currentOpacity: 0, currentlyDrawn: false, layerObject: mapLayerObject};
@@ -84,6 +84,7 @@ function initializeLayerMaps(){
   objectInitialize = {filePath: 'originalTiles/SEP9', currentOpacity: 0, currentlyDrawn: false, layerObject: mapLayerObject};
   layersMap['B72/Sep 9 2015/1200'] = objectInitialize;
   layersKey.push('B72/Sep 9 2015/1200');
+
 }
 
 
@@ -98,16 +99,22 @@ function getAvailableLayers(){
 /*
 * The function updates whether the layer object should be on/off
 */
-function updateLayerOnOff(keyObject, booleanOnOff){
-  if(booleanOnOff == true){
-    //add the appropriate layer to the map
-    map.addLayer(layersMap[keyObject].layerObject);
-  }else{
-    //remove the appropriate layer to the map
-    map.removeLayer(layersMap[keyObject].layerObject);
-    //restore the initial map
-    layersMap[keyObject].layerObject.setOpacity(1);
-  }
+function updateLayersOnOff(layersArray, booleanOnOff) {
+
+    for (sliderIndex = 0; sliderIndex < layersArray.length; sliderIndex++) {
+
+        var layerName = layersArray[sliderIndex][0];
+        var layerOpacity = layersArray[sliderIndex][1]/100;
+
+        if (booleanOnOff === true) {
+            //add the appropriate layer to the map
+            map.addLayer(layersMap[layerName].layerObject);
+            layersMap[layerName].layerObject.setOpacity(layerOpacity);
+        } else {
+            //remove the appropriate layer to the map
+            map.removeLayer(layersMap[layerName].layerObject);
+        }
+    }
 }
 
 /*
