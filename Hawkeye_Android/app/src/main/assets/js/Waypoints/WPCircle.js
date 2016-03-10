@@ -9,7 +9,7 @@
 
 var WPLand = WPBase.extend(function() {
 
-  this.descriptor = 'WPLand';
+  this.descriptor = 'WPCircle';
 
   /**
    * [_WPParams description]
@@ -24,7 +24,7 @@ var WPLand = WPBase.extend(function() {
     param6: null,
     param7: null
   };
-  
+
   /**
    * [options description] The purpose of this object is to set specific options
    * specific to the WPCircle Class. These options would initially be inherited
