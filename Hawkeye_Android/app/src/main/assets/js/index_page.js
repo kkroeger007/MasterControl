@@ -125,6 +125,12 @@
         $('.pushmenu-left').toggleClass('pushmenu-open');
     }
 
+
+    function openWaypoints() {
+        $('.pushmenu-push').toggleClass('pushmenu-push-totop');
+        $('.pushmenu-up').toggleClass('pushmenu-open');
+    }
+
     function openPreferences() {
         $("#map").css("width", "75%");
         $("#map").css("position", "absolute");
@@ -249,6 +255,17 @@
         $(".map-layers-check").click(function() {
             $('.pushmenu-push').toggleClass('pushmenu-push-toright');
             $('.pushmenu-left').toggleClass('pushmenu-open');
+        });
+
+
+        $(".marker-type-list li").click(function() {
+            var clickedItem = $(this).text();
+            var buttonText = clickedItem + '<i class="material-icons">keyboard_arrow_down</i>';
+            $(".marker-type-button").html(buttonText);
+
+
+            // TODO-KEN: This is the string that was clicked from the dropdown:
+            console.log(clickedItem);
         });
 
     };

@@ -113,16 +113,25 @@
 
 <body style="padding:0; margin:0;">
 
-
     <div class="mdl-layout mdl-js-layout mdl-layout--fixed-header pushmenu-push">
         <header class="mdl-layout__header">
             <div class="mdl-layout__header-row">
                 <!-- Add spacer, to align navigation to the right -->
                 <div class="mdl-layout-spacer"></div>
-                <!-- Navigation -->
-                <nav class="mdl-navigation">
 
-                </nav>
+
+                <button id="markerType" class="mdl-button mdl-js-button mdl-js-ripple-effect marker-type-button">
+                  Waypoint<i class="material-icons">keyboard_arrow_down</i>
+                </button>
+                <ul class="mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect marker-type-list" for="markerType">
+                    <li class="mdl-menu__item">Waypoint</li>
+                    <li class="mdl-menu__item">Spline Waypoint</li>
+                    <li class="mdl-menu__item">Circle</li>
+                    <li class="mdl-menu__item mdl-menu__item--full-bleed-divider">Land</li>
+                    <li class="mdl-menu__item">Region of Interest</li>
+                    <li class="mdl-menu__item test-li">Structure Scanner</li>
+                </ul>
+
             </div>
         </header>
         <div class="mdl-layout__drawer">
@@ -153,6 +162,12 @@
         <!-- Map -->
         <div id="map"></div>
 
+        <!-- Waypoints Button -->
+        <div class="manage-waypoints-button">
+            <button class="mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect mdl-button--colored" onclick="openWaypoints()">
+                <i class="material-icons">place</i>
+            </button>
+        </div>
 
         <!-- Manage Layers Button -->
         <div class="manage-layers-button">
@@ -166,6 +181,29 @@
             <button class="mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect mdl-button--colored" onclick="centerOnLocation()">
                 <i class="material-icons">my_location</i>
             </button>
+        </div>
+
+
+        <!-- Waypoints Button -->
+        <div class="manage-waypoints-button">
+            <button class="mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect mdl-button--colored" onclick="openWaypoints()">
+                <i class="material-icons">place</i>
+            </button>
+        </div>
+
+        <!-- ************************************ -->
+        <!-- ******* Waypoints Container ******* -->
+        <!-- ************************************ -->
+        <div class="waypoints-outer-container pushmenu-bottom pushmenu-up" style="display: ;">
+            <div class="waypoints-inner-container">
+                <div class="mdl-grid">
+                    <div class="mdl-cell mdl-cell--12-col">
+                        <button class="mdl-button mdl-js-button mdl-button--icon">
+                            <i class="material-icons">check</i>
+                        </button>
+                    </div>
+                </div>
+            </div>
         </div>
 
 
@@ -187,120 +225,6 @@
                         </button>
                     </div>
                 </div>
-
-
-
-                <div class="mdl-card">
-                    <div class="mdl-card__title">
-                        <h2 class="mdl-card__title-text">Application</h2>
-                    </div>
-                    <div class="mdl-card__supporting-text">
-                        This text might describe the photo and provide further information, such as where and when it was taken.
-                    </div>
-                    <div class="mdl-card__actions">
-                        <a href="(URL or function)">Related Action</a>
-                    </div>
-                </div>
-
-                <div class="mdl-card">
-                    <div class="mdl-card__title">
-                        <h2 class="mdl-card__title-text">Bluetooth</h2>
-                    </div>
-                    <div class="mdl-card__supporting-text">
-                        This text might describe the photo and provide further information, such as where and when it was taken.
-                    </div>
-                    <div class="mdl-card__actions">
-                        <a href="(URL or function)">Related Action</a>
-                    </div>
-                </div>
-
-                <div class="mdl-card">
-                    <div class="mdl-card__title">
-                        <h2 class="mdl-card__title-text">Communication</h2>
-                    </div>
-                    <div class="mdl-card__supporting-text">
-                        This text might describe the photo and provide further information, such as where and when it was taken.
-                    </div>
-                    <div class="mdl-card__actions">
-                        <a href="(URL or function)">Related Action</a>
-                    </div>
-                </div>
-
-                <div class="mdl-card">
-                    <div class="mdl-card__title">
-                        <h2 class="mdl-card__title-text">HSI Companion Module</h2>
-                    </div>
-                    <div class="mdl-card__supporting-text">
-                        This text might describe the photo and provide further information, such as where and when it was taken.
-                    </div>
-                    <div class="mdl-card__actions">
-                        <a href="(URL or function)">Related Action</a>
-                    </div>
-                </div>
-
-                <div class="mdl-card">
-                    <div class="mdl-card__title">
-                        <h2 class="mdl-card__title-text">Mapping</h2>
-                    </div>
-                    <div class="mdl-card__supporting-text">
-                        This text might describe the photo and provide further information, such as where and when it was taken.
-                    </div>
-                    <div class="mdl-card__actions">
-                        <a href="(URL or function)">Related Action</a>
-                    </div>
-                </div>
-
-                <div class="mdl-card">
-                    <div class="mdl-card__title">
-                        <h2 class="mdl-card__title-text">Planning</h2>
-                    </div>
-                    <div class="mdl-card__supporting-text">
-                        This text might describe the photo and provide further information, such as where and when it was taken.
-                    </div>
-                    <div class="mdl-card__actions">
-                        <a href="(URL or function)">Related Action</a>
-                    </div>
-                </div>
-
-                <div class="mdl-card">
-                    <div class="mdl-card__title">
-                        <h2 class="mdl-card__title-text">Speech</h2>
-                    </div>
-                    <div class="mdl-card__supporting-text">
-                        This text might describe the photo and provide further information, such as where and when it was taken.
-                    </div>
-                    <div class="mdl-card__actions">
-                        <a href="(URL or function)">Related Action</a>
-                    </div>
-                </div>
-
-                <div class="mdl-card">
-                    <div class="mdl-card__title">
-                        <h2 class="mdl-card__title-text">Vehicle</h2>
-                    </div>
-                    <div class="mdl-card__supporting-text">
-                        This text might describe the photo and provide further information, such as where and when it was taken.
-                    </div>
-                    <div class="mdl-card__actions">
-                        <a href="(URL or function)">Related Action</a>
-                    </div>
-                </div>
-
-
-                <div class="mdl-grid">
-                    <div class="mdl-cell mdl-cell--6-col">
-                        <button class="mdl-button mdl-js-button mdl-button--icon back-button">
-                            <i class="material-icons">keyboard_backspace</i>
-                        </button>
-                    </div>
-                    <div class="mdl-cell mdl-cell--6-col check-button-div">
-                        <button class="mdl-button mdl-js-button mdl-button--icon check-button">
-                            <i class="material-icons">check</i>
-                        </button>
-                    </div>
-                </div>
-
-
             </div>
         </div>
 
@@ -308,15 +232,9 @@
         <!-- ************************************ -->
         <!-- ******* Map Layers Container ******* -->
         <!-- ************************************ -->
-        <div class="pushmenu pushmenu-left">
             <div class="maplayers-outer-container pushmenu pushmenu-left" style="display: ;">
                 <div class="maplayers-inner-container">
                     <div class="mdl-grid">
-                        <!-- <div class="mdl-cell mdl-cell--6-col">
-                            <button class="mdl-button mdl-js-button mdl-button--icon back-button">
-                                <i class="material-icons">keyboard_backspace</i>
-                            </button>
-                        </div> -->
                         <div class="mdl-cell mdl-cell--12-col check-button-div">
                             <button class="mdl-button mdl-js-button mdl-button--icon map-layers-check">
                                 <i class="material-icons">check</i>
@@ -326,21 +244,22 @@
 
                     <div class="map-layers-cards">
                     </div>
+                </div>
+            </div>
 
 
-                    <!-- Arrow and Check -->
-                    <!-- <div class="manage-layers-end mdl-grid">
-                        <div class="mdl-cell mdl-cell--6-col">
-                            <button class="mdl-button mdl-js-button mdl-button--icon back-button">
-                                <i class="material-icons">keyboard_backspace</i>
-                            </button>
-                        </div>
-                        <div class="mdl-cell mdl-cell--6-col check-button-div">
-                            <button class="mdl-button mdl-js-button mdl-button--icon check-button">
-                                <i class="material-icons">check</i>
-                            </button>
-                        </div>
-                    </div> -->
+
+        <!-- ************************************ -->
+        <!-- ******* Waypoints Container ******* -->
+        <!-- ************************************ -->
+        <div class="waypoints-outer-container pushmenu-bottom pushmenu-up" style="display: ;">
+            <div class="waypoints-inner-container">
+                <div class="mdl-grid">
+                    <div class="mdl-cell mdl-cell--12-col">
+                        <button class="mdl-button mdl-js-button mdl-button--icon">
+                            <i class="material-icons">check</i>
+                        </button>
+                    </div>
                 </div>
             </div>
         </div>
