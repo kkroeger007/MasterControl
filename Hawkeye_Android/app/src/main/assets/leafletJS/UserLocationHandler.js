@@ -43,7 +43,6 @@ var userLocationHandler = Class.extend(function() {
    * @type {Object}
    */
   this.markerProp = {
-    userLocationIcon,
     draggable: false, //whether or not to allow user draggable
     clickable: false, //whether or not to allow user clickable
     title: 'USER'
@@ -77,6 +76,7 @@ var userLocationHandler = Class.extend(function() {
    */
   this.initializer = function() {
     userLocationIcon = new L.icon(this.iconProp);
+    this.markerProp.icon = userLocationIcon;
 
     userLocationInfo = new Object();
     userLocationInfo.HDOP = 0.0; //Horizontal dillution of position
@@ -128,6 +128,10 @@ var userLocationHandler = Class.extend(function() {
     if (this.options.displayConfidenceCircle == true) {
       userCircle.addTo(_leafletMap);
     }
+  };
+
+  this.getUserLocation = function(){
+    return(userMarker.getLatLng());
   };
 
   /**

@@ -20,33 +20,33 @@ function initializeLeaflet(){
 
     setMapBaseLayer('GS');
 
-    //initializeUserLocation();
-    // initializeMarker();
-    // initializeWPPathHandler();
-    // initializeLayerMaps();
+    initializeLayerMaps();
 
-    map.on('click', clickEventChecker);
+    //TODO: Renable when the click makes sense.
+    //map.on('click', clickEventChecker);
+    this.userLocationObject = new userLocationHandler(map,new L.LatLng(0.0, 0.0),true,true);
     this.wpQueue = new WPQueue(map);
-
-    //initializeWPMarker_Circle();
-    //var tmpLocation = new L.LatLng(37.890499,-76.814185);
-    //var testWPG = new WPGeneral(map,tmpLocation,true);
-    //var userTemp = new WPLand(map,tmpLocation,true);
-    //userTemp.updateUserLocationInfo(0,0,0,2);
-
-    //computeFinalLocation(tmpLocation,50);
-    //map.off('click', parseClickEvent(addMarkerAtLocation_OnClick));
-
-    //initializeDrawBoundaries();
 }
 
 function centerOnLocation() {
-    alert('TODO: Center on Location...');
+  var tmpLatLng = this.userLocationObject.getUserLocation();
+  map.panTo(tmpLatLng);
 }
+
 function showAndroidToast(toastmsg) {
     Android.showToast(toastmsg);
 }
 
 function moveToScreenTwo() {
     Android.moveToNextScreen();
+}
+
+function updateUserLocation(lat,lng){
+  //console.log('Latitude: ' + lat + 'Longitude:' + lng);
+  this.userLocationObject.updateUserLocation(new L.LatLng(lat, lng));
+}
+
+function updateUserAccuracy(accuracy){
+  //console.log('Latitude: ' + lat + 'Longitude:' + lng);
+  this.userLocationObject.updateUserAccuracy(accuracy);
 }

@@ -12,6 +12,7 @@ import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.location.Location;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.provider.MediaStore;
@@ -19,8 +20,10 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 
+import android.view.View;
 import android.webkit.JavascriptInterface;
 import android.webkit.WebChromeClient;
+import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
@@ -299,8 +302,24 @@ public class MainActivity extends AppCompatActivity {
         verifyStoragePermissions(this);
         //testDocumentTree();
         mWebView = (WebView) findViewById(R.id.webView);
-        mWebView.getSettings().setJavaScriptEnabled(true);
-        mWebView.setWebChromeClient(new WebChromeClient());
+
+        WebSettings webSettings = mWebView.getSettings();
+        webSettings.setJavaScriptEnabled(true);
+        webSettings.setRenderPriority(WebSettings.RenderPriority.HIGH);
+        webSettings.setCacheMode(WebSettings.LOAD_CACHE_ELSE_NETWORK);
+        webSettings.setAppCacheEnabled(true);
+        webSettings.setDomStorageEnabled(true);
+        webSettings.setLayoutAlgorithm(WebSettings.LayoutAlgorithm.NARROW_COLUMNS);
+        webSettings.setUseWideViewPort(true);
+        mWebView.setWebViewClient(new WebViewClient());
+
+        if (Build.VERSION.SDK_INT >= 19) {
+            mWebView.setLayerType(View.LAYER_TYPE_HARDWARE, null);
+        }
+        else {
+            mWebView.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
+        }
+
         //mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
 
         //writeToSDFile();
@@ -388,8 +407,10 @@ public class MainActivity extends AppCompatActivity {
             mWebView.post(new Runnable() {
                 @Override
                 public void run() {
-                    Log.d("LOC",String.valueOf(userLocation.getLatitude()) + "," +String.valueOf(userLocation.getLongitude()));
-                    String locString ="javascript:updateUserLocation(["+ String.valueOf(userLocation.getLatitude()) + "," +String.valueOf(userLocation.getLongitude())+ "])";
+                    //Log.d("LOC",String.valueOf(userLocation.getLatitude()) + "," +String.valueOf(userLocation.getLongitude()));
+                    String locString ="javascript:updateUserLocation("+ String.valueOf(userLocation.getLatitude()) + "," +String.valueOf(userLocation.getLongitude())+ ")";
+                    mWebView.loadUrl(locString);
+                    locString ="javascript:updateUserAccuracy("+ String.valueOf(userLocation.getAccuracy())+ ")";
                     mWebView.loadUrl(locString);
                 }
             });

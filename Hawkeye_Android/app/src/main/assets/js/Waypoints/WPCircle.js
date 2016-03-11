@@ -7,26 +7,43 @@
  * for the UAV to circle about a specified radius.
  */
 
-var WPCircle = WPBase.extend(function() {
+var WPCircle = Class.extend(function() {
 
   this.descriptor = 'WPCircle';
 
-  var _upArrowMarker;
+
+  var mLeafletMap; //This holds the leaflet map object.
+  var mCircleLocations = {
+    circleLeft: [],
+    circleCenter: [],
+    circleRight: []
+  };
+
+  var mCallbackOnMove;
+
+  var mMarker; //This holds the marker object.
+  var markerLocationIcon; //This holds the marker icon.
+
+
+  var mUpArrowMarker;
   var upArrowIcon;
 
-  var _downArrowMarker;
+  var mDownArrowMarker;
   var downArrowIcon;
 
-  var _circleMarker;
+  var mCircleMarker;
+
+  var mRadius;
+  var mDirection;
 
   this.directionENUM = {
-    CCW: 'CCW',
-    CW: 'CW'
-  }
-  /**
-   * [_WPParams description]
-   * @type {Object}
-   */
+      CCW: 'CCW',
+      CW: 'CW'
+    }
+    /**
+     * [_WPParams description]
+     * @type {Object}
+     */
   var _WPParams = {
     param1: null,
     param2: null,
@@ -47,18 +64,44 @@ var WPCircle = WPBase.extend(function() {
     displayOriginMarker: true
   };
 
+
+  /**
+   * [markerProp description] The purpose of this object is to store the properties
+   * related to the marker. These are Leaflet specific properties. See
+   *
+   * @type {Object}
+   */
+  this.markerProp = {
+    draggable: true,
+    clickable: true,
+    title: 'CIRCLE'
+  };
   /**
    * [iconProp description] The purpose of this object is to store the properties
    * related to the general marker icon.
    * @type {Object}
    */
   this.iconProp = {
-    iconUrl: 'images/marker-icon.png', //default icon
-    iconSize: [25, 41], // size of the icon
-    iconAnchor: [12, 41], // point of the icon which will correspond to marker's location
+    iconUrl: 'images/Circle-ICON.png', //default icon
+    iconSize: [40, 40], // size of the icon
+    iconAnchor: [20, 20], // point of the icon which will correspond to marker's location
     popupAnchor: [-19, 38] // point from which the popup should open relative to the iconAnchor
   };
 
+
+  /**
+   * [upArrowProp description]
+   * @type {Object}
+   */
+  this.upArrowProp = {
+    draggable: false,
+    clickable: false
+  };
+
+  /**
+   * [upArrowIconProp description]
+   * @type {Object}
+   */
   this.upArrowIconProp = {
     iconUrl: 'images/Arrow-CircleUP-Icon.png', //default icon
     iconSize: [40, 40], // size of the icon
@@ -66,6 +109,20 @@ var WPCircle = WPBase.extend(function() {
     popupAnchor: [-19, 38] // point from which the popup should open relative to the iconAnchor
   };
 
+
+  /**
+   * [downArrowProp description]
+   * @type {Object}
+   */
+  this.downArrowProp = {
+    draggable: false,
+    clickable: false
+  };
+
+  /**
+   * [downArrowIconProp description]
+   * @type {Object}
+   */
   this.downArrowIconProp = {
     iconUrl: 'images/Arrow-CircleDOWN-Icon.png', //default icon
     iconSize: [40, 40], // size of the icon
@@ -73,15 +130,6 @@ var WPCircle = WPBase.extend(function() {
     popupAnchor: [-19, 38] // point from which the popup should open relative to the iconAnchor
   };
 
-  this.upArrowProp = {
-    draggable: true,
-    clickable: true
-  };
-
-  this.downArrowProp = {
-    draggable: true,
-    clickable: true
-  };
 
   /**
    * [circlePathProp description] The purpose of this object is to store the properties
@@ -104,14 +152,6 @@ var WPCircle = WPBase.extend(function() {
   };
 
   /**
-   * [markerProp description] The purpose of this object is to store the properties
-   * related to the marker. These are Leaflet specific properties. See
-   *
-   * @type {Object}
-   */
-  this.markerProp.title = 'CIRCLE';
-
-  /**
    * [function: this.initializer] This function intializes the necessary variables
    * required for this class.
    * @return {[type]} [description]
@@ -129,34 +169,88 @@ var WPCircle = WPBase.extend(function() {
 
 
   this.constructor = function(leafletMap, locationLatLng, display, radius, direction) {
-    _leafletMap = leafletMap;
-    _marker = new L.marker(locationLatLng, this.markerProp);
+    mLeafletMap = leafletMap;
+    mRadius = radius;
+    mDirection = direction;
+    this.options.displayOriginMarker = display;
 
-    _circleMarker = new L.circle(locationLatLng,radius,this.circlePathProp);
+    mCircleLocations.circleLeft = computeLocationOfInterest(locationLatLng, 270.0, mRadius);
+    mCircleLocations.circleCenter = locationLatLng;
+    mCircleLocations.circleRight = computeLocationOfInterest(locationLatLng, 90.0, mRadius);
 
-    var leftSide = computeLocationOfInterest(locationLatLng, 270.0, radius);
-    var rightSide = computeLocationOfInterest(locationLatLng, 90.0, radius);
+    mMarker = new L.marker(mCircleLocations.circleCenter, this.markerProp);
+
+    mMarker.on('click', markerClickEvent);
+    mMarker.on('drag', markerDragEvent);
+    mMarker.on('mouseover', markerMouseOverEvent);
+    mMarker.on('dblclick', markerDblClickEvent)
+    mMarker.on('contextmenu', markerConextMenuEvent);
+
+    mCircleMarker = new L.circle(mCircleLocations.circleCenter, radius, this.circlePathProp);
 
 
-    if(direction == this.directionENUM.CW){
-      _upArrowMarker = new L.marker(leftSide,this.upArrowProp);
-      _downArrowMarker = new L.marker(rightSide,this.downArrowProp);
-    }else{
-      _upArrowMarker = new L.marker(rightSide,this.upArrowProp);
-      _downArrowMarker = new L.marker(leftSide,this.downArrowProp);
+    if (mDirection == this.directionENUM.CW) {
+      mUpArrowMarker = new L.marker(mCircleLocations.circleLeft, this.upArrowProp);
+      mDownArrowMarker = new L.marker(mCircleLocations.circleRight, this.downArrowProp);
+    } else {
+      mUpArrowMarker = new L.marker(mCircleLocations.circleRight, this.upArrowProp);
+      mDownArrowMarker = new L.marker(mCircleLocations.circleLeft, this.downArrowProp);
     }
 
-    this.options.displayOriginMarker = display;
     if (display == true) {
-      _marker.addTo(_leafletMap);
-      _circleMarker.addTo(_leafletMap);
-      _upArrowMarker.addTo(_leafletMap);
-      _downArrowMarker.addTo(_leafletMap);
+      mMarker.addTo(mLeafletMap);
+      mCircleMarker.addTo(mLeafletMap);
+      mUpArrowMarker.addTo(mLeafletMap);
+      mDownArrowMarker.addTo(mLeafletMap);
     }
   };
 
-  computeLocationOfInterest = function (originLatLon, locationBearingD, locationDistanceM)
-  {
+/**
+ * [function description]
+ * @param  {[type]} locationLatLng [description]
+ * @return {[type]}                [description]
+ */
+  this.updateArrowIcons = function(locationLatLng) {
+    mCircleLocations.circleLeft = computeLocationOfInterest(locationLatLng, 270.0, mRadius);
+    mCircleLocations.circleRight = computeLocationOfInterest(locationLatLng, 90.0, mRadius);
+
+    if (mDirection == this.directionENUM.CW) {
+      mUpArrowMarker.setLatLng(mCircleLocations.circleLeft);
+      mDownArrowMarker.setLatLng(mCircleLocations.circleRight);
+    } else {
+      mUpArrowMarker.setLatLng(mCircleLocations.circleRight);
+      mDownArrowMarker.setLatLng(mCircleLocations.circleLeft);
+    }
+
+    mUpArrowMarker.update();
+    mDownArrowMarker.update();
+  };
+
+/**
+ * [function description]
+ * @param  {[type]} locationLatLng [description]
+ * @return {[type]}                [description]
+ */
+  this.updateOriginLocation = function(locationLatLng) {
+    mCircleLocations.circleCenter = locationLatLng;
+
+    mMarker.setLatLng(locationLatLng);
+    mMarker.update();
+
+    mCircleMarker.setLatLng(locationLatLng);
+    mCircleMarker.redraw();
+
+    this.updateArrowIcons(locationLatLng);
+  };
+
+/**
+ * [function description]
+ * @param  {[type]} originLatLon      [description]
+ * @param  {[type]} locationBearingD  [description]
+ * @param  {[type]} locationDistanceM [description]
+ * @return {[type]}                   [description]
+ */
+  computeLocationOfInterest = function(originLatLon, locationBearingD, locationDistanceM) {
     //var tmpLatLng = markerOrigin.getLatLng();
     var originLatR = convertDegrees_Radians(originLatLon.lat);
     var originLonR = convertDegrees_Radians(originLatLon.lng);
@@ -165,29 +259,134 @@ var WPCircle = WPBase.extend(function() {
 
     var R = 6378137; //default radius of earth in meters
 
-    var finalLatR = Math.asin( Math.sin(originLatR)*Math.cos(locationDistance/R) +
-    Math.cos(originLatR)*Math.sin(locationDistance/R)*Math.cos(locationBearingR) );
-    var finalLonR = originLonR + Math.atan2(Math.sin(locationBearingR)*Math.sin(locationDistance/R)*Math.cos(originLatR),
-    Math.cos(locationDistance/R)-Math.sin(originLatR)*Math.sin(finalLatR));
+    var finalLatR = Math.asin(Math.sin(originLatR) * Math.cos(locationDistance / R) +
+      Math.cos(originLatR) * Math.sin(locationDistance / R) * Math.cos(locationBearingR));
+    var finalLonR = originLonR + Math.atan2(Math.sin(locationBearingR) * Math.sin(locationDistance / R) * Math.cos(originLatR),
+      Math.cos(locationDistance / R) - Math.sin(originLatR) * Math.sin(finalLatR));
 
     var finalLatD = convertRadians_Degrees(finalLatR);
-    var finalLonD = (convertRadians_Degrees(finalLonR) + 540.0)%360-180; //wraps the result to +/- 180
+    var finalLonD = (convertRadians_Degrees(finalLonR) + 540.0) % 360 - 180; //wraps the result to +/- 180
 
-    var finalLocation = new L.LatLng(finalLatD,finalLonD);
+    var finalLocation = new L.LatLng(finalLatD, finalLonD);
 
     return (finalLocation);
   };
 
-  convertDegrees_Radians = function(angleDegrees)
-  {
+/**
+ * [function description]
+ * @param  {[type]} angleDegrees [description]
+ * @return {[type]}              [description]
+ */
+  convertDegrees_Radians = function(angleDegrees) {
     var angleRadians = (Math.PI / 180.0) * (angleDegrees);
     return (angleRadians);
   };
 
-  convertRadians_Degrees = function(angleRadians){
-    var angleDegrees = (180.0/Math.PI) * (angleRadians);
+/**
+ * [function description]
+ * @param  {[type]} angleRadians [description]
+ * @return {[type]}              [description]
+ */
+  convertRadians_Degrees = function(angleRadians) {
+    var angleDegrees = (180.0 / Math.PI) * (angleRadians);
     return (angleDegrees);
   };
+
+
+
+  /**
+   * [function description]
+   * @param  {[Leaflet Map]} leafletMap [description]
+   * @return {[type]}            [description]
+   */
+  this.updateMap = function(leafletMap) {
+    mLeafletMap = leafletMap;
+  };
+
+  //TODO: figure out how to handle a proper remove....for now remove layer from map
+  this.removeMarkers = function() {
+  };
+
+
+
+  /**
+   * [function markerClickEvent]
+   * @param  {[event]} event [description]
+   * @return {[type]}       [description]
+   */
+  markerClickEvent = function(event) {
+
+  };
+
+  /**
+   * [function markerDragEvent]
+   * @param  {[event]} event [description]
+   * @return {[type]}       [description]
+   */
+  markerDragEvent = function(event) {
+    var marker = event.target;
+    var position = marker.getLatLng();
+    this.updateOriginLocation(position);
+    mCallbackOnMove(this);
+  }.bind(this);
+
+
+  this.getOriginLoc = function() {
+    return (mCircleLocations.circleCenter);
+  };
+
+  /**
+   * [function description]
+   * @param  {[event]} event [description]
+   * @return {[type]}       [description]
+   */
+  markerMouseOverEvent = function(event) {
+
+  };
+
+  /**
+   * [function description]
+   * @param  {[event]} event [description]
+   * @return {[type]}       [description]
+   */
+  markerDblClickEvent = function(event) {
+
+  };
+
+  /**
+   * [function description]
+   * @param  {[event]} event [description]
+   * @return {[type]}       [description]
+   */
+  markerConextMenuEvent = function(event) {
+
+  };
+
+
+
+  /**
+   * [function description] This function acts as both a get and set function for
+   * the markerLocationIcon object. Call the function with no arguements and it
+   * is a get, or with arguements and it is a set.
+   * @param  {[markerLocationIcon Obj]} value [description] The desried icon set value.
+   * @return {[type]}       [description]
+   */
+  this.markerLocationIcon = function(value) {
+    if (value === undefined) return (_markerLocationIcon);
+    _markerLocationIcon = value;
+  }
+
+  /**
+   * [function description] This function acts as both a get and set function for
+   * the marker object. Call the function with no arguements and it
+   * is a get, or with arguements and it is a set.
+   * @param  {[Leaflet Marker]} value [description] The desried marker set value.
+   * @return {[type]}       [description]
+   */
+  this.marker = function(value) {
+    if (value === undefined) return (mMarker);
+    mMarker = value;
+  }
 
   this.upArrowIcon = function(value) {
     if (value === undefined) return (upArrowIcon);
@@ -195,8 +394,8 @@ var WPCircle = WPBase.extend(function() {
   };
 
   this.upArrowMarker = function(value) {
-    if (value === undefined) return (upArrowMarker);
-    upArrowMarker = value;
+    if (value === undefined) return (mUpArrowMarker);
+    mUpArrowMarker = value;
   }
 
   this.downArrowIcon = function(value) {
@@ -205,7 +404,33 @@ var WPCircle = WPBase.extend(function() {
   };
 
   this.downArrowMarker = function(value) {
-    if (value === undefined) return (downArrowMarker);
-    downArrowMarker = value;
+    if (value === undefined) return (mDownArrowMarker);
+    mDownArrowMarker = value;
   }
+
+  /**
+   * [function description] This function acts as both a get and set function for
+   * the leafletMap object. Call the function with no arguements and it
+   * is a get, or with arguements and it is a set.
+   * @param  {[Leaflet Map]} value [description] The desried map set value.
+   * @return {[type]}       [description]
+   */
+  this.leafletMap = function(value) {
+    if (value === undefined) return (mLeafletMap);
+    mLeafletMap = value;
+  }
+
+
+  /**
+   * [function description] This function acts as both a get and set function for
+   * the leafletMap object. Call the function with no arguements and it
+   * is a get, or with arguements and it is a set.
+   * @param  {[Leaflet Map]} value [description] The desried map set value.
+   * @return {[type]}       [description]
+   */
+  this._callbackOnMove = function(value) {
+    if (value === undefined) return (mCallbackOnMove);
+    mCallbackOnMove = value;
+  }
+
 });
