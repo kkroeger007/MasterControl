@@ -80,10 +80,10 @@ public class Service_GPSInternal extends Service implements GoogleApiClient.Conn
     /**
      * FLAGS for the GOOGLE API Services
      */
-    private static final long TIME_MAX_WAIT_PERIOD = 1000; //ms
-    private static final long TIME_UPDATE_INTERVAL = 250; // ms
-    private static final long TIME_UPDATE_FASTEST_INTERVAL = 100; // ms
-    private static final float DIST_MIN_UPDATE = 0.0f; // m
+    private static final long TIME_MAX_WAIT_PERIOD = 5000; //ms
+    private static final long TIME_UPDATE_INTERVAL = 1000; // ms
+    private static final long TIME_UPDATE_FASTEST_INTERVAL = 500; // ms
+    private static final float DIST_MIN_UPDATE = 0.25f; // m
 
     /**
      * Keys for storing activity state in the Bundle.

@@ -59,18 +59,18 @@ function initializeLayerMaps(){
 
   mapLayerObject = L.tileLayer('originalTiles/AUG26/B5/{z}/{x}/{y}.png', {maxZoom: 20,minZoom: 16,tms: true,opacity: 1});
   objectInitialize = {filePath: 'originalTiles/AUG26/B5', currentOpacity: 0, currentlyDrawn: false, layerObject: mapLayerObject};
-  layersMap['B5/Aug 26 2015/1200'] = objectInitialize;
-  layersKey.push('B5/Aug 26 2015/1200');
+  layersMap['B3/Aug 26 2015/1205'] = objectInitialize;
+  layersKey.push('B3/Aug 26 2015/1205');
 
   mapLayerObject = L.tileLayer('originalTiles/AUG26/BJ6_14/{z}/{x}/{y}.png', {maxZoom: 20,minZoom: 16,tms: true,opacity: 1});
   objectInitialize = {filePath: 'originalTiles/AUG26/BJ6_14', currentOpacity: 0, currentlyDrawn: false, layerObject: mapLayerObject};
-  layersMap['BJ6_14/Aug 26 2015/1200'] = objectInitialize;
-  layersKey.push('BJ6_14/Aug 26 2015/1200');
+  layersMap['BJ6/Aug 26 2015/1200'] = objectInitialize;
+  layersKey.push('BJ6/Aug 26 2015/1200');
 
   mapLayerObject = L.tileLayer('originalTiles/AUG26/P10_12/{z}/{x}/{y}.png', {maxZoom: 20,minZoom: 16,tms: true,opacity: 1});
   objectInitialize = {filePath: 'originalTiles/AUG26/P10_12', currentOpacity: 0, currentlyDrawn: false, layerObject: mapLayerObject};
-  layersMap['P10_12/Aug 26 2015/1200'] = objectInitialize;
-  layersKey.push('P10_12/Aug 26 2015/1200');
+  layersMap['B3/Aug 26 2015/1210'] = objectInitialize;
+  layersKey.push('B3/Aug 26 2015/1210');
 
   mapLayerObject = L.tileLayer('originalTiles/AUG26/B72South/{z}/{x}/{y}.png', {maxZoom: 20,minZoom: 16,tms: true,opacity: 1});
   objectInitialize = {filePath: 'originalTiles/AUG26/B72South', currentOpacity: 0, currentlyDrawn: false, layerObject: mapLayerObject};
