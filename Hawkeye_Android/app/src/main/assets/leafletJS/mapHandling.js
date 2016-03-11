@@ -7,7 +7,7 @@ function parseClickEvent(returnFn){
 
 function clickEventChecker(e){
   var tempPosition = e.latlng;
-  var tempObj = new WPGeneral(map,tempPosition,true);
+  var tempObj = new WPCircle(map,tempPosition,true,30,'CW');
   wpQueue.appendMarker(tempObj);
 }
 
