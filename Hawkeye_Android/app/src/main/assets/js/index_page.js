@@ -8,6 +8,7 @@
         //var layerArray = ['LayerName1/Date1/Time1', 'LayerName1/Date2/Time2', 'Layername2/Date1/Time1', 'Layername2/Date2/Time2', 'Layername2/Date3/Time3', 'Layername3/Date1/Time1'];
         var layerArray = getAvailableLayers();
 
+
         // Create the layers object to be used later:
         var layersObj = [];
         var layersIndex = 0;
@@ -73,10 +74,10 @@
             html +=         '<div class="custom-collapse">';
             html +=             '<div class="measuringWrapper">';
             html +=                 '<div class="mdl-grid">';
-            html +=                     '<div class="mdl-cell mdl-cell--6-col">';
-            html +=                         '<p>' + layersObj[cardIndex].dates[0] + '</p>';
+            html +=                     '<div class="mdl-cell mdl-cell--4-col">';
+            html +=                         '<p style="font-size: .67em">' + layersObj[cardIndex].dates[0] + '</p>';
             html +=                     '</div>';
-            html +=                     '<div class="mdl-cell mdl-cell--6-col">';
+            html +=                     '<div class="mdl-cell mdl-cell--8-col">';
             var latestIdStr = layersObj[cardIndex].layerName + '/' + layersObj[cardIndex].dates[0] + '/' + layersObj[cardIndex].times[0];
             html +=                         '<input id="' + latestIdStr + '" class="mdl-slider mdl-js-slider opacity-slider latest-layer-slider" type="range" min="0" max="100" value="100" tabindex="0">';
             html +=                     '</div>';
@@ -97,10 +98,10 @@
 
             for (layerIndex = 1; layerIndex < layersObj[cardIndex].dates.length; layerIndex++) {
                 html +=                 '<div class="mdl-grid">';
-                html +=                     '<div class="mdl-cell mdl-cell--6-col">';
-                html +=                         '<p>' + layersObj[cardIndex].dates[layerIndex] + '</p>';
+                html +=                     '<div class="mdl-cell mdl-cell--4-col">';
+                html +=                         '<p style="font-size: .67em">' + layersObj[cardIndex].dates[layerIndex] + '</p>';
                 html +=                     '</div>';
-                html +=                     '<div class="mdl-cell mdl-cell--6-col">';
+                html +=                     '<div class="mdl-cell mdl-cell--8-col">';
                 var idStr = layersObj[cardIndex].layerName + '/' + layersObj[cardIndex].dates[layerIndex] + '/' + layersObj[cardIndex].times[layerIndex];
                 html +=                         '<input id="' + idStr + '" class="mdl-slider mdl-js-slider opacity-slider" type="range" min="0" max="100" value="0" tabindex="0">';
                 html +=                     '</div>';
@@ -123,12 +124,6 @@
     function openMapLayers() {
         $('.pushmenu-push').toggleClass('pushmenu-push-toright');
         $('.pushmenu-left').toggleClass('pushmenu-open');
-    }
-
-
-    function openWaypoints() {
-        $('.pushmenu-push').toggleClass('pushmenu-push-totop');
-        $('.pushmenu-up').toggleClass('pushmenu-open');
     }
 
     function openPreferences() {
@@ -255,17 +250,6 @@
         $(".map-layers-check").click(function() {
             $('.pushmenu-push').toggleClass('pushmenu-push-toright');
             $('.pushmenu-left').toggleClass('pushmenu-open');
-        });
-
-
-        $(".marker-type-list li").click(function() {
-            var clickedItem = $(this).text();
-            var buttonText = clickedItem + '<i class="material-icons">keyboard_arrow_down</i>';
-            $(".marker-type-button").html(buttonText);
-
-
-            // TODO-KEN: This is the string that was clicked from the dropdown:
-            console.log(clickedItem);
         });
 
     };

@@ -23,7 +23,7 @@ function initializeLeaflet(){
     //initializeUserLocation();
     // initializeMarker();
     // initializeWPPathHandler();
-    // initializeLayerMaps();
+    initializeLayerMaps();
 
     map.on('click', clickEventChecker);
     this.wpQueue = new WPQueue(map);

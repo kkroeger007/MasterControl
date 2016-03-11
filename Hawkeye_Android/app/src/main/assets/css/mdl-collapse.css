@@ -34,17 +34,17 @@
     margin-top: 0 !important;
 }
 .custom-collapse {
-    -moz-transition: height 0.2s;
+    /*-moz-transition: height 0.2s;
     -ms-transition: height 0.2s;
     -o-transition: height 0.2s;
     -webkit-transition: height 0.2s;
-    transition: height 0.2s;
+    transition: height 0.2s;*/
     height: 0;
     overflow: hidden;
 }
 .custom-collapse-icon {
     transition-property: transform;
-    transition-duration: 0.2s;
+    /*transition-duration: 0.2s;*/
 }
 .custom-collapse-icon.custom-collapse-open {
     -moz-transform: rotate(-180deg);

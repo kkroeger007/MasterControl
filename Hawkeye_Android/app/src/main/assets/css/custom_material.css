@@ -3,11 +3,10 @@
 
 body {
     overflow: hidden;
-    height: 100vh;
 }
 
 #map {
-    height: 100%;
+    height: 100vh;
 }
 
 .center-location-button {
@@ -132,7 +131,7 @@ body {
 
 .pushmenu-push {
     overflow-x: hidden;
-    overflow-y: hidden;
+    /*overflow-y: hidden;*/
     position: relative;
     right: 0;
 }
@@ -145,16 +144,15 @@ body {
 .pushmenu,
 .pushmenu-bottom,
 .pushmenu-push {
-    -webkit-transition: all 0.3s ease;
+    /*-webkit-transition: all 0.3s ease;
     -moz-transition: all 0.3s ease;
-    transition: all 0.3s ease;
+    transition: all 0.3s ease;*/
 }
 
 
 
 /* Push Menu -- From Bottom */
-.pushmenu-bottom {
-    /*this is the nav*/
+/*.pushmenu-bottom {
     height: 15%;
     width: 100%;
     bottom: -15%;
@@ -186,9 +184,7 @@ body {
 
 .waypoints-inner-container {
     position: relative;
-    /*top: 7vh;*/
-    /*left: 2em;*/
-}
+}*/
 
 
 
@@ -221,7 +217,6 @@ h6.mdl-card__title-text {
     color: white;
     height: 100%;
     position: relative;
-    /*padding-right: 0;*/
 }
 
 /* Kill the padding on the header row to align buttons on the right with the edge */
