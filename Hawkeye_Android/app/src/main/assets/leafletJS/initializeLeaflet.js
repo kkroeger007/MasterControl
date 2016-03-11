@@ -20,12 +20,10 @@ function initializeLeaflet(){
 
     setMapBaseLayer('GS');
 
-    //initializeUserLocation();
-    // initializeMarker();
-    // initializeWPPathHandler();
-    // initializeLayerMaps();
+    initializeLayerMaps();
 
     map.on('click', clickEventChecker);
+    this.userLocationObject = new userLocationHandler(map,new L.LatLng(37.888704, -76.816090),true,true);
     this.wpQueue = new WPQueue(map);
 
     //initializeWPMarker_Circle();
@@ -49,4 +47,8 @@ function showAndroidToast(toastmsg) {
 
 function moveToScreenTwo() {
     Android.moveToNextScreen();
+}
+
+function updateUserLocation(lat,lng){
+  this.userLocationObject.updateUserLocation(new L.LatLng(lat, lng));
 }
