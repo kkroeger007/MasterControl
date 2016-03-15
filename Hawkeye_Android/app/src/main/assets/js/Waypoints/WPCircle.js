@@ -94,8 +94,8 @@ var WPCircle = Class.extend(function() {
    * @type {Object}
    */
   this.upArrowProp = {
-    draggable: false,
-    clickable: false
+    draggable: true,
+    clickable: true
   };
 
   /**
@@ -115,8 +115,8 @@ var WPCircle = Class.extend(function() {
    * @type {Object}
    */
   this.downArrowProp = {
-    draggable: false,
-    clickable: false
+    draggable: true,
+    clickable: true
   };
 
   /**
@@ -168,6 +168,17 @@ var WPCircle = Class.extend(function() {
   };
 
 
+/**
+ * [function description] This is the default constructor for the WPCircle class.
+ * This class handles the orbit and/or circle routine and functionality of the
+ * UAS.
+ * @param  {[map]} leafletMap     [description]
+ * @param  {[LatLng]} locationLatLng [description]
+ * @param  {[Bool]} display        [description]
+ * @param  {[Float]} radius         [description]
+ * @param  {[Int]} direction      [description] 
+ * @return {[type]}                [description]
+ */
   this.constructor = function(leafletMap, locationLatLng, display, radius, direction) {
     mLeafletMap = leafletMap;
     mRadius = radius;
@@ -196,6 +207,9 @@ var WPCircle = Class.extend(function() {
       mUpArrowMarker = new L.marker(mCircleLocations.circleRight, this.upArrowProp);
       mDownArrowMarker = new L.marker(mCircleLocations.circleLeft, this.downArrowProp);
     }
+    mUpArrowMarker.on('drag',arrowDragEvent);
+    mDownArrowMarker.on('drag',arrowDragEvent);
+
 
     if (display == true) {
       mMarker.addTo(mLeafletMap);
@@ -205,11 +219,11 @@ var WPCircle = Class.extend(function() {
     }
   };
 
-/**
- * [function description]
- * @param  {[type]} locationLatLng [description]
- * @return {[type]}                [description]
- */
+  /**
+   * [function description]
+   * @param  {[type]} locationLatLng [description]
+   * @return {[type]}                [description]
+   */
   this.updateArrowIcons = function(locationLatLng) {
     mCircleLocations.circleLeft = computeLocationOfInterest(locationLatLng, 270.0, mRadius);
     mCircleLocations.circleRight = computeLocationOfInterest(locationLatLng, 90.0, mRadius);
@@ -226,11 +240,11 @@ var WPCircle = Class.extend(function() {
     mDownArrowMarker.update();
   };
 
-/**
- * [function description]
- * @param  {[type]} locationLatLng [description]
- * @return {[type]}                [description]
- */
+  /**
+   * [function description]
+   * @param  {[type]} locationLatLng [description]
+   * @return {[type]}                [description]
+   */
   this.updateOriginLocation = function(locationLatLng) {
     mCircleLocations.circleCenter = locationLatLng;
 
@@ -243,13 +257,21 @@ var WPCircle = Class.extend(function() {
     this.updateArrowIcons(locationLatLng);
   };
 
-/**
- * [function description]
- * @param  {[type]} originLatLon      [description]
- * @param  {[type]} locationBearingD  [description]
- * @param  {[type]} locationDistanceM [description]
- * @return {[type]}                   [description]
- */
+  this.updateCircleRadius = function(radialDistance){
+    mRadius = radialDistance;
+    mCircleMarker.setRadius(mRadius);
+    mCircleMarker.redraw();
+    this.updateArrowIcons(mCircleLocations.circleCenter);
+
+  };
+
+  /**
+   * [function description]
+   * @param  {[type]} originLatLon      [description]
+   * @param  {[type]} locationBearingD  [description]
+   * @param  {[type]} locationDistanceM [description]
+   * @return {[type]}                   [description]
+   */
   computeLocationOfInterest = function(originLatLon, locationBearingD, locationDistanceM) {
     //var tmpLatLng = markerOrigin.getLatLng();
     var originLatR = convertDegrees_Radians(originLatLon.lat);
@@ -272,21 +294,53 @@ var WPCircle = Class.extend(function() {
     return (finalLocation);
   };
 
-/**
- * [function description]
- * @param  {[type]} angleDegrees [description]
- * @return {[type]}              [description]
- */
+  /**
+   * [function description] The purpose of this function is to compute the
+   * distance between two LatLng locaitons using the haversine formula.
+   * @param  {[LatLng]} gpsOne [description] A single location.
+   * @param  {[LatLng]} gpsTwo [description] Another locaiton.
+   * @return {[Float]}        [description] Distance between the locations in
+   * meters. It would be expected that the inheriting class displaying the
+   * information to the screen per the adjustment would correct for the
+   * appropriate user requested units.
+   */
+  computeDistanceBetween = function(gpsOne, gpsTwo) {
+    var R = 6378137; //default radius of earth in meters
+
+    var gpsOneLat = convertDegrees_Radians(gpsOne.lat);
+    var gpsOneLon = convertDegrees_Radians(gpsOne.lng);
+    var gpsTwoLat = convertDegrees_Radians(gpsTwo.lat);
+    var gpsTwoLon = convertDegrees_Radians(gpsTwo.lng);
+
+    var deltaLat = gpsTwoLat - gpsOneLat;
+    var deltaLon = gpsTwoLon - gpsOneLon;
+
+    var a = Math.sin(deltaLat / 2) * Math.sin(deltaLat / 2) +
+      Math.cos(gpsOneLat) * Math.cos(gpsTwoLat) *
+      Math.sin(deltaLon / 2) * Math.sin(deltaLon / 2);
+
+    var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+
+    var distance = R * c;
+
+    return (distance);
+  };
+
+  /**
+   * [function description]
+   * @param  {[type]} angleDegrees [description]
+   * @return {[type]}              [description]
+   */
   convertDegrees_Radians = function(angleDegrees) {
     var angleRadians = (Math.PI / 180.0) * (angleDegrees);
     return (angleRadians);
   };
 
-/**
- * [function description]
- * @param  {[type]} angleRadians [description]
- * @return {[type]}              [description]
- */
+  /**
+   * [function description]
+   * @param  {[type]} angleRadians [description]
+   * @return {[type]}              [description]
+   */
   convertRadians_Degrees = function(angleRadians) {
     var angleDegrees = (180.0 / Math.PI) * (angleRadians);
     return (angleDegrees);
@@ -304,10 +358,15 @@ var WPCircle = Class.extend(function() {
   };
 
   //TODO: figure out how to handle a proper remove....for now remove layer from map
-  this.removeMarkers = function() {
-  };
+  this.removeMarkers = function() {};
 
+  arrowDragEvent = function(event){
+    var marker = event.target;
+    var position = marker.getLatLng();
 
+    var tmpDis = computeDistanceBetween(mCircleLocations.circleCenter,position);
+    this.updateCircleRadius(tmpDis);
+  }.bind(this);
 
   /**
    * [function markerClickEvent]
@@ -327,6 +386,7 @@ var WPCircle = Class.extend(function() {
     var marker = event.target;
     var position = marker.getLatLng();
     this.updateOriginLocation(position);
+    //TODO: There is an error in the statement below
     mCallbackOnMove(this);
   }.bind(this);
 

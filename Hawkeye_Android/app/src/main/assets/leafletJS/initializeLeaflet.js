@@ -23,7 +23,7 @@ function initializeLeaflet(){
     initializeLayerMaps();
 
     //TODO: Renable when the click makes sense.
-    //map.on('click', clickEventChecker);
+    map.on('click', clickEventChecker);
     this.userLocationObject = new userLocationHandler(map,new L.LatLng(0.0, 0.0),true,true);
     this.wpQueue = new WPQueue(map);
 }
