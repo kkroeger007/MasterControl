@@ -1,8 +1,12 @@
 package com.kkroegeraraustech.Hawkeye_Android;
 
+import android.app.AlertDialog;
 import android.app.Application;
+import android.app.Dialog;
+import android.app.DialogFragment;
 import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
@@ -10,6 +14,7 @@ import android.os.Handler;
 import android.support.v4.content.LocalBroadcastManager;
 import android.text.TextUtils;
 import android.util.Log;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.kkroegeraraustech.Hawkeye_Android.Utils.Preferences.PreferencesApplicaiton;
@@ -21,9 +26,11 @@ import com.o3dr.android.client.interfaces.DroneListener;
 import com.o3dr.android.client.interfaces.TowerListener;
 
 import com.o3dr.services.android.lib.drone.attribute.AttributeEvent;
+import com.o3dr.services.android.lib.drone.attribute.AttributeType;
 import com.o3dr.services.android.lib.drone.connection.ConnectionParameter;
 import com.o3dr.services.android.lib.drone.connection.ConnectionResult;
 import com.o3dr.services.android.lib.drone.connection.ConnectionType;
+import com.o3dr.services.android.lib.drone.property.Attitude;
 import com.o3dr.services.android.lib.model.AbstractCommandListener;
 import com.o3dr.services.android.lib.util.Utils;
 
@@ -317,7 +324,7 @@ public class PrimaryApp_3DR extends Application implements DroneListener, TowerL
     public void onDroneEvent(String event, Bundle extras) {
         switch (event) {
             case AttributeEvent.STATE_CONNECTED:
-                handler.removeCallbacks(disconnectionTask);
+                //handler.removeCallbacks(disconnectionTask);
                 //startService(new Intent(getApplicationContext(), AppService.class));
 
                 //final boolean isReturnToMeOn = dpPrefs.isReturnToMeEnabled();
@@ -337,7 +344,7 @@ public class PrimaryApp_3DR extends Application implements DroneListener, TowerL
                 break;
 
             case AttributeEvent.STATE_DISCONNECTED:
-                shouldWeTerminate();
+                //shouldWeTerminate();
                 break;
         }
 
