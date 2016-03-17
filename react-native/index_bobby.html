@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title></title>
+
+    <!-- **** CSS **** -->
+    <!-- Ionicons -->
+    <link rel="stylesheet" href="css/ionicons/ionicons.min.css" />
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="css/font-awesome-4.5.0/css/font-awesome.min.css" />
+
+    <!-- Leaflet CSS -->
+    <link rel="stylesheet" href="leaflet.css" />
+
+    <!-- Material Design Lite CSS -->
+    <link rel="stylesheet" href="material_design_lite/material-teal-blue.min.css" />
+    <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Roboto:300,400,500,700" type="text/css">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="css/custom_material.css" />
+    <link rel="stylesheet" href="material_design_lite/google_icons.css">
+    <link rel="stylesheet" href="css/mdl-collapse.css" />
+    <link rel="stylesheet" href="css/bobby.css">
+
+
+    <!-- **** JavaScript **** -->
+    <!-- jQuery and jQuery-UI JS -->
+    <script src="js/jquery/dist/jquery.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js"></script>
+
+
+    <!-- Leaflet JS -->
+    <script src="leaflet.js"></script>
+    <script src="leaflet-providers.js"></script>
+
+    <!-- Material Design Lite JS -->
+    <script src="material_design_lite/material.min.js"></script>
+    <!-- <script src="material_design_lite/material.min.js.map"></script> -->
+
+
+    <!-- Drawing Leaflet JS -->
+    <script type="text/javascript" src="leafletJS/polygonDrawing/Leaflet.draw.js"></script>
+    <link rel="stylesheet" href="leafletJS/polygonDrawing/dist/leaflet.draw.css" />
+
+    <script type="text/javascript" src="leafletJS/polygonDrawing/Toolbar.js"></script>
+    <script type="text/javascript" src="leafletJS/polygonDrawing/Tooltip.js"></script>
+    <script type="text/javascript" src="leafletJS/polygonDrawing/TextPolyline.js"></script>
+
+    <script type="text/javascript" src="leafletJS/polygonDrawing/ext/GeometryUtil.js"></script>
+    <script type="text/javascript" src="leafletJS/polygonDrawing/ext/LatLngUtil.js"></script>
+    <script type="text/javascript" src="leafletJS/polygonDrawing/ext/LineUtil.Intersect.js"></script>
+    <script type="text/javascript" src="leafletJS/polygonDrawing/ext/Polygon.Intersect.js"></script>
+    <script type="text/javascript" src="leafletJS/polygonDrawing/ext/Polyline.Intersect.js"></script>
+
+
+    <script type="text/javascript" src="leafletJS/polygonDrawing/draw/DrawToolbar.js"></script>
+    <script type="text/javascript" src="leafletJS/polygonDrawing/draw/handler/Draw.Feature.js"></script>
+    <script type="text/javascript" src="leafletJS/polygonDrawing/draw/handler/Draw.SimpleShape.js"></script>
+    <script type="text/javascript" src="leafletJS/polygonDrawing/draw/handler/Draw.Polyline.js"></script>
+    <script type="text/javascript" src="leafletJS/polygonDrawing/draw/handler/Draw.Circle.js"></script>
+    <script type="text/javascript" src="leafletJS/polygonDrawing/draw/handler/Draw.Marker.js"></script>
+    <script type="text/javascript" src="leafletJS/polygonDrawing/draw/handler/Draw.Polygon.js"></script>
+    <script type="text/javascript" src="leafletJS/polygonDrawing/draw/handler/Draw.Rectangle.js"></script>
+
+
+    <script type="text/javascript" src="leafletJS/polygonDrawing/edit/EditToolbar.js"></script>
+    <script type="text/javascript" src="leafletJS/polygonDrawing/edit/handler/EditToolbar.Edit.js"></script>
+    <script type="text/javascript" src="leafletJS/polygonDrawing/edit/handler/EditToolbar.Delete.js"></script>
+
+    <script type="text/javascript" src="leafletJS/polygonDrawing/Control.Draw.js"></script>
+
+    <script type="text/javascript" src="leafletJS/polygonDrawing/edit/handler/Edit.Poly.js"></script>
+    <script type="text/javascript" src="leafletJS/polygonDrawing/edit/handler/Edit.SimpleShape.js"></script>
+    <script type="text/javascript" src="leafletJS/polygonDrawing/edit/handler/Edit.Circle.js"></script>
+    <script type="text/javascript" src="leafletJS/polygonDrawing/edit/handler/Edit.Rectangle.js"></script>
+    <script type="text/javascript" src="leafletJS/polygonDrawing/edit/handler/Edit.Marker.js"></script>
+
+    <!-- Context Menu Leaflet JS -->
+    <script type="text/javascript" src="leafletJS/contextMenu/leaflet.contextmenu.js"></script>
+    <link rel="stylesheet" href="leafletJS/contextMenu/leaflet.contextmenu.css" />
+
+    <!-- Custom JS Class Helper -->
+    <script type="text/javascript" src="js/classHelper/extend.js"></script>
+
+    <!-- Custom JS -->
+    <script type="text/javascript" src="parseJS/parseLeaflet.js"></script>
+    <script type="text/javascript" src="androidJS/callbackAndroid.js"></script>
+    <script type="text/javascript" src="leafletJS/mapHandling.js"></script>
+    <script type="text/javascript" src="leafletJS/serverMaps.js"></script>
+    <script type="text/javascript" src="leafletJS/UserLocationHandler.js"></script>
+    <script type="text/javascript" src="leafletJS/mapBackgroundLayer.js"></script>
+    <script type="text/javascript" src="leafletJS/initializeLeaflet.js"></script>
+    <script type="text/javascript" src="leafletJS/WPMarker_Circle.js"></script>
+    <script type="text/javascript" src="leafletJS/drawBoundaries.js"></script>
+
+    <script type="text/javascript" src="js/Waypoints/WPBase.js"></script>
+    <script type="text/javascript" src="js/Waypoints/WPCircle.js"></script>
+    <script type="text/javascript" src="js/Waypoints/WPLand.js"></script>
+    <script type="text/javascript" src="js/Waypoints/WPLaunch.js"></script>
+    <script type="text/javascript" src="js/Waypoints/WPGeneral.js"></script>
+    <script type="text/javascript" src="js/Waypoints/WPQueue.js"></script>
+    <script type="text/javascript" src="js/Waypoints/WPPathHandler.js"></script>
+    <script type="text/javascript" src="js/index_page.js"></script>
+    <script type="text/javascript" src="js/bobby.js">
+
+    </script>
+
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.2/html5shiv.js"></script>
+      <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+</head>
+  <body style="padding:0; margin:0;">
+
+    <!-- Header  -->
+    <header class="">
+      <a href="#" id="openSidebar"><i class="material-icons">menu</i></a>
+      <div class="header-instrument">
+        <i class="material-icons">home</i>
+        <span>1.1 MI</span>
+      </div>
+      <div class="header-instrument">
+        <i class="material-icons">my_location</i>
+        <span>3D</span>
+      </div>
+      <div class="header-instrument">
+        <i class="material-icons">wifi</i>
+        <span>..</span>
+      </div>
+      <div class="header-instrument">
+        <i class="fa fa-2x fa-battery-full"></i>
+        <span>12.1V</span>
+      </div>
+      <div class="header-instrument">
+        <span>Auto</span>
+      </div>
+      <a href="#"><i class="material-icons">more_vert</i></a>
+    </header>
+    <!-- End Header  -->
+    <!-- Pop Out Sidebar -->
+    <div class="sidebar">
+      <a href="#" id="closeSidebar"><i class="material-icons">clear</i></a>
+    </div>
+    <!-- End Sidebar  -->
+
+    <!-- Live Flight Controls -->
+    <div class="live-flight-controls">
+      <div class="single-control active">
+        <i class="material-icons">home</i>
+        <span>Home</span>
+      </div>
+      <div class="single-control">
+        <i class="material-icons">flight_land</i>
+        <span>Land</span>
+      </div>
+      <div class="single-control">
+        <i class="material-icons">pause_circle_outline</i>
+        <span>Pause</span>
+      </div>
+      <div class="single-control">
+        <i class="material-icons">airplanemode_active</i>
+        <span>Auto</span>
+      </div>
+      <div class="single-control">
+        <i class="material-icons">location_disabled</i>
+        <span>Follow</span>
+      </div>
+    </div>
+    <!-- End Live Flight -->
+    <div class="instrumentation-panel">
+      <div class="horizon-panel">
+        <div class="horizon-details">
+          <div class="single-horizon-detail">
+            <div class="single-horizon-detail-icon">
+              <i class="material-icons flight-rotate">flight</i>
+            </div>
+            <span>169&deg;</span>
+          </div>
+          <div class="single-horizon-detail">
+            <div class="single-horizon-detail-split">
+              <i class="material-icons">flight_takeoff</i>
+            </div>
+            <span>-42&deg;</span>
+          </div>
+          <div class="single-horizon-detail">
+            <div class="single-horizon-detail-split">
+              <div id="aircraft-indicator" class="aircraft-indicator-mini">
+                <div class="aircraft-mini"></div>
+                <div class="center-aircraft-mini"></div>
+                <div class="bullseye-mini"></div>
+                <div class="inner-pointer-mini"></div>
+              </div>
+            </div>
+            <span>16&deg;</span>
+          </div>
+        </div>
+        <div class="horizon">
+          <div id="compass" class="compass">
+            <i class="fa fa-play direction"></i>
+          </div>
+          <div id="flight-indicator" class="flight-indicator-container">
+            <div class="flight-indicator">
+              <div class="flight-indicator-inner">
+                <div class="indicator-line"></div>
+                <div class="indicator-line"></div>
+                <div class="indicator-line"></div>
+                <div class="indicator-line"></div>
+              </div>
+            </div>
+          </div>
+          <div id="aircraft-indicator" class="aircraft-indicator">
+            <div class="aircraft"></div>
+            <div class="center-aircraft"></div>
+            <div class="bullseye"></div>
+            <div class="inner-pointer"></div>
+          </div>
+        </div>
+      </div>
+      <!-- End Horizon -->
+      <div class="timer">
+        <i class="material-icons">timer</i>
+        <span>02:55</span>
+      </div>
+      <div class="single-instrument-detail ltgreen-detail">
+        <span class="parameter">45.4 ft/s</span>
+        <span class="label">Ground Speed</label>
+      </div>
+      <div class="single-instrument-detail dkblue-detail">
+        <span class="parameter">45.4 ft/s</span>
+        <span class="label">Air Speed</label>
+      </div>
+      <div class="single-instrument-detail dkgreen-detail">
+        <span class="parameter">0.3 ft/s</span>
+        <span class="label">Climb Rate</label>
+      </div>
+      <div class="single-instrument-detail ltblue-detail">
+        <span class="parameter">65.3 ft/s</span>
+        <span class="label">Altitude</label>
+      </div>
+    </div>
+    <!-- Map -->
+    <div id="map"></div>
+
+
+    <script>
+        initializeLeaflet();
+    </script>
+
+  </body>
+
+</html>

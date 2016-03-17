@@ -10,6 +10,7 @@ import android.content.ServiceConnection;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.Message;
@@ -28,6 +29,7 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import java.io.File;
 import java.lang.ref.WeakReference;
 import java.util.Set;
 
@@ -43,6 +45,16 @@ public class MainActivity extends AppCompatActivity {
 
     private boolean mBound = false;
 
+    public File getAlbumStorageDir(String albumName) {
+        // Get the directory for the user's public pictures directory.
+        File file = new File(Environment.getExternalStoragePublicDirectory(
+                Environment.DIRECTORY_DCIM), albumName);
+        if (!file.mkdirs()) {
+            Log.e("KEN", "Directory not created");
+        }
+        return file;
+    }
+
     private final ServiceConnection BTConnection = new ServiceConnection() {
         @Override
         public void onServiceConnected(ComponentName name, IBinder service) {
@@ -52,7 +64,7 @@ public class MainActivity extends AppCompatActivity {
             BTService.setHandler(mHandler);
 
             boolean BTSupport = BTService.detemineBluetoothSupport();
-            boolean BTOn = BTService.deteermineBluetoothOn();
+            boolean BTOn = BTService.determineBluetoothOn();
 
             if (BTSupport == true) {
                 if (BTOn == false) {
@@ -131,6 +143,17 @@ public class MainActivity extends AppCompatActivity {
 
         mOutStringBuffer.setLength(0);
         mOutEditText.setText(mOutStringBuffer);
+
+        String m_path = Environment.getExternalStoragePublicDirectory(
+                Environment.DIRECTORY_PICTURES).getAbsolutePath();
+        File f = new File(m_path);
+        File[] files = f.listFiles();
+        for (File inFile : files) {
+            if (inFile.isDirectory()) {
+                Log.d("KEN",inFile.toString());
+            }
+        }
+
 
         //TODO: We should check the state of the service prior to attempting reconnection
 
