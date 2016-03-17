@@ -98,7 +98,7 @@ var WPPathHandler = Class.extend(function() {
       WPPolyline.addLatLng(this._WPQueue[tmpIndex + 1].getOriginLoc()); //The first in at the end of the array
       WPPolyline.redraw();
       this._WPPolylineArray[0] = WPPolyline;
-    } else if (tmpIndex == this._WPPolylineArray.length) {
+    } else if ((tmpIndex == this._WPPolylineArray.length) && (this._WPPolylineArray.length>0)){
       map.removeLayer(this._WPPolylineArray[tmpIndex - 1]);
       WPPolyline = new L.polyline(this.polyLineProp).addTo(map);
       WPPolyline.on('click',onClickWPPath);
