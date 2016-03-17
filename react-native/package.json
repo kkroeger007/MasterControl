@@ -1,0 +1,16 @@
+{
+  "name": "Hawkeye",
+  "version": "0.0.1",
+  "private": true,
+  "scripts": {
+    "start": "react-native start"
+  },
+  "dependencies": {
+    "react-native": "^0.21.0",
+    "react-native-art-svg": "^1.1.0",
+    "react-native-linear-gradient": "^1.5.2",
+    "react-native-maps": "^0.3.0",
+    "react-native-vector-icons": "^1.3.2",
+    "react-timer-mixin": "^0.13.3"
+  }
+}
