@@ -362,7 +362,6 @@ public class MainActivity extends AppCompatActivity implements DroneListener, To
         setContentView(R.layout.activity_main);
         final Context context = getApplicationContext();
 
-        attitudeText = (TextView) findViewById(R.id.attitude_text);
         preferencesApplication = new PreferencesApplicaiton(context);
 
         mWebAppInterface = new WebAppInterface(this);
@@ -467,6 +466,7 @@ public class MainActivity extends AppCompatActivity implements DroneListener, To
 
         connectToDrone();
     }
+
     private String getRealPathFromURI(Uri contentURI) {
         String result;
         Cursor cursor = getContentResolver().query(contentURI, null, null, null, null);

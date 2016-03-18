@@ -5,19 +5,6 @@
     tools:context=".MainActivity"
     android:orientation="vertical">
 
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="New Text"
-        android:id="@+id/attitude_text" />
-
-    <LinearLayout
-        android:orientation="vertical"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="right"></LinearLayout>
-
     <WebView
         android:layout_width="match_parent"
         android:layout_height="match_parent"

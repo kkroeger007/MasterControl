@@ -12,6 +12,7 @@ import android.os.Handler;
 import android.os.IBinder;
 import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -21,6 +22,7 @@ import android.widget.Toast;
 import java.lang.ref.WeakReference;
 import java.util.Set;
 
+import com.kkroegeraraustech.Hawkeye_Android.Services.USB.NMEAParser;
 import com.kkroegeraraustech.Hawkeye_Android.Services.USB.Service_USBGPS;
 
 public class USBGPSActivity extends AppCompatActivity {
@@ -104,6 +106,12 @@ public class USBGPSActivity extends AppCompatActivity {
             }
         });
 
+//        NMEAParser testParser = new NMEAParser();
+//        String tmpString = "$GPGGA,";
+//        String returnedString = testParser.parseNmeaSentence(tmpString);
+//        Location testLocation = testParser.getLocationData();
+//        Log.d("LOG", String.valueOf(testLocation.getLatitude()));
+
         LonTV = (TextView)findViewById(R.id.textView_LON);
         LatTV = (TextView)findViewById(R.id.textView_LAT);
     }
@@ -174,8 +182,10 @@ public class USBGPSActivity extends AppCompatActivity {
     }
 
     public void updateData(Location newLocation){
-        LatTV.setText(String.valueOf(newLocation.getLatitude()));
-        LonTV.setText(String.valueOf(newLocation.getLongitude()));
+        if(newLocation != null) {
+            LatTV.setText(String.valueOf(newLocation.getLongitude()));
+            LonTV.setText(String.valueOf(newLocation.getLongitude()));
+        }
     }
 
 
