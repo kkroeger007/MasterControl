@@ -104,16 +104,20 @@ public class Service_USBGPS extends Service{
                 String data = new String(arg0, "UTF-8");
                 remainingString = remainingString + data;
                 remainingString = mNMEAParser.parseNmeaSentence(remainingString);
-                Location tmpLocation = mNMEAParser.getLocationData();
-
-                if (mHandler != null) {
-                    mHandler.obtainMessage(MESSAGE_RAW, data).sendToTarget();
+                if((mHandler != null)){
+                    //mHandler.obtainMessage(MESSAGE_RAW, data).sendToTarget();
+                    Location tmpLocation = mNMEAParser.getLocationData();
                     mHandler.obtainMessage(MESSAGE_GPS,tmpLocation).sendToTarget();
-                    //send the data to the manager
-//                    if(mLocation != null){
-//                        mHandler.obtainMessage(MESSAGE_GPS,mLocation).sendToTarget();
-//                    }
                 }
+
+//                if (mHandler != null) {
+//                    mHandler.obtainMessage(MESSAGE_RAW, data).sendToTarget();
+//                    mHandler.obtainMessage(MESSAGE_GPS,tmpLocation).sendToTarget();
+//                    //send the data to the manager
+////                    if(mLocation != null){
+////                        mHandler.obtainMessage(MESSAGE_GPS,mLocation).sendToTarget();
+////                    }
+//                }
 //                if(mOnServiceListener_Remote != null){
 //                    if(mLocation != null) {
 //                        Location tempLocation = mLocation;

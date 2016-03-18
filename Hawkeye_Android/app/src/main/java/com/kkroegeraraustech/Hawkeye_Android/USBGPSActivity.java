@@ -1,5 +1,6 @@
 package com.kkroegeraraustech.Hawkeye_Android;
 
+import android.annotation.SuppressLint;
 import android.content.BroadcastReceiver;
 import android.content.ComponentName;
 import android.content.Context;
@@ -7,6 +8,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.ServiceConnection;
 import android.location.Location;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
@@ -14,6 +16,10 @@ import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
+import android.webkit.JavascriptInterface;
+import android.webkit.WebSettings;
+import android.webkit.WebView;
+import android.webkit.WebViewClient;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -24,6 +30,7 @@ import java.util.Set;
 
 import com.kkroegeraraustech.Hawkeye_Android.Services.USB.NMEAParser;
 import com.kkroegeraraustech.Hawkeye_Android.Services.USB.Service_USBGPS;
+import com.kkroegeraraustech.Hawkeye_Android.Utils.Preferences.PreferencesApplicaiton;
 
 public class USBGPSActivity extends AppCompatActivity {
 
@@ -78,42 +85,136 @@ public class USBGPSActivity extends AppCompatActivity {
     private Service_USBGPS.UpdateUSBGPSListener mDeviceListener = new Service_USBGPS.UpdateUSBGPSListener() {
         @Override
         public void onUpdateGPS(Location locationUpdate) {
-            LatTV.setText(String.valueOf(locationUpdate.getLatitude()));
-            LonTV.setText(String.valueOf(locationUpdate.getLongitude()));
+            mWebAppInterface.updateUserLocation(locationUpdate);
+//            LatTV.setText(String.valueOf(locationUpdate.getLatitude()));
+//            LonTV.setText(String.valueOf(locationUpdate.getLongitude()));
         }
     };
 
+    private static final String URL = "file:///android_asset/index.html";
+    private WebView mWebView;
+    WebAppInterface mWebAppInterface;
+
+    @SuppressLint("SetJavaScriptEnabled")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_usbgps);
-
+//        setContentView(R.layout.activity_usbgps);
+//
         mHandler = new MyHandler(this);
+//
+//        display = (TextView) findViewById(R.id.textView1);
+//        editText = (EditText) findViewById(R.id.editText1);
+//        Button sendButton = (Button) findViewById(R.id.buttonSend);
+//        sendButton.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                if (!editText.getText().toString().equals("")) {
+//                    String data = editText.getText().toString();
+//                    if (usbService != null) { // if Service_USBGPS was correctly binded, Send data
+//                        display.append(data);
+//                        usbService.write(data.getBytes());
+//                    }
+//                }
+//            }
+//        });
+//
+////        NMEAParser testParser = new NMEAParser();
+////        String tmpString = "$GPGGA,";
+////        String returnedString = testParser.parseNmeaSentence(tmpString);
+////        Location testLocation = testParser.getLocationData();
+////        Log.d("LOG", String.valueOf(testLocation.getLatitude()));
+//
+//        LonTV = (TextView)findViewById(R.id.textView_LON);
+//        LatTV = (TextView)findViewById(R.id.textView_LAT);
 
-        display = (TextView) findViewById(R.id.textView1);
-        editText = (EditText) findViewById(R.id.editText1);
-        Button sendButton = (Button) findViewById(R.id.buttonSend);
-        sendButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (!editText.getText().toString().equals("")) {
-                    String data = editText.getText().toString();
-                    if (usbService != null) { // if Service_USBGPS was correctly binded, Send data
-                        display.append(data);
-                        usbService.write(data.getBytes());
-                    }
-                }
+            setContentView(R.layout.activity_main);
+            final Context context = getApplicationContext();
+
+            mWebAppInterface = new WebAppInterface(this);
+            //testDocumentTree();
+            mWebView = (WebView) findViewById(R.id.webView);
+
+            WebSettings webSettings = mWebView.getSettings();
+            webSettings.setJavaScriptEnabled(true);
+            webSettings.setRenderPriority(WebSettings.RenderPriority.HIGH);
+            webSettings.setCacheMode(WebSettings.LOAD_CACHE_ELSE_NETWORK);
+            webSettings.setAppCacheEnabled(true);
+            webSettings.setDomStorageEnabled(true);
+            webSettings.setLayoutAlgorithm(WebSettings.LayoutAlgorithm.NARROW_COLUMNS);
+            webSettings.setUseWideViewPort(true);
+            mWebView.setWebViewClient(new WebViewClient());
+
+            if (Build.VERSION.SDK_INT >= 19) {
+                mWebView.setLayerType(View.LAYER_TYPE_HARDWARE, null);
             }
-        });
+            else {
+                mWebView.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
+            }
 
-//        NMEAParser testParser = new NMEAParser();
-//        String tmpString = "$GPGGA,";
-//        String returnedString = testParser.parseNmeaSentence(tmpString);
-//        Location testLocation = testParser.getLocationData();
-//        Log.d("LOG", String.valueOf(testLocation.getLatitude()));
 
-        LonTV = (TextView)findViewById(R.id.textView_LON);
-        LatTV = (TextView)findViewById(R.id.textView_LAT);
+
+            mWebView.setWebViewClient(new WebViewClient() {
+                @Override
+                public void onPageFinished(WebView view, String url) {
+                }
+            });
+
+            refreshWebView();
+
+
+            mWebView.addJavascriptInterface(new WebAppInterface(this), "Android");
+    }
+
+    private void refreshWebView() {
+        //mWebView.loadData(tmpString, "text/html", "UTF-8");
+        mWebView.loadUrl(URL);
+    }
+
+
+    public class WebAppInterface{
+        Context mContext;
+        float testFloat;
+        /** Instantiate the interface and set the context */
+        WebAppInterface(Context c) {
+            mContext = c;
+        }
+
+        @JavascriptInterface
+        public void updateUserLocation(final Location userLocation){
+            mWebView.post(new Runnable() {
+                @Override
+                public void run() {
+                    //Log.d("LOC",String.valueOf(userLocation.getLatitude()) + "," +String.valueOf(userLocation.getLongitude()));
+                    String locString ="javascript:updateUserLocation("+ String.valueOf(userLocation.getLatitude()) + "," +String.valueOf(userLocation.getLongitude())+ ")";
+                    mWebView.loadUrl(locString);
+                    locString ="javascript:updateUserAccuracy("+ String.valueOf(userLocation.getAccuracy())+ ")";
+                    mWebView.loadUrl(locString);
+                }
+            });
+        }
+        @JavascriptInterface
+        public void doneLoading(){
+            mWebView.post(new Runnable() {
+                @Override
+                public void run() {
+                    mWebView.loadUrl("javascript:addMarkerAtLocation([37.890476,-76.814011])");
+                }
+            });
+        }
+        @JavascriptInterface
+        public void updateLatLon(double lat, double lon){
+
+        }
+        @JavascriptInterface
+        public void showToast(String toast) {
+            Toast.makeText(mContext, toast, Toast.LENGTH_SHORT).show();
+        }
+
+        @JavascriptInterface
+        public void returnResult(String dialogMsg){
+            Log.v(null, dialogMsg);
+        }
     }
 
     @Override
@@ -175,6 +276,7 @@ public class USBGPSActivity extends AppCompatActivity {
                     break;
                 case Service_USBGPS.MESSAGE_GPS:
                     Location tmpLocation = (Location) msg.obj;
+                    Log.d("NEW",tmpLocation.toString());
                     mActivity.get().updateData(tmpLocation);
                     break;
             }
@@ -183,8 +285,9 @@ public class USBGPSActivity extends AppCompatActivity {
 
     public void updateData(Location newLocation){
         if(newLocation != null) {
-            LatTV.setText(String.valueOf(newLocation.getLongitude()));
-            LonTV.setText(String.valueOf(newLocation.getLongitude()));
+            mWebAppInterface.updateUserLocation(newLocation);
+            //LatTV.setText(String.valueOf(newLocation.getLongitude()));
+            //LonTV.setText(String.valueOf(newLocation.getLongitude()));
         }
     }
 

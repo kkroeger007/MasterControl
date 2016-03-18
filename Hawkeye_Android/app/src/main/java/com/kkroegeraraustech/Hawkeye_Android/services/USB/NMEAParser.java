@@ -50,6 +50,7 @@ public class NMEAParser {
         this.precision = precision;
         this.currentMessage = "";
         fix = new Location("EXTERNAL");
+        mFlagState = false;
     }
 
     public void setLocationManager(LocationManager lm){
@@ -178,7 +179,7 @@ public class NMEAParser {
         hasGGA = false;
         hasRMC=false;
         if (this.mockStatus != status){
-            Log.d(LOG_TAG, "New mockStatus: "+System.currentTimeMillis()+" "+status);
+            Log.d(LOG_TAG, "New mockStatus: " + System.currentTimeMillis() + " " + status);
             if (lm != null && mockGpsEnabled){
                 lm.setTestProviderStatus(mockLocationProvider, status, extras, updateTime);
                 // lm.setTestProviderStatus(mockLocationProvider, status, extras, SystemClock.elapsedRealtime());
@@ -212,6 +213,8 @@ public class NMEAParser {
             splitter.setString(sentence);
             String command = splitter.next();
             if (command.equals("GPGGA")){
+                gpsSentence = "";
+                mFlagState = true;
 				/* $GPGGA,123519,4807.038,N,01131.000,E,1,08,0.9,545.4,M,46.9,M,,*47
 
 					Where:
@@ -311,6 +314,8 @@ public class NMEAParser {
 //                    }
                 }
             } else if (command.equals("GPRMC")){
+                gpsSentence = "";
+                mFlagState = true;
 				/* $GPRMC,123519,A,4807.038,N,01131.000,E,022.4,084.4,230394,003.1,W*6A
 
 				   Where:
@@ -386,6 +391,8 @@ public class NMEAParser {
 //                    }
                 }
             } else if (command.equals("GPGSA")){
+                gpsSentence = "";
+                mFlagState = true;
 				/*  $GPGSA,A,3,04,05,,09,12,,,24,,,,,2.5,1.3,2.1*39
 
 					Where:
@@ -415,6 +422,8 @@ public class NMEAParser {
                 // Vertical dilution of precision (float)
                 String vdop = splitter.next();
             } else if (command.equals("GPVTG")){
+                gpsSentence = "";
+                mFlagState = true;
 				/*  $GPVTG,054.7,T,034.4,M,005.5,N,010.2,K*48
 
 					where:
@@ -444,6 +453,8 @@ public class NMEAParser {
                 // for NMEA 0183 version 3.00 active the Mode indicator field is added
                 // Mode indicator, (A=autonomous, D=differential, E=Estimated, N=not valid, S=Simulator )
             } else if (command.equals("GPGLL")){
+                gpsSentence = "";
+                mFlagState = true;
 				/*  $GPGLL,4916.45,N,12311.12,W,225444,A,*1D
 
 					Where:
@@ -548,11 +559,17 @@ public class NMEAParser {
     }
 
     public Location getLocationData(){
+        mFlagState = false;
         Location tempFix = this.fix;
         return(tempFix);
     }
 
     public String getMessageData(){
         return currentMessage;
+    }
+
+    private Boolean mFlagState;
+    public Boolean getFlagState(){
+        return mFlagState;
     }
 }

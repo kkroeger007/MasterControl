@@ -94,8 +94,6 @@ public class MainActivity extends AppCompatActivity implements DroneListener, To
     private static final AtomicBoolean isCellularNetworkOn = new AtomicBoolean(false);
 
 
-
-    WebAppInterface mWebAppInterface;
     /**
      * Create a GPS Service Listener that updates the user location
      */
@@ -344,15 +342,14 @@ public class MainActivity extends AppCompatActivity implements DroneListener, To
         Log.v(null,text.toString());
 
     }
-
-    String tmpString = "<!doctype html>\n<html>\n<head>\n\t</head>\n\t<body>\n\t\t<center>\n\t\t\t<div id='msg'>Hello World!</div>\n\t\t</center>\n\t</body>\n</html>";
-    private static final String URL = "file:///android_asset/index.html";
-    private WebView mWebView;
-
     //Button b1;
     EditText ed1;
 
     TextView attitudeText;
+
+    private static final String URL = "file:///android_asset/index.html";
+    private WebView mWebView;
+    WebAppInterface mWebAppInterface;
 
 
     @SuppressLint("SetJavaScriptEnabled")
