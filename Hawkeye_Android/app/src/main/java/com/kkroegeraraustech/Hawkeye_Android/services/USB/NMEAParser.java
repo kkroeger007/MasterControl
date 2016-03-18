@@ -1,8 +1,5 @@
 package com.kkroegeraraustech.Hawkeye_Android.Services.USB;
 
-import java.nio.charset.Charset;
-import java.nio.charset.CharsetEncoder;
-
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Locale;

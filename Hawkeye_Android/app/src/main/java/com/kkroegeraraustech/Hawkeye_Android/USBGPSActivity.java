@@ -20,50 +20,20 @@ import android.webkit.JavascriptInterface;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import java.lang.ref.WeakReference;
 import java.util.Set;
 
-import com.kkroegeraraustech.Hawkeye_Android.Services.USB.NMEAParser;
 import com.kkroegeraraustech.Hawkeye_Android.Services.USB.Service_USBGPS;
-import com.kkroegeraraustech.Hawkeye_Android.Utils.Preferences.PreferencesApplicaiton;
 
 public class USBGPSActivity extends AppCompatActivity {
 
     /*
      * Notifications from Service_USBGPS will be received here.
      */
-    private final BroadcastReceiver mUsbReceiver = new BroadcastReceiver() {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            switch (intent.getAction()) {
-                case Service_USBGPS.ACTION_USB_PERMISSION_GRANTED: // USB PERMISSION GRANTED
-                    Toast.makeText(context, "USB Ready", Toast.LENGTH_SHORT).show();
-                    break;
-                case Service_USBGPS.ACTION_USB_PERMISSION_NOT_GRANTED: // USB PERMISSION NOT GRANTED
-                    Toast.makeText(context, "USB Permission not granted", Toast.LENGTH_SHORT).show();
-                    break;
-                case Service_USBGPS.ACTION_NO_USB: // NO USB CONNECTED
-                    Toast.makeText(context, "No USB connected", Toast.LENGTH_SHORT).show();
-                    break;
-                case Service_USBGPS.ACTION_USB_DISCONNECTED: // USB DISCONNECTED
-                    Toast.makeText(context, "USB disconnected", Toast.LENGTH_SHORT).show();
-                    break;
-                case Service_USBGPS.ACTION_USB_NOT_SUPPORTED: // USB NOT SUPPORTED
-                    Toast.makeText(context, "USB device not supported", Toast.LENGTH_SHORT).show();
-                    break;
-            }
-        }
-    };
+    private final BroadcastReceiver mUsbReceiver = createBroadcastReceiver();
     private Service_USBGPS usbService;
-    private TextView display;
-    private EditText editText;
-    private TextView LatTV;
-    private TextView LonTV;
     private MyHandler mHandler;
 
     private final ServiceConnection usbConnection = new ServiceConnection() {
@@ -71,7 +41,6 @@ public class USBGPSActivity extends AppCompatActivity {
         public void onServiceConnected(ComponentName name, IBinder service) {
             Service_USBGPS.LocalBinder binder = (Service_USBGPS.LocalBinder) service;
             usbService = binder.getService();
-            //usbService = ((Service_USBGPS.UsbBinder) arg1).getService();
             usbService.setHandler(mHandler);
             usbService.setOnServiceListener(mDeviceListener);
         }
@@ -86,8 +55,6 @@ public class USBGPSActivity extends AppCompatActivity {
         @Override
         public void onUpdateGPS(Location locationUpdate) {
             mWebAppInterface.updateUserLocation(locationUpdate);
-//            LatTV.setText(String.valueOf(locationUpdate.getLatitude()));
-//            LonTV.setText(String.valueOf(locationUpdate.getLongitude()));
         }
     };
 
@@ -99,122 +66,37 @@ public class USBGPSActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-//        setContentView(R.layout.activity_usbgps);
-//
         mHandler = new MyHandler(this);
-//
-//        display = (TextView) findViewById(R.id.textView1);
-//        editText = (EditText) findViewById(R.id.editText1);
-//        Button sendButton = (Button) findViewById(R.id.buttonSend);
-//        sendButton.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                if (!editText.getText().toString().equals("")) {
-//                    String data = editText.getText().toString();
-//                    if (usbService != null) { // if Service_USBGPS was correctly binded, Send data
-//                        display.append(data);
-//                        usbService.write(data.getBytes());
-//                    }
-//                }
-//            }
-//        });
-//
-////        NMEAParser testParser = new NMEAParser();
-////        String tmpString = "$GPGGA,";
-////        String returnedString = testParser.parseNmeaSentence(tmpString);
-////        Location testLocation = testParser.getLocationData();
-////        Log.d("LOG", String.valueOf(testLocation.getLatitude()));
-//
-//        LonTV = (TextView)findViewById(R.id.textView_LON);
-//        LatTV = (TextView)findViewById(R.id.textView_LAT);
+        setContentView(R.layout.activity_main);
 
-            setContentView(R.layout.activity_main);
-            final Context context = getApplicationContext();
+        mWebAppInterface = new WebAppInterface(this);
+        mWebView = (WebView) findViewById(R.id.webView);
 
-            mWebAppInterface = new WebAppInterface(this);
-            //testDocumentTree();
-            mWebView = (WebView) findViewById(R.id.webView);
+        WebSettings webSettings = mWebView.getSettings();
+        webSettings.setJavaScriptEnabled(true);
+        webSettings.setCacheMode(WebSettings.LOAD_CACHE_ELSE_NETWORK);
+        webSettings.setAppCacheEnabled(true);
+        webSettings.setDomStorageEnabled(true);
+        webSettings.setLayoutAlgorithm(WebSettings.LayoutAlgorithm.NARROW_COLUMNS);
+        webSettings.setUseWideViewPort(true);
+        mWebView.setWebViewClient(new WebViewClient());
 
-            WebSettings webSettings = mWebView.getSettings();
-            webSettings.setJavaScriptEnabled(true);
-            webSettings.setRenderPriority(WebSettings.RenderPriority.HIGH);
-            webSettings.setCacheMode(WebSettings.LOAD_CACHE_ELSE_NETWORK);
-            webSettings.setAppCacheEnabled(true);
-            webSettings.setDomStorageEnabled(true);
-            webSettings.setLayoutAlgorithm(WebSettings.LayoutAlgorithm.NARROW_COLUMNS);
-            webSettings.setUseWideViewPort(true);
-            mWebView.setWebViewClient(new WebViewClient());
+        if (Build.VERSION.SDK_INT >= 19) {
+            mWebView.setLayerType(View.LAYER_TYPE_HARDWARE, null);
+        }
+        else {
+            mWebView.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
+        }
 
-            if (Build.VERSION.SDK_INT >= 19) {
-                mWebView.setLayerType(View.LAYER_TYPE_HARDWARE, null);
-            }
-            else {
-                mWebView.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
-            }
+        mWebView.setWebViewClient(new WebViewClient());
 
+        refreshWebView();
 
-
-            mWebView.setWebViewClient(new WebViewClient() {
-                @Override
-                public void onPageFinished(WebView view, String url) {
-                }
-            });
-
-            refreshWebView();
-
-
-            mWebView.addJavascriptInterface(new WebAppInterface(this), "Android");
+        mWebView.addJavascriptInterface(new WebAppInterface(this), "Android");
     }
 
     private void refreshWebView() {
-        //mWebView.loadData(tmpString, "text/html", "UTF-8");
         mWebView.loadUrl(URL);
-    }
-
-
-    public class WebAppInterface{
-        Context mContext;
-        float testFloat;
-        /** Instantiate the interface and set the context */
-        WebAppInterface(Context c) {
-            mContext = c;
-        }
-
-        @JavascriptInterface
-        public void updateUserLocation(final Location userLocation){
-            mWebView.post(new Runnable() {
-                @Override
-                public void run() {
-                    //Log.d("LOC",String.valueOf(userLocation.getLatitude()) + "," +String.valueOf(userLocation.getLongitude()));
-                    String locString ="javascript:updateUserLocation("+ String.valueOf(userLocation.getLatitude()) + "," +String.valueOf(userLocation.getLongitude())+ ")";
-                    mWebView.loadUrl(locString);
-                    locString ="javascript:updateUserAccuracy("+ String.valueOf(userLocation.getAccuracy())+ ")";
-                    mWebView.loadUrl(locString);
-                }
-            });
-        }
-        @JavascriptInterface
-        public void doneLoading(){
-            mWebView.post(new Runnable() {
-                @Override
-                public void run() {
-                    mWebView.loadUrl("javascript:addMarkerAtLocation([37.890476,-76.814011])");
-                }
-            });
-        }
-        @JavascriptInterface
-        public void updateLatLon(double lat, double lon){
-
-        }
-        @JavascriptInterface
-        public void showToast(String toast) {
-            Toast.makeText(mContext, toast, Toast.LENGTH_SHORT).show();
-        }
-
-        @JavascriptInterface
-        public void returnResult(String dialogMsg){
-            Log.v(null, dialogMsg);
-        }
     }
 
     @Override
@@ -272,7 +154,8 @@ public class USBGPSActivity extends AppCompatActivity {
             switch (msg.what) {
                 case Service_USBGPS.MESSAGE_RAW:
                     String data = (String) msg.obj;
-                    mActivity.get().display.append(data);
+                    Log.d("MessageRaw", "handleMessage: " + data);
+//                    mActivity.get().display.append(data);
                     break;
                 case Service_USBGPS.MESSAGE_GPS:
                     Location tmpLocation = (Location) msg.obj;
@@ -286,10 +169,71 @@ public class USBGPSActivity extends AppCompatActivity {
     public void updateData(Location newLocation){
         if(newLocation != null) {
             mWebAppInterface.updateUserLocation(newLocation);
-            //LatTV.setText(String.valueOf(newLocation.getLongitude()));
-            //LonTV.setText(String.valueOf(newLocation.getLongitude()));
         }
     }
 
+    private BroadcastReceiver createBroadcastReceiver(){
+        return new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                switch (intent.getAction()) {
+                    case Service_USBGPS.ACTION_USB_PERMISSION_GRANTED: // USB PERMISSION GRANTED
+                        Toast.makeText(context, "USB Ready", Toast.LENGTH_SHORT).show();
+                        break;
+                    case Service_USBGPS.ACTION_USB_PERMISSION_NOT_GRANTED: // USB PERMISSION NOT GRANTED
+                        Toast.makeText(context, "USB Permission not granted", Toast.LENGTH_SHORT).show();
+                        break;
+                    case Service_USBGPS.ACTION_NO_USB: // NO USB CONNECTED
+                        Toast.makeText(context, "No USB connected", Toast.LENGTH_SHORT).show();
+                        break;
+                    case Service_USBGPS.ACTION_USB_DISCONNECTED: // USB DISCONNECTED
+                        Toast.makeText(context, "USB disconnected", Toast.LENGTH_SHORT).show();
+                        break;
+                    case Service_USBGPS.ACTION_USB_NOT_SUPPORTED: // USB NOT SUPPORTED
+                        Toast.makeText(context, "USB device not supported", Toast.LENGTH_SHORT).show();
+                        break;
+                }
+            }
+        };
+    }
 
+    public class WebAppInterface{
+        Context mContext;
+        /** Instantiate the interface and set the context */
+        WebAppInterface(Context c) {
+            mContext = c;
+        }
+
+        @JavascriptInterface
+        public void updateUserLocation(final Location userLocation){
+            mWebView.post(new Runnable() {
+                @Override
+                public void run() {
+                    //Log.d("LOC",String.valueOf(userLocation.getLatitude()) + "," +String.valueOf(userLocation.getLongitude()));
+                    String locString ="javascript:updateUserLocation("+ String.valueOf(userLocation.getLatitude()) + "," +String.valueOf(userLocation.getLongitude())+ ")";
+                    mWebView.loadUrl(locString);
+                    locString ="javascript:updateUserAccuracy("+ String.valueOf(userLocation.getAccuracy())+ ")";
+                    mWebView.loadUrl(locString);
+                }
+            });
+        }
+        @JavascriptInterface
+        public void doneLoading(){
+            mWebView.post(new Runnable() {
+                @Override
+                public void run() {
+                    mWebView.loadUrl("javascript:addMarkerAtLocation([37.890476,-76.814011])");
+                }
+            });
+        }
+        @JavascriptInterface
+        public void showToast(String toast) {
+            Toast.makeText(mContext, toast, Toast.LENGTH_SHORT).show();
+        }
+
+        @JavascriptInterface
+        public void returnResult(String dialogMsg){
+            Log.v(null, dialogMsg);
+        }
+    }
 }
