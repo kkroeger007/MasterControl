@@ -1,6 +1,6 @@
 /*
  * Created: Kenneth Kroeger
- * Updated Date: 3/9/2016
+ * Date: 3/21/2016
  *
  * Description: The purpose of this class is to be the basic WPBase class that
  * is inherited/extended by all other waypoint type classes. This will OOP
@@ -11,10 +11,67 @@ var WPBase = Class.extend(function() {
 
   var _callbackOnMove;
 
-  var _marker; //This holds the marker object.
-  var _markerLocationIcon; //This holds the marker icon.
-  var _leafletMap; //This holds the leaflet map object.
-  var _originLocation; // This holds the origin position object.
+  var mMarker; //This holds the marker object.
+  var mMarkerLocationIcon; //This holds the marker icon.
+  var mLeafletMap; //This holds the leaflet map object.
+  var mOriginLocation; // This holds the origin position object.
+
+
+  /**
+   * [_WPParams description]
+   * @type {Object}
+   */
+  var mWPParams = {
+    param1: null,   //Delay - Hold time at mission waypoint (MAX 65535 seconds) (copter only)
+    param2: null,  //Acceptance radius meters-inside wp considered hit (plane only)
+    param3: null,  //0 to pass through WP, If >0 meters to pass CW orbit (plane only)
+    param4: null,  //Desired yaw angle at waypoint target (rotary wind only)
+    param5: null,  //Latitude (If zero the vehicle will hold current).
+    param6: null,  //Longitude (if zero the vehicle will hold current).
+    param7: null   //Altitude (if zero the vehicle will hold current).
+  };
+
+  this.WPParams = function(value) {
+    if (value === undefined) return (mWPParams);
+    mWPParams = value;
+  };
+
+  this.WPParams_param1 = function(value) {
+    if (value === undefined) return (mWPParams.param1);
+    mWPParams.param1 = value;
+  };
+
+  this.WPParams_param2 = function(value) {
+    if (value === undefined) return (mWPParams.param2);
+    mWPParams.param2 = value;
+  };
+
+  this.WPParams_param3 = function(value) {
+    if (value === undefined) return (mWPParams.param3);
+    mWPParams.param3 = value;
+  };
+
+  this.WPParams_param4 = function(value) {
+    if (value === undefined) return (mWPParams.param4);
+    mWPParams.param4 = value;
+  };
+
+  this.WPParams_param5 = function(value) {
+    if (value === undefined) return (mWPParams.param5);
+    mWPParams.param5 = value;
+  };
+
+  this.WPParams_param6 = function(value) {
+    if (value === undefined) return (mWPParams.param6);
+    mWPParams.param6 = value;
+  };
+
+  this.WPParams_param7 = function(value) {
+    if (value === undefined) return (mWPParams.param7);
+    mWPParams.param7 = value;
+  };
+
+
   /**
    * [options description] The purpose of this object is to set specific options
    * specific to the WPBase Class. These options would initially be inherited
@@ -22,7 +79,8 @@ var WPBase = Class.extend(function() {
    * @type {Object}
    */
   this.options = {
-    displayOriginMarker: true
+    displayOriginMarker: true,
+    transmitToAircraft: true
   };
 
   /**
@@ -55,8 +113,8 @@ var WPBase = Class.extend(function() {
    * @return {[type]} [description]
    */
   this.initializer = function() {
-    _markerLocationIcon = new L.icon(this.iconProp);
-    this.markerProp.icon = _markerLocationIcon;
+    mMarkerLocationIcon = new L.icon(this.iconProp);
+    this.markerProp.icon = mMarkerLocationIcon;
   };
 
   /**
@@ -69,19 +127,19 @@ var WPBase = Class.extend(function() {
    * @return {[type]}                [description]
    */
   this.constructor = function(leafletMap, locationLatLng, display) {
-    _leafletMap = leafletMap;
-    _originLocation = locationLatLng;
-    _marker = new L.marker(_originLocation, this.markerProp);
+    mLeafletMap = leafletMap;
+    mOriginLocation = locationLatLng;
+    mMarker = new L.marker(mOriginLocation, this.markerProp);
 
-    _marker.on('click', markerClickEvent);
-    _marker.on('drag', markerDragEvent);
-    _marker.on('mouseover', markerMouseOverEvent);
-    _marker.on('dblclick', markerDblClickEvent)
-    _marker.on('contextmenu', markerConextMenuEvent);
+    mMarker.on('click', markerClickEvent);
+    mMarker.on('drag', markerDragEvent);
+    mMarker.on('mouseover', markerMouseOverEvent);
+    mMarker.on('dblclick', markerDblClickEvent)
+    mMarker.on('contextmenu', markerConextMenuEvent);
 
     this.options.displayOriginMarker = display;
     if (display == true) {
-      _marker.addTo(_leafletMap);
+      mMarker.addTo(mLeafletMap);
     }
   };
 
@@ -91,15 +149,15 @@ var WPBase = Class.extend(function() {
    * @return {[type]}            [description]
    */
   this.updateMap = function(leafletMap) {
-    _leafletMap = leafletMap;
+    mLeafletMap = leafletMap;
     if (this.options.displayOriginMarker == true) {
-      _marker.addTo(_leafletMap);
+      mMarker.addTo(mLeafletMap);
     }
   };
 
   //TODO: figure out how to handle a proper remove....for now remove layer from map
   this.removeWP = function() {
-    _leafletMap.removeLayer(_marker);
+    mLeafletMap.removeLayer(mMarker);
   };
 
   /**
@@ -119,14 +177,21 @@ var WPBase = Class.extend(function() {
   markerDragEvent = function(event) {
     var marker = event.target;
     var position = marker.getLatLng();
-    _originLocation = position;
-    _marker.setLatLng(new L.LatLng(position.lat, position.lng));
-    _marker.update();
+    mOriginLocation = position;
+    mMarker.setLatLng(new L.LatLng(position.lat, position.lng));
+    mMarker.update();
+
+    try{
+      onMoveCallback(position);
+    }catch(e){
+      console.log('An error has occured on the callback: ' +e.message);
+    }
+
     _callbackOnMove(this);
   }.bind(this);
 
   this.getOriginLoc = function(){
-    return(_originLocation);
+    return(mOriginLocation);
   };
 
   /**
@@ -164,8 +229,8 @@ var WPBase = Class.extend(function() {
    * @return {[type]}       [description]
    */
   this.marker = function(value) {
-    if (value === undefined) return (_marker);
-    _marker = value;
+    if (value === undefined) return (mMarker);
+    mMarker = value;
   }
 
   /**
@@ -176,8 +241,8 @@ var WPBase = Class.extend(function() {
    * @return {[type]}       [description]
    */
   this.markerLocationIcon = function(value) {
-    if (value === undefined) return (_markerLocationIcon);
-    _markerLocationIcon = value;
+    if (value === undefined) return (mMarkerLocationIcon);
+    mMarkerLocationIcon = value;
   }
 
   /**
@@ -188,8 +253,8 @@ var WPBase = Class.extend(function() {
    * @return {[type]}       [description]
    */
   this.leafletMap = function(value) {
-    if (value === undefined) return (_leafletMap);
-    _leafletMap = value;
+    if (value === undefined) return (mLeafletMap);
+    mLeafletMap = value;
   }
 
 

@@ -2,23 +2,25 @@
  * Created: Kenneth Kroeger
  * Date: 3/21/2016
  *
- * Description: The purpose of this class is be the basic WPHome class that
- * is inherets the WPBase Class. This waypoint represents the target location
- * for the UAV to return to if problems occur.
+ * Description: This is a custom WP that has been created by Kenneth Kroeger
+ * and is no way to get transmitted to the aircraft. The purpose of this
+ * waypoint is to force an operator to takeoff froma specific region if a mission
+ * had been created for them. This ensure safe and more successful operations.
  */
 
-var WPHome = WPBase.extend(function() {
+var WPTakeoffRegion = WPBase.extend(function() {
 
-  this.descriptor = 'WPHome';
+  this.descriptor = 'WPTakeoffRegion';
+
 
   /**
    * [_WPParams description]
    * @type {Object}
    */
-  this.WPParams_SelectionLocation = function(value) {
-    if (value === undefined) return (this.WPParams_param1());
-    this.WPParams_param1(value);
-  };
+   this.WPParams_Radius = function(value) {
+     if (value === undefined) return (this.WPParams_param5());
+     this.WPParams_param5(value);
+   };
   this.WPParams_Latitude = function(value) {
     if (value === undefined) return (this.WPParams_param5());
     this.WPParams_param5(value);
@@ -27,20 +29,7 @@ var WPHome = WPBase.extend(function() {
     if (value === undefined) return (this.WPParams_param6());
     this.WPParams_param6(value);
   };
-  this.WPParams_Altitude = function(value) {
-    if (value === undefined) return (this.WPParams_param7());
-    this.WPParams_param7(value);
-  };
 
-  /**
-   * [options description] The purpose of this object is to set specific options
-   * specific to the WPLand Class. These options would initially be inherited
-   * by an class extending this class.
-   * @type {Object}
-   */
-  this.options = {
-    displayOriginMarker: true
-  };
 
   /**
    * [iconProp description] The purpose of this object is to store the properties
@@ -50,7 +39,7 @@ var WPHome = WPBase.extend(function() {
   this.iconProp = {
     iconUrl: 'images/ic_wp_Land.png', //default icon
     iconSize: [25, 41], // size of the icon
-    iconAnchor: [12, 41], // point of the icon which will correspond to marker's location
+    iconAnchor: [12, 41]'', // point of the icon which will correspond to marker's location
     popupAnchor: [-19, 38] // point from which the popup should open relative to the iconAnchor
   };
 
@@ -60,16 +49,19 @@ var WPHome = WPBase.extend(function() {
    *
    * @type {Object}
    */
-  this.markerProp.title = 'HOME';
+  this.markerProp.title = 'TAKEOFF_REGION';
 
   /**
-   * [function: this.initializer ] This function intializes the necessary variables
+   * [function: this.initializer] This function intializes the necessary variables
    * required for this class.
    * @return {[type]} [description]
    */
   this.initializer = function() {
     this.markerLocationIcon(new L.icon(this.iconProp));
     this.markerProp.icon = this.markerLocationIcon();
+
+    this.options.transmitToAircraft = false;
+
   };
 
   onMoveCallback = function(locationValue){

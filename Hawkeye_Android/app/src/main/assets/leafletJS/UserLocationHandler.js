@@ -9,7 +9,7 @@
 
 var userLocationHandler = Class.extend(function() {
 
-  var _leafletMap; //The leaflet map object passed into this class
+  var mLeafletMap; //The leaflet map object passed into this class
   var userLocationIcon;
   var userMarker;
   var userCircle;
@@ -99,16 +99,16 @@ var userLocationHandler = Class.extend(function() {
   this.constructor = function(leafletMap, locationLatLng, displayUser, displayConfidence) {
     userMarker = new L.marker(locationLatLng, this.markerProp);
     userCircle = new L.circle(locationLatLng, 100, this.circlePathProp);
-    _leafletMap = leafletMap;
+    mLeafletMap = leafletMap;
 
     options.displayerUserLocation = displayUser;
     options.displayConfidenceCircle = displayConfidence;
 
     if (displayUser == true) {
-      userMarker.addTo(_leafletMap);
+      userMarker.addTo(mLeafletMap);
     }
     if (displayConfidence == true) {
-      userCircle.addTo(_leafletMap);
+      userCircle.addTo(mLeafletMap);
     }
   };
 
@@ -119,14 +119,14 @@ var userLocationHandler = Class.extend(function() {
    * @return {[type]}            [description]
    */
   this.updateMap = function(leafletMap) {
-    _leafletMap = leafletMap;
+    mLeafletMap = leafletMap;
 
     if (this.options.displayerUserLocation == true) {
-      userMarker.addTo(_leafletMap);
+      userMarker.addTo(mLeafletMap);
     }
 
     if (this.options.displayConfidenceCircle == true) {
-      userCircle.addTo(_leafletMap);
+      userCircle.addTo(mLeafletMap);
     }
   };
 
@@ -145,19 +145,19 @@ var userLocationHandler = Class.extend(function() {
     if (options.displayerUserLocation != displayUser) {
       options.displayerUserLocation = displayUser;
       if (displayUser == true) {
-        userMarker.addTo(_leafletMap);
+        userMarker.addTo(mLeafletMap);
       } else {
-        _leafletMap.removeLayer(userMarker);
-        _leafletMap.removeLayer(userCircle);
+        mLeafletMap.removeLayer(userMarker);
+        mLeafletMap.removeLayer(userCircle);
       }
     }
 
     if (options.displayConfidenceCircle != displayConfidence) {
       options.displayerUserLocation = displayConfidence;
       if (displayConfidence == true) {
-        userCircle.addTo(_leafletMap);
+        userCircle.addTo(mLeafletMap);
       } else {
-        _leafletMap.removeLayer(userCircle);
+        mLeafletMap.removeLayer(userCircle);
       }
     }
   };
@@ -190,6 +190,14 @@ var userLocationHandler = Class.extend(function() {
     userCircle.redraw();
   };
 
+  /**
+   * [function description]
+   * @return {[type]} [description]
+   */
+  this.panToLocation = function(){
+    var tmpLatLng = this.userLocationObject.getUserLocation();
+    map.panTo(tmpLatLng);
+  };
 
   /**
    * [function description] The purpose of this function is to update the accuracy

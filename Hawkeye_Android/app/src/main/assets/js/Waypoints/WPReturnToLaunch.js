@@ -2,37 +2,34 @@
  * Created: Kenneth Kroeger
  * Date: 3/21/2016
  *
- * Description: The purpose of this class is be the basic WPLand class that
+ * Description: The purpose of this class is be the basic WPRTL class that
  * is inherets the WPBase Class. This waypoint represents the target location
  * for the UAV to land.
  */
 
 /*
- *NOTES: The motors will not stop on their own...you must exit AUTO to cut
- *engins or send a disable command. //TODO: Could this be automated if desired?
+ *NOTES: Return to the home location (or the nearest Rally Point if closer) and
+ *then land. The home location is where the vehicle was last armed (or when it
+ *first gets GPS lock after arming if the vehicle configuration allows this).
+ *
+ *This is the mission equivalent of the RTL flight mode.  The vehicle will
+ *first climb to the RTL_ALT parameter’s specified altitude (default is 15m)
+ *before returning home.
+ *
+ *This command takes no parameters and generally should be the last command in
+ *the mission.
  */
 
-var WPLand = WPBase.extend(function() {
+var WPTRL = WPBase.extend(function() {
 
-  this.descriptor = 'WPLand';
+  this.descriptor = 'WPRTL';
 
   /**
-   * [_WPParams description]
+   * [_WPParams description] There are no editable parameters for this base object.
+   * We will debate to specify a differentiation between RTL between home, launch,
+   * and or rally points.
    * @type {Object}
    */
-  this.WPParams_Latitude = function(value) {
-    if (value === undefined) return (this.WPParams_param5());
-    this.WPParams_param5(value);
-  };
-  this.WPParams_Longitude = function(value) {
-    if (value === undefined) return (this.WPParams_param6());
-    this.WPParams_param6(value);
-  };
-  this.WPParams_Altitude = function(value) {
-    if (value === undefined) return (this.WPParams_param7());
-    this.WPParams_param7(value);
-  };
-
   /**
    * [options description] The purpose of this object is to set specific options
    * specific to the WPLand Class. These options would initially be inherited
@@ -72,11 +69,5 @@ var WPLand = WPBase.extend(function() {
     this.markerLocationIcon(new L.icon(this.iconProp));
     this.markerProp.icon = this.markerLocationIcon();
   };
-
-  onMoveCallback = function(locationValue){
-    this.WPParams_Latitude(locationValue.lat);
-    this.WPParams_Longitude(locationValue.lon);
-  }.bind(this);
-
 
 });

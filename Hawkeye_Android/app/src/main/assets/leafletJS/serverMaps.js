@@ -40,13 +40,13 @@ function initializeLayerMaps(){
 
   mapLayerObject = L.tileLayer('originalTiles/JUL29/B721/{z}/{x}/{y}.png', {maxZoom: 20,minZoom: 16,tms: true,opacity: 1});
   objectInitialize = {filePath: 'originalTiles/JUL29/B721', currentOpacity: 0, currentlyDrawn: false, layerObject: mapLayerObject};
-  layersMap['B72 Part1/July 29 2015/1200'] = objectInitialize;
-  layersKey.push('B72 Part1/July 29 2015/1200');
+  layersMap['B78 Part1/July 29 2015/1200'] = objectInitialize;
+  layersKey.push('B78 Part1/July 29 2015/1200');
 
   mapLayerObject = L.tileLayer('originalTiles/JUL29/B722/{z}/{x}/{y}.png', {maxZoom: 20,minZoom: 16,tms: true,opacity: 1});
   objectInitialize = {filePath: 'originalTiles/JUL29/B722', currentOpacity: 0, currentlyDrawn: false, layerObject: mapLayerObject};
-  layersMap['B72 Part2/July 29 2015/1200'] = objectInitialize;
-  layersKey.push('B72 Part2/July 29 2015/1200');
+  layersMap['B78 Part2/July 29 2015/1200'] = objectInitialize;
+  layersKey.push('B78 Part2/July 29 2015/1200');
 
 
   /*
@@ -74,16 +74,16 @@ function initializeLayerMaps(){
 
   mapLayerObject = L.tileLayer('originalTiles/AUG26/B72South/{z}/{x}/{y}.png', {maxZoom: 20,minZoom: 16,tms: true,opacity: 1});
   objectInitialize = {filePath: 'originalTiles/AUG26/B72South', currentOpacity: 0, currentlyDrawn: false, layerObject: mapLayerObject};
-  layersMap['B72 South/Aug 26 2015/1200'] = objectInitialize;
-  layersKey.push('B72 South/Aug 26 2015/1200');
+  layersMap['B78 South/Aug 26 2015/1200'] = objectInitialize;
+  layersKey.push('B78 South/Aug 26 2015/1200');
 
   /*
   * Addition of the Sep 9 Dates
   */
   mapLayerObject = L.tileLayer('originalTiles/SEP9/{z}/{x}/{y}.png', {maxZoom: 20,minZoom: 16,tms: true,opacity: 1});
   objectInitialize = {filePath: 'originalTiles/SEP9', currentOpacity: 0, currentlyDrawn: false, layerObject: mapLayerObject};
-  layersMap['B72/Sep 9 2015/1200'] = objectInitialize;
-  layersKey.push('B72/Sep 9 2015/1200');
+  layersMap['B78/Sep 9 2015/1200'] = objectInitialize;
+  layersKey.push('B78/Sep 9 2015/1200');
 
 }
 
@@ -108,8 +108,13 @@ function updateLayersOnOff(layersArray, booleanOnOff) {
 
         if (booleanOnOff === true) {
             //add the appropriate layer to the map
-            map.addLayer(layersMap[layerName].layerObject);
-            layersMap[layerName].layerObject.setOpacity(layerOpacity);
+            try{
+              map.addLayer(layersMap[layerName].layerObject);
+              layersMap[layerName].layerObject.setOpacity(layerOpacity);
+            }catch(e){
+              console.log("The error is"+e);
+            }
+
         } else {
             //remove the appropriate layer to the map
             map.removeLayer(layersMap[layerName].layerObject);

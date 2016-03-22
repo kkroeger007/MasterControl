@@ -1,6 +1,6 @@
 /*
  * Created: Kenneth Kroeger
- * Updated Date: 3/9/2016
+ * Date: 3/21/2016
  *
  * Description: The purpose of this class is be the basic WPGeneral class that
  * is inherets the WPBase Class. This waypoint represents the target location
@@ -14,14 +14,33 @@ var WPGeneral = WPBase.extend(function() {
    * [_WPParams description]
    * @type {Object}
    */
-  var _WPParams = {
-    param1: null,
-    param2: null,
-    param3: null,
-    param4: null,
-    param5: null,
-    param6: null,
-    param7: null
+  this.WPParams_delay = function(value) {
+    if (value === undefined) return (this.WPParams_param1());
+    this.WPParams.param1(value);
+  };
+  this.WPParams_acceptanceRadius = function(value) {
+    if (value === undefined) return (this.WPParams_param2());
+    this.WPParams_param2(value);
+  };
+  this.WPParams_orbitRadius = function(value) {
+    if (value === undefined) return (this.WPParams_param3());
+    this.WPParams_param3(value);
+  };
+  this.WPParams_yawAngle = function(value) {
+    if (value === undefined) return (this.WPParams_param4());
+    this.WPParams_param4(value);
+  };
+  this.WPParams_Latitude = function(value) {
+    if (value === undefined) return (this.WPParams_param5());
+    this.WPParams_param5(value);
+  };
+  this.WPParams_Longitude = function(value) {
+    if (value === undefined) return (this.WPParams_param6());
+    this.WPParams_param6(value);
+  };
+  this.WPParams_Altitude = function(value) {
+    if (value === undefined) return (this.WPParams_param7());
+    this.WPParams_param7(value);
   };
 
   /**
@@ -58,5 +77,18 @@ var WPGeneral = WPBase.extend(function() {
     this.markerLocationIcon(new L.icon(this.iconProp));
     this.markerProp.icon = this.markerLocationIcon();
   };
+
+  this.constructor = function(leafletMap, locationLatLng, display) {
+    this.super(leafletMap, locationLatLng, display);
+
+    this.WPParams_Latitude(locationLatLng.lat);
+    this.WPParams_Longitude(locationLatLng.lng);
+  };
+
+
+  onMoveCallback = function(locationValue){
+    this.WPParams_Latitude(locationValue.lat);
+    this.WPParams_Longitude(locationValue.lon);
+  }.bind(this);
 
 });

@@ -1,6 +1,6 @@
 /*
  * Created: Kenneth Kroeger
- * Updated Date: 3/9/2016
+ * Date: 3/21/2016
  *
  * Description: The purpose of this class is to handle the drawing and rendering
  * of the Polylines between WP. It will work in conjunction with the WPQueue class.

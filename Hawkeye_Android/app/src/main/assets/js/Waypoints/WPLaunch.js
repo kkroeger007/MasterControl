@@ -1,12 +1,20 @@
 /*
  * Created: Kenneth Kroeger
- * Updated Date: 3/9/2016
+ * Date: 3/21/2016
  *
  * Description: The purpose of this class is be the basic WPLand class that
  * is inherets the WPBase Class. This waypoint represents the target location
  * for the UAV to land.
  */
 
+
+/*
+ *The vehicle will climb straight up from it’s current location to the
+ *specified altitude. If the mission is begun while the copter is already
+ *flying, the vehicle will climb straight up to the specified altitude,
+ *if the vehicle is already above the altitude the command will be ignored
+ *and the mission will move onto the next command immediately.
+ */
 var WPLaunch = WPBase.extend(function() {
 
   this.descriptor = 'WPLaunch';
@@ -15,16 +23,27 @@ var WPLaunch = WPBase.extend(function() {
    * [_WPParams description]
    * @type {Object}
    */
-  var _WPParams = {
-    param1: null,
-    param2: null,
-    param3: null,
-    param4: null,
-    param5: null,
-    param6: null,
-    param7: null
+  this.WPParams_pitch = function(value) {
+    if (value === undefined) return (this.WPParams_param1());
+    this.WPParams_param1(value);
   };
-  
+  this.WPParams_yawAngle = function(value) {
+    if (value === undefined) return (this.WPParams_param4());
+    this.WPParams_param4(value);
+  };
+  this.WPParams_Latitude = function(value) {
+    if (value === undefined) return (this.WPParams_param5());
+    this.WPParams_param5(value);
+  };
+  this.WPParams_Longitude = function(value) {
+    if (value === undefined) return (this.WPParams_param6());
+    this.WPParams_param6(value);
+  };
+  this.WPParams_Altitude = function(value) {
+    if (value === undefined) return (this.WPParams_param7());
+    this.WPParams_param7(value);
+  };
+
 
   /**
    * [options description] The purpose of this object is to set specific options
@@ -65,5 +84,11 @@ var WPLaunch = WPBase.extend(function() {
     this.markerLocationIcon(new L.icon(this.iconProp));
     this.markerProp.icon = this.markerLocationIcon();
   };
+
+  onMoveCallback = function(locationValue){
+    this.WPParams_Latitude(locationValue.lat);
+    this.WPParams_Longitude(locationValue.lon);
+  }.bind(this);
+
 
 });
