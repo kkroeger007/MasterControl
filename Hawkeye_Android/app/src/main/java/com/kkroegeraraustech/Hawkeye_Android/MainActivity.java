@@ -3,9 +3,11 @@ package com.kkroegeraraustech.Hawkeye_Android;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.content.BroadcastReceiver;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.ServiceConnection;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
@@ -14,10 +16,13 @@ import android.location.Location;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.IBinder;
 import android.provider.MediaStore;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AppCompatActivity;
+import android.text.TextUtils;
 import android.util.Log;
 
 import android.view.View;
@@ -36,10 +41,59 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 import com.kkroegeraraustech.Hawkeye_Android.Services.Service_GPSInternal;
+import com.kkroegeraraustech.Hawkeye_Android.Utils.Preferences.PreferencesApplicaiton;
+import com.kkroegeraraustech.Hawkeye_Android.Utils.file.IO.ExceptionWriter;
+import com.o3dr.android.client.ControlTower;
+import com.o3dr.android.client.Drone;
+import com.o3dr.android.client.interfaces.DroneListener;
+import com.o3dr.android.client.interfaces.TowerListener;
+import com.o3dr.services.android.lib.drone.attribute.AttributeEvent;
+import com.o3dr.services.android.lib.drone.attribute.AttributeType;
+import com.o3dr.services.android.lib.drone.connection.ConnectionParameter;
+import com.o3dr.services.android.lib.drone.connection.ConnectionResult;
+import com.o3dr.services.android.lib.drone.connection.ConnectionType;
+import com.o3dr.services.android.lib.drone.property.Attitude;
+import com.o3dr.services.android.lib.util.Utils;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements DroneListener, TowerListener {
+
+    private final Handler handler = new Handler();
+    private final List<ApiListener> apiListeners = new ArrayList<ApiListener>();
+    private PreferencesApplicaiton preferencesApplication;
+
+    private LocalBroadcastManager lbm;
+
+    private Thread.UncaughtExceptionHandler exceptionHandler;
+
+    private ControlTower controlTower;
+    private Drone drone;
+
+    private static final long DELAY_TO_DISCONNECTION = 1000l; // ms
+
+    private static final String TAG = PrimaryApp_3DR.class.getSimpleName();
+
+    public static final String ACTION_TOGGLE_DRONE_CONNECTION = Utils.PACKAGE_NAME
+            + ".ACTION_TOGGLE_DRONE_CONNECTION";
+    public static final String EXTRA_ESTABLISH_CONNECTION = "extra_establish_connection";
+
+    public static final String ACTION_DRONE_CONNECTION_FAILED = Utils.PACKAGE_NAME
+            + ".ACTION_DRONE_CONNECTION_FAILED";
+
+    public static final String EXTRA_CONNECTION_FAILED_ERROR_CODE = "extra_connection_failed_error_code";
+
+    public static final String EXTRA_CONNECTION_FAILED_ERROR_MESSAGE = "extra_connection_failed_error_message";
+
+    public static final String ACTION_DRONE_EVENT = Utils.PACKAGE_NAME + ".ACTION_DRONE_EVENT";
+    public static final String EXTRA_DRONE_EVENT = "extra_drone_event";
+
+    private static final AtomicBoolean isCellularNetworkOn = new AtomicBoolean(false);
+
+
 
     WebAppInterface mWebAppInterface;
     /**
@@ -117,7 +171,15 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onStart(){
         super.onStart();
+        controlTower.connect(this);
         doBindServices();
+    }
+
+    @Override
+    protected void onStop(){
+        super.onStop();
+        controlTower.unregisterDrone(drone);
+        controlTower.disconnect();
     }
 
 
@@ -204,7 +266,6 @@ public class MainActivity extends AppCompatActivity {
     }
     private File currentDir;
     private TextView tv;
-    private static final String TAG = "MEDIA";
 
     private void writeExternalStorage(){
         StorageHelper temp = new StorageHelper();
@@ -291,14 +352,22 @@ public class MainActivity extends AppCompatActivity {
     //Button b1;
     EditText ed1;
 
+    TextView attitudeText;
+
 
     @SuppressLint("SetJavaScriptEnabled")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        mWebAppInterface = new WebAppInterface(this);
-        mCurrentLOC = new Location("");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        final Context context = getApplicationContext();
+
+        attitudeText = (TextView) findViewById(R.id.attitude_text);
+        preferencesApplication = new PreferencesApplicaiton(context);
+
+        mWebAppInterface = new WebAppInterface(this);
+        mCurrentLOC = new Location("");
+
         verifyStoragePermissions(this);
         //testDocumentTree();
         mWebView = (WebView) findViewById(R.id.webView);
@@ -371,8 +440,32 @@ public class MainActivity extends AppCompatActivity {
 //        startActivity(shareIntent);
         refreshWebView();
 
+
         mWebView.addJavascriptInterface(new WebAppInterface(this), "Android");
 
+        lbm = LocalBroadcastManager.getInstance(context);
+
+        controlTower = new ControlTower(context);
+        drone = new Drone(context);
+
+        final Thread.UncaughtExceptionHandler dpExceptionHandler = new Thread.UncaughtExceptionHandler() {
+            @Override
+            public void uncaughtException(Thread thread, Throwable ex) {
+                new ExceptionWriter(ex).saveStackTraceToSD(context);
+                exceptionHandler.uncaughtException(thread, ex);
+            }
+        };
+
+        exceptionHandler = Thread.getDefaultUncaughtExceptionHandler();
+        Thread.setDefaultUncaughtExceptionHandler(dpExceptionHandler);
+
+
+        final IntentFilter intentFilter = new IntentFilter();
+        intentFilter.addAction(ACTION_TOGGLE_DRONE_CONNECTION);
+
+        registerReceiver(broadcastReceiver, intentFilter);
+
+        connectToDrone();
     }
     private String getRealPathFromURI(Uri contentURI) {
         String result;
@@ -393,6 +486,7 @@ public class MainActivity extends AppCompatActivity {
         //mWebView.loadData(tmpString, "text/html", "UTF-8");
         mWebView.loadUrl(URL);
     }
+
 
     public class WebAppInterface{
         Context mContext;
@@ -438,6 +532,198 @@ public class MainActivity extends AppCompatActivity {
             Log.v(null, dialogMsg);
         }
     }
+
+
+    //This is the Drone stuff required...initially just gonna drop it here
+
+
+
+    private final Runnable disconnectionTask = new Runnable() {
+        @Override
+        public void run() {
+            controlTower.unregisterDrone(drone);
+            controlTower.disconnect();
+
+            handler.removeCallbacks(this);
+        }
+    };
+
+
+    private final BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            final String action = intent.getAction();
+
+            switch (action) {
+                case ACTION_TOGGLE_DRONE_CONNECTION:
+                    boolean connect = intent.getBooleanExtra(EXTRA_ESTABLISH_CONNECTION,
+                            !drone.isConnected());
+
+                    if (connect)
+                        connectToDrone();
+                    else
+                        disconnectFromDrone();
+                    break;
+            }
+        }
+    };
+
+    public void connectToDrone() {
+        Bundle extraParams = new Bundle();
+        extraParams.putInt(ConnectionType.EXTRA_USB_BAUD_RATE, 57600); // Set default baud rate to 57600
+        ConnectionParameter connectionParams = new ConnectionParameter(ConnectionType.TYPE_USB, extraParams, null);
+        drone.connect(connectionParams);
+
+    }
+
+    private ConnectionParameter retrieveConnectionParameters() {
+        final int connectionType = preferencesApplication.preferencesCommunication.getConnectionParameterType();
+        Bundle extraParams = new Bundle();
+        ConnectionParameter connParams;
+
+        extraParams.putInt(ConnectionType.EXTRA_USB_BAUD_RATE, preferencesApplication.preferencesCommunication.getUsbBaudRate());
+        connParams = new ConnectionParameter(connectionType, extraParams, null);
+
+        return connParams;
+    }
+
+    public static void connectToDrone(Context context) {
+        context.sendBroadcast(new Intent(PrimaryApp_3DR.ACTION_TOGGLE_DRONE_CONNECTION)
+                .putExtra(PrimaryApp_3DR.EXTRA_ESTABLISH_CONNECTION, true));
+    }
+
+    public static void disconnectFromDrone(Context context) {
+        context.sendBroadcast(new Intent(PrimaryApp_3DR.ACTION_TOGGLE_DRONE_CONNECTION)
+                .putExtra(PrimaryApp_3DR.EXTRA_ESTABLISH_CONNECTION, false));
+    }
+
+    public void disconnectFromDrone() {
+        if (drone.isConnected()) {
+            drone.disconnect();
+        }
+    }
+
+    public Drone getDrone() {
+        return this.drone;
+    }
+
+
+
+    @Override
+    public void onDroneConnectionFailed(ConnectionResult result) {
+        String errorMsg = result.getErrorMessage();
+        Toast.makeText(getApplicationContext(), "Connection failed: " + errorMsg,
+                Toast.LENGTH_LONG).show();
+
+        lbm.sendBroadcast(new Intent(ACTION_DRONE_CONNECTION_FAILED)
+                .putExtra(EXTRA_CONNECTION_FAILED_ERROR_CODE, result.getErrorCode())
+                .putExtra(EXTRA_CONNECTION_FAILED_ERROR_MESSAGE, result.getErrorMessage()));
+    }
+
+    protected void alertUser(String message) {
+        Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show();
+        Log.d(TAG, message);
+    }
+
+
+    @Override
+    public void onDroneEvent(String event, Bundle extras) {
+        switch(event) {
+            case AttributeEvent.STATE_CONNECTED:
+                alertUser("Drone Connected");
+                break;
+            case AttributeEvent.ATTITUDE_UPDATED:
+                Attitude tmpAttitude = this.drone.getAttribute(AttributeType.ATTITUDE);
+                attitudeText.setText(Double.toString(tmpAttitude.getRoll()));
+                Log.d("KEN", Double.toString(tmpAttitude.getRoll()));
+                break;
+        }
+    }
+
+    @Override
+    public void onDroneServiceInterrupted(String errorMsg) {
+        controlTower.unregisterDrone(drone);
+
+        if (!TextUtils.isEmpty(errorMsg))
+            Log.e(TAG, errorMsg);
+    }
+
+    @Override
+    public void onTowerConnected() {
+        drone.unregisterDroneListener(this);
+
+        controlTower.registerDrone(drone, handler);
+        drone.registerDroneListener(this);
+
+        //notifyApiConnected();
+    }
+
+    @Override
+    public void onTowerDisconnected() {
+        notifyApiDisconnected();
+    }
+
+
+    public interface ApiListener {
+        void onApiConnected();
+
+        void onApiDisconnected();
+    }
+
+
+    public void addApiListener(ApiListener listener) {
+        if (listener == null)
+            return;
+
+        handler.removeCallbacks(disconnectionTask);
+        boolean isTowerConnected = controlTower.isTowerConnected();
+        if (isTowerConnected)
+            listener.onApiConnected();
+
+        if (!isTowerConnected) {
+            try {
+                controlTower.connect(this);
+            } catch (IllegalStateException e) {
+                //Ignore
+            }
+        }
+
+        apiListeners.add(listener);
+    }
+
+    public void removeApiListener(ApiListener listener) {
+        if (listener != null) {
+            apiListeners.remove(listener);
+            if (controlTower.isTowerConnected())
+                listener.onApiDisconnected();
+        }
+
+        shouldWeTerminate();
+    }
+
+    private void shouldWeTerminate() {
+        if (apiListeners.isEmpty() && !drone.isConnected()) {
+            // Wait 30s, then disconnect the service binding.
+            handler.postDelayed(disconnectionTask, DELAY_TO_DISCONNECTION);
+        }
+    }
+
+    private void notifyApiConnected() {
+        if (apiListeners.isEmpty())
+            return;
+
+        for (ApiListener listener : apiListeners)
+            listener.onApiConnected();
+    }
+
+    private void notifyApiDisconnected() {
+        if (apiListeners.isEmpty())
+            return;
+
+        for (ApiListener listener : apiListeners)
+            listener.onApiDisconnected();
+    }
+
 }
 
 
