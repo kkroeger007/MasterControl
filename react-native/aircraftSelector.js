@@ -21,10 +21,10 @@ var AircraftSelector = React.createClass({
     this.removeListeners();
   },
   addListeners(){
-    this.addListenerOn(this.props.events, 'dropdown', this.triggerDropdown);
+    this.addListenerOn(this.props.eventEmitter, 'dropdown', this.triggerDropdown);
   },
   removeListeners(){
-    this.removeListenerOn(this.props.events, 'dropdown');
+    this.removeListenerOn(this.props.eventEmitter, 'dropdown');
   },
   triggerDropdown(){
     this.setState({

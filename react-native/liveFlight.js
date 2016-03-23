@@ -1,23 +1,13 @@
 import React from 'react-native';
 var {StyleSheet, View, TouchableOpacity, Text, Navigator, Animated, LayoutAnimation} = React;
-import MapView from 'react-native-maps';
 import TimerMixin from 'react-timer-mixin';
 var Icon = require('react-native-vector-icons/MaterialIcons');
 var InstrumentPanel = require('./instrumentPanel');
-
-LATITUDE_DELTA = 0.015;
-LONGITUDE_DELTA = 0.010;
 
 var LiveFlight = React.createClass({
   mixins: [TimerMixin],
   getInitialState(){
     return{
-      region: new Animated.Region({
-        latitude: 37.888704,
-        longitude: -76.814500,
-        latitudeDelta: LATITUDE_DELTA,
-        longitudeDelta: LONGITUDE_DELTA,
-      }),
       dashboard: false,
       dashboardStyles:{
         right: -500,
@@ -25,7 +15,7 @@ var LiveFlight = React.createClass({
     };
   },
   componentDidMount(){
-    this.refs.map.rotateEnabled = true;
+
   },
   showDashboard(){
     LayoutAnimation.configureNext(LayoutAnimation.Presets.Linear);
@@ -45,73 +35,29 @@ var LiveFlight = React.createClass({
     this.setState({
       dashboard: !this.state.dashboard,
     });
-
-  },
-  resetRotation(){
-    console.log(this.refs.map.rotateEnabled);
-    this.refs.map.rotateEnabled = !this.refs.map.rotateEnabled;
-    this.setTimeout(
-      () => { this.refs.map.rotateEnabled = !this.refs.map.rotateEnabled; },
-      150
-    );
-  },
-  onRegionChange(region) {
-    this.setState({
-      region: new Animated.Region({
-        latitude: region.latitude,
-        longitude: region.longitude,
-        latitudeDelta: region.latitudeDelta,
-        longitudeDelta: region.longitudeDelta,
-      })
-    });
-  },
-  centerToUserLocation(){
-    navigator.geolocation.getCurrentPosition(
-      (position) => {
-        this.setState({
-          region: new Animated.Region({
-           latitude: position.coords.latitude,
-           longitude: position.coords.longitude,
-           latitudeDelta: LATITUDE_DELTA,
-           longitudeDelta: LONGITUDE_DELTA,
-         }),
-       });
-      },
-      (error) => alert(error.message),
-      {enableHighAccuracy: true, timeout: 20000, maximumAge: 1000}
-    );
   },
   render(){
     return(
       <View style={styles.container}>
-        <MapView.Animated
-          style={styles.map}
-          region={this.state.region}
-          onRegionChange={this.onRegionChange}
-          mapType="satellite"
-          ref="map"
-          rotateEnabled={true}
-          showsUserLocation={true}
-        />
-      <TouchableOpacity activeOpacity={0.7} style={styles.center} onPress={this.centerToUserLocation}>
-        <Icon
-          name="gps-fixed"
-          size={25}
-          color='#666666'
-          style={this.state.center && styles.active}
-           />
-      </TouchableOpacity>
-      <TouchableOpacity activeOpacity={0.7} style={styles.instrumentation} onPress={this.showDashboard}>
-        <Icon
-          name="network-check"
-          size={25}
-          color='#666666'
-          style={this.state.dashboard && styles.active}
-           />
-      </TouchableOpacity>
-      <View style={[styles.slide, this.state.dashboardStyles]}>
-        <InstrumentPanel />
-      </View>
+        <TouchableOpacity activeOpacity={0.7} style={styles.center} onPress={this.centerToUserLocation}>
+          <Icon
+            name="gps-fixed"
+            size={25}
+            color='#666666'
+            style={this.state.center && styles.active}
+             />
+        </TouchableOpacity>
+        <TouchableOpacity activeOpacity={0.7} style={styles.instrumentation} onPress={this.showDashboard}>
+          <Icon
+            name="network-check"
+            size={25}
+            color='#666666'
+            style={this.state.dashboard && styles.active}
+             />
+        </TouchableOpacity>
+        <View style={[styles.slide, this.state.dashboardStyles]}>
+          <InstrumentPanel />
+        </View>
     </View>
     );
   }
@@ -141,6 +87,7 @@ var styles = StyleSheet.create({
     backgroundColor: '#f9f9f9',
     borderRadius:60,
     padding:5,
+    elevation:5,
   },
   instrumentation:{
     position: 'absolute',
@@ -149,6 +96,7 @@ var styles = StyleSheet.create({
     backgroundColor: '#f9f9f9',
     borderRadius:60,
     padding:5,
+    elevation:5,
   },
   active:{
     color: '#16a092'

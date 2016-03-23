@@ -1,0 +1,230 @@
+/* ************ */
+/* General CSS */
+
+body {
+    overflow: hidden;
+    height: 100vh;
+}
+
+#map {
+    height: 100%;
+}
+
+.center-location-button {
+    position: absolute;
+    bottom: 3%;
+    right: 1%;
+}
+
+.manage-layers-button {
+    position: absolute;
+    bottom: 12%;
+    right: 1%;
+    /*height: 10vh;
+    width: 10vh;*/
+}
+
+.manage-waypoints-button {
+    position: absolute;
+    bottom: 12%;
+    left: 1%;
+    /*height: 10vh;
+    width: 10vh;*/
+}
+
+/* Buttons */
+/*.manage-layers-button button {
+    height: 100%;
+    width: 100%;
+}*/
+
+/* Icons */
+/*.manage-layers-button i {
+    height: 100px;
+    width: 100px;
+}*/
+
+.maplayers-outer-container {
+    position: absolute;
+    top: 0;
+    right: 0;
+    height: 100vh;
+    width: 25%;
+    background-color: rgba(0,0,0,0.15);
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+.maplayers-inner-container {
+    position: relative;
+    /*top: 7vh;*/
+    /*left: 2em;*/
+}
+
+
+.preferences-outer-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100vh;
+    width: 25%;
+    background-color: rgba(0,0,0,0.15);
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+.preferences-inner-container {
+    position: relative;
+    top: 7vh;
+    /*left: 2em;*/
+}
+
+.preferences-inner-container .mdl-card {
+    width: 100%;
+    margin-bottom: 10px;
+}
+
+.maplayers-inner-container .mdl-card {
+    width: 100%;
+    min-height: 0px !important;
+    margin-bottom: 5%;
+}
+
+.maplayers-inner-container .mdl-card .mdl-cell {
+    padding: 0;
+    margin-top: 0;
+    margin-bottom: -10px;
+    margin-top: -10px;
+}
+
+.maplayers-inner-container .more-layers {
+    margin-top: -20px;
+}
+
+
+.preferences-inner-container .back-button {
+    /*margin-bottom: 5%;
+    margin-left: 5%;*/
+}
+
+.check-button-div {
+    text-align: left;
+}
+
+
+/* Push Menu -- From Right */
+.pushmenu {
+    /*this is the nav*/
+    width: 25%;
+    height: 100%;
+    top: 0;
+    z-index: 1000;
+    position: fixed;
+}
+
+.pushmenu-left {
+    right: -25%;
+}
+
+.pushmenu-left.pushmenu-open {
+    right: 0;
+}
+
+.pushmenu-push {
+    overflow-x: hidden;
+    overflow-y: hidden;
+    position: relative;
+    right: 0;
+}
+
+.pushmenu-push-toright {
+    width: 75%;
+}
+/*Transition*/
+
+.pushmenu,
+.pushmenu-bottom,
+.pushmenu-push {
+    /*-webkit-transition: all 0.3s ease;
+    -moz-transition: all 0.3s ease;
+    transition: all 0.3s ease;*/
+}
+
+
+
+/* Push Menu -- From Bottom */
+.pushmenu-bottom {
+    /*this is the nav*/
+    height: 15%;
+    width: 100%;
+    bottom: -15%;
+    z-index: 1000;
+    position: fixed;
+}
+
+.pushmenu-up {
+    bottom: -15%;
+}
+
+.pushmenu-up.pushmenu-open {
+    bottom: 0;
+}
+
+.pushmenu-push-totop {
+    height: 85%;
+}
+
+
+.waypoints-outer-container {
+    position: absolute;
+    width: 100%;
+    height: 15%;
+    background-color: rgba(0,0,0,0.15);
+    overflow-y: hidden;
+    overflow-x: auto;
+}
+
+.waypoints-inner-container {
+    position: relative;
+    /*top: 7vh;*/
+    /*left: 2em;*/
+}
+
+
+
+
+h1.mdl-card__title-text {
+    font-size: 2em;
+}
+h2.mdl-card__title-text {
+    font-size: 1.5em;
+}
+h3.mdl-card__title-text {
+    font-size: 1.17em;
+}
+h4.mdl-card__title-text {
+    font-size: 1.33em;
+}
+h5.mdl-card__title-text {
+    /*font-size: .83em;*/
+    font-size: 1em;
+}
+h6.mdl-card__title-text {
+    font-size: .67em;
+}
+
+
+/* Marker Type Style */
+.marker-type-button {
+    border-left: 1px solid;
+    border-color: white;
+    color: white;
+    height: 100%;
+    position: relative;
+    /*padding-right: 0;*/
+}
+
+/* Kill the padding on the header row to align buttons on the right with the edge */
+.mdl-layout__header-row {
+    padding-right: 0;
+}

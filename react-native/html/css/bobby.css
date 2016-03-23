@@ -1,0 +1,362 @@
+*{
+  font-family: "Roboto";
+}
+body, html{
+  width:100%;
+  height:100%;
+}
+header{
+  background:#16A092;
+  height: 10vh;
+  display: flex;
+  align-items: center;
+  padding: 0px 25px;
+  justify-content: space-between;
+}
+.sidebar{
+  position: absolute;
+  width:30%;
+  background: #f9f9f9;
+  height:100vh;
+  left:0;
+  top:0;
+  z-index:999;
+  display: none;
+}
+#openSidebar{
+  color: #f9f9f9;
+  font-size:32px;
+}
+#closeSidebar{
+  color: red;
+}
+header .header-instrument{
+  align-items: center;
+  display: flex;
+  justify-content: center;
+  flex: 1;
+  padding: 10px;
+}
+header .header-instrument span, header .header-instrument i{
+  color: #0E5555;
+  font-size:22px;
+  padding:0px 10px;
+}
+header a, header .header-instrument span{
+  color: #f9f9f9;
+  font-size:18px;
+}
+/**
+ *  Live Flight Controls
+ */
+
+.live-flight-controls{
+  position: absolute;
+  bottom:0;
+  left:0;
+  right:0;
+  margin: 0 auto;
+  z-index: 999;
+  width:33%;
+  display: flex;
+  flex:1;
+  background: #f9f9f9;
+  color: #0E5555;
+  height:100px;
+  border-top-right-radius: 5px;
+  border-top-left-radius: 5px;
+  align-items: center;
+  justify-content: space-between;
+}
+.live-flight-controls .single-control{
+  text-align: center;
+  display: flex;
+  flex:1;
+  align-items: center;
+  flex-direction: column;
+  height:100%;
+  cursor: pointer;
+}
+.live-flight-controls .single-control:first-child{
+  border-top-left-radius: 5px;
+}
+.live-flight-controls .single-control:last-child{
+  border-top-right-radius: 5px;
+}
+.live-flight-controls .single-control.active{
+  background: #0E5555;
+  color: #f9f9f9!important;
+}
+.live-flight-controls .single-control i{
+  padding:15px 0px;
+  font-size:30px;
+}
+
+/**
+ * Instrumentation Panel
+ */
+.instrumentation-panel{
+  background: transparent;
+  position: absolute;
+  right: 50px;
+  top: 15vh;
+  z-index: 999;
+}
+.horizon-panel{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+.single-horizon-detail{
+  background: rgba(0, 0, 0,.5);
+  color: #f9f9f9;
+  text-align: center;
+  flex: 1;
+  padding: 5px;
+  margin: 5px 10px;
+  border-radius: 3px;
+  flex-direction: row;
+  display: flex;
+}
+.single-horizon-detail span{
+  font-size:16px;
+  align-self: center;
+}
+.single-horizon-detail-icon{
+  width:30px;
+  height:30px;
+  border-radius: 30px;
+  position: relative;
+  background:#16A092;
+  margin-right:10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.single-horizon-detail-split{
+  width:30px;
+  height:30px;
+  border-radius: 30px;
+  position: relative;
+  display: flex;
+  flex-direction:column;
+  justify-content: space-around;
+  align-items: center;
+  background: -webkit-linear-gradient(top, #638CA6 0%, #638CA6 50%, #16A092 50%, #16A092 100%);
+  margin-right:10px;
+}
+.single-horizon-detail-split i, .single-horizon-detail-icon i{
+  font-size:20px;
+}
+.aircraft-mini{
+  height:3px;
+  background:#f9f9f9;
+  border-radius:5px;
+  position:absolute;
+  left:0;
+  right:0;
+  top:0;
+  bottom:0;
+  width:75%;
+  margin: auto;
+}
+.center-aircraft-mini{
+  height:8px;
+  width:8px;
+  top:0;
+  right:0;
+  bottom:0;
+  left:0;
+  position: absolute;
+  background:#f9f9f9;
+  margin: auto;
+  border-radius: 20px;
+}
+.bullseye-mini{
+  background:#CF303D;
+  top:0;
+  right:0;
+  bottom:0;
+  left:0;
+  position: absolute;
+  height:3px;
+  width:3px;
+  margin: auto;
+  border-radius: 10px;
+}
+.inner-pointer-mini{
+  position: absolute;
+  top: -11px;
+  height: 3px;
+  background-color: #f9f9f9;
+  width: 2px;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  margin: auto;
+  border-radius: 5px;
+}
+.aircraft-indicator-mini{
+  width:100%;
+  height:100%;
+  position: absolute;
+  top: 0;
+}
+.timer{
+  background: rgba(0, 0, 0,.5);
+  color: #f9f9f9;
+  text-align: center;
+  flex: 1;
+  padding: 10px 5px;
+  margin: 5px 10px;
+  border-radius: 3px;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+}
+.timer span{
+  font-size:24px;
+  font-weight: bold;
+}
+.single-instrument-detail{
+  color: #f9f9f9;
+  text-align: center;
+  flex: 1;
+  padding: 10px 5px;
+  margin: 5px 10px;
+  border-radius: 3px;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  flex-direction: column;
+}
+.single-instrument-detail span.parameter{
+  font-size:24px;
+  font-weight: bold;
+  color: #f9f9f9;
+}
+.single-instrument-detail span.label{
+  font-size:12px;
+  font-weight: 500;
+  margin-top:5px;
+  color: #f9f9f9!important
+}
+.ltgreen-detail{
+  background: rgba(23, 166, 151, .6);
+  color: #006A5F;
+}
+.dkblue-detail{
+  background: rgba(94, 133, 158, .6);
+  color: #234F6C;
+}
+.ltblue-detail{
+  background: rgba(136, 202, 207, .6);
+  color: #398B93;
+}
+.dkgreen-detail{
+  background: rgba(17, 114, 108, .6);
+  color: #002929;
+}
+ /* Horizon Indicator */
+ .horizon{
+  position: relative;
+  width:100px;
+  height:100px;
+}
+.flight-indicator{
+  background:#f9f9f9;
+  height:100px;
+  width:100px;
+  border-radius: 100px;
+  position:relative;
+  display:flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  /*box-shadow: 4px 2px 10px #333333;*/
+  overflow: hidden;
+}
+.direction{
+  color: #f9f9f9;
+  position: absolute;
+  top:-10px;
+  left:0;
+  right:0;
+  margin: auto;
+  text-align: center;
+  font-size:14px;
+  transform: rotate(-90deg);
+}
+.flight-indicator-inner{
+  width:100%;
+  height:100%;
+  width:85px;
+  height:85px;
+  border-radius: 85px;
+  position: relative;
+  display: flex;
+  flex-direction:column;
+  justify-content: space-around;
+  align-items: center;
+  background: -webkit-linear-gradient(top, #638CA6 0%, #638CA6 50%, #16A092 50%, #16A092 100%);
+
+}
+.indicator-line{
+  width:40%;
+  height:1px;
+  background:#f9f9f9;
+}
+
+.aircraft{
+  height:5px;
+  background:#f9f9f9;
+  border-radius:5px;
+  position:absolute;
+  left:0;
+  right:0;
+  top:0;
+  bottom:0;
+  width:75%;
+  margin: auto;
+}
+.center-aircraft{
+  height:12px;
+  width:12px;
+  top:0;
+  right:0;
+  bottom:0;
+  left:0;
+  position: absolute;
+  background:#f9f9f9;
+  margin: auto;
+  border-radius: 20px;
+}
+.bullseye{
+  background:#CF303D;
+  top:0;
+  right:0;
+  bottom:0;
+  left:0;
+  position: absolute;
+  height:6px;
+  width:6px;
+  margin: auto;
+  border-radius: 10px;
+}
+.inner-pointer{
+  position: absolute;
+  top: -15px;
+  height: 5px;
+  background-color: #f9f9f9;
+  width: 4px;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  margin: auto;
+  border-radius: 5px;
+}
+.compass, .flight-indicator-container, .aircraft-indicator{
+  width:100%;
+  height:100%;
+  position: absolute;
+}
