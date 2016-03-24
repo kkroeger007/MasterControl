@@ -132,8 +132,8 @@ var FlightEditor = React.createClass({
 
 var styles = StyleSheet.create({
   container:{
+    position:'relative',
     flex:1,
-    position: 'relative',
   },
   center:{
     position:'absolute',

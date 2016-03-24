@@ -5,6 +5,7 @@ import React, {
   Text,
   View,
   Image,
+  WebView,
   TouchableOpacity,
   BackAndroid,
   Dimensions,
@@ -21,7 +22,11 @@ var FlightEditor = require('./flightEditor');
 var DrawerNavigation = require('./drawerNavigation');
 var AircraftSelector = require('./aircraftSelector');
 var InstrumentPanel = require('./instrumentPanel');
+var WebViewBridge = require('./components/WebViewBridge/webviewBridge');
+let {width, height} = Dimensions.get('window');
+var WaypointGraph = require('./waypointGraph');
 
+const injectScript = `$('#map').css('width', `+width+`)`;
 
 
 var Main = React.createClass({
@@ -42,8 +47,8 @@ var Main = React.createClass({
     this.addListenerOn(this.props.eventEmitter, 'changeFlightMode', this.changeFlightMode);
   },
   componentWillUnmount(){
-    this.removeListenerOn(this.props.eventEmitter, 'selectAircraft');
-    this.removeListener(this.props.eventEmitter, 'changeFlightMode');
+    // this.removeListenerOn(this.props.eventEmitter, 'selectAircraft');
+    // this.removeListener(this.props.eventEmitter, 'changeFlightMode');
   },
   openDrawer(){
     this._drawer.open();
@@ -68,9 +73,29 @@ var Main = React.createClass({
       break;
     }
   },
+  onBridgeMessage(message){
+    const { webviewbridge } = this.refs;
+    switch (message) {
+      case "hello from webview":
+        webviewbridge.sendToBridge("hello from react-native");
+        break;
+      case "got the message inside webview":
+        console.log("we have got a message from webview! yeah");
+        break;
+    }
+  },
   render() {
     return (
         <View style={styles.container}>
+          <View style={{flex:1, position:'absolute', top:0, bottom:0, right:0, left: 0,}}>
+            <WebViewBridge
+            style={{flex:1}}
+            ref="webviewbridge"
+            javaScriptEnabled={true}
+            onBridgeMessage={this.onBridgeMessage}
+            injectedJavaScript={injectScript}
+            source={require('./html/index.html')}/>
+          </View>
           {this.state.flightMode}
             <AircraftSelector style={styles.aircraftSelector} eventEmitter={this.props.eventEmitter} />
             {this.state.aircraftSelected &&

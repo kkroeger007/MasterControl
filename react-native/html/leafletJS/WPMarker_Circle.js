@@ -84,7 +84,7 @@ function drawCircleWPMarker(centerLocation , circleRadius){
 function drawCircleWPOrigin(centerLocation){
   var marker = new L.marker(centerLocation,
     {
-      WPCircleOriginICON,
+      // WPCircleOriginICON,
       draggable: true,
       clickable: true,
       title: 'HOME'
@@ -131,7 +131,7 @@ function drawCircleWPOrigin(centerLocation){
     // WPMaker_Circle_Arrows.push(drawArrowLine(centerLocation,arrowEndPoint_Right));
     var marker = new L.marker(centerLocation,
     {
-        WPCircleArrowICON,
+        // WPCircleArrowICON,
         draggable:false,
         clickable:false,
         title: 'arrow1'
@@ -152,7 +152,7 @@ function drawCircleWPOrigin(centerLocation){
       // WPMaker_Circle_Arrows.push(drawArrowLine(centerLocation,arrowEndPoint_Right));
       var marker = new L.marker(centerLocation,
         {
-          WPCircleArrowICON,
+          // WPCircleArrowICON,
           draggable: false,
           clickable: false,
           title: 'arrow2'

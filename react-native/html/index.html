@@ -28,16 +28,15 @@
 
     <!-- **** JavaScript **** -->
     <!-- jQuery and jQuery-UI JS -->
-    <script src="js/jquery/dist/jquery.min.js"></script>
+    <script type="text/javascript" src="js/jquery/dist/jquery.min.js"></script>
 
 
     <!-- Leaflet JS -->
-    <script src="leaflet.js"></script>
+    <script type="text/javascript" src="leaflet.js"></script>
     <script src="leaflet-providers.js"></script>
 
     <!-- Material Design Lite JS -->
-    <script src="material_design_lite/material.min.js"></script>
-    <!-- <script src="material_design_lite/material.min.js.map"></script> -->
+    <script type="text/javascript" src="material_design_lite/material.min.js"></script>
 
 
     <!-- Drawing Leaflet JS -->
@@ -103,6 +102,7 @@
     <script type="text/javascript" src="js/Waypoints/WPQueue.js"></script>
     <script type="text/javascript" src="js/Waypoints/WPPathHandler.js"></script>
     <script type="text/javascript" src="js/index_page.js"></script>
+    <script stype="text/javascript" src="js/initialize.js"></script>
 
 
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
@@ -111,21 +111,22 @@
       <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.2/html5shiv.js"></script>
       <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
-
 </head>
 
 
 <body style="padding:0; margin:0;">
-        <h1 style="padding-top:40px">Testing</h1>
         <!-- Map -->
-        <div id="map"></div>
-
-
-
-
-    <script>
-        initializeLeaflet();
-    </script>
+        <div style="width:1366px!important; height:800px!important"  id="map"></div>
+        <!-- <img src="http://www.lib.utexas.edu/maps/middle_east_and_asia/pei-ching_topo_1978.jpg" /> -->
+        <script type="text/javascript">
+          $(document).ready(function(){
+            initializeLeaflet();
+            var height = window.innerHeight;
+            var width = window.innerWidth;
+            $('#map').css('width', width);
+            $('#map').css('height', height);
+          })
+        </script>
 </body>
 
 </html>

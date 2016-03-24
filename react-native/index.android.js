@@ -46,9 +46,9 @@ var Hawkeye = React.createClass({
     Orientation.addListener(() => {this.getOrientation()});
   },
   removeEventListeners(){
-    this.removeListener(this.eventEmitter, 'openDrawer');
-    this.removeListener(this.eventEmitter, 'drawerItemClicked');
-    this.removeListener(this.eventEmitter, 'changeFlightMode');
+    // this.removeListener(this.eventEmitter, 'openDrawer');
+    // this.removeListener(this.eventEmitter, 'drawerItemClicked');
+    // this.removeListener(this.eventEmitter, 'changeFlightMode');
   },
   addBackListener(){
     BackAndroid.addEventListener('hardwareBackPress', () => {
