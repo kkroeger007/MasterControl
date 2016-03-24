@@ -1,34 +1,39 @@
 import React from 'react-native';
-var {View, Text, TouchableOpacity, ListView, StyleSheet, ScrollView, Dimensions} = React;
+var {View, Text, TouchableOpacity, ListView, StyleSheet, ScrollView, Dimensions, TouchableNativeFeedback} = React;
 var {height, width} = Dimensions.get('window');
 var WaypointQueueItem = require('./waypointQueueItem');
+var SortableListView = require('./components/sortableListView');
+var Subscribable = require('Subscribable');
+
 
 var WaypointQueue = React.createClass({
+  mixins: [Subscribable.Mixin],
   getInitialState(){
-    var ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
+    var dimensions = Dimensions.get('window');
     return {
-      dataSource: ds.cloneWithRows(this.props.markers),
-      selectedMarker: {},
-      editingMarker: false,
+      width: dimensions.width,
+      height: dimensions.height,
     };
   },
-  _renderRow(rowData){
-    return(
-      <TouchableOpacity activeOpacity={0.7} onPress={() => this.handleWaypointQueueItemPress(rowData)} style={styles.item}>
-        <WaypointQueueItem data={rowData}/>
-      </TouchableOpacity>
-    );
+  componentDidMount(){
+    this.addListenerOn(this.props.eventEmitter, 'orientationChanged', this.orientationChanged);
   },
-  handleWaypointQueueItemPress(data){
-    this.props.eventEmitter.emit('editMarkerOpen', data);
+  orientationChanged(data){
+    var dimensions = Dimensions.get('window');
+    this.setState({
+      width: dimensions.width,
+      height: dimensions.height,
+    });
   },
   render(){
     return(
-        <View style={styles.waypointList}>
-          <ListView
-            dataSource={this.state.dataSource}
-            renderRow={(rowData) => this._renderRow(rowData)}
-            renderScrollComponent={props => <ScrollView horizontal={true} />}
+        <View style={[styles.waypointList, {width: this.state.width}]}>
+          <SortableListView
+            eventEmitter={this.props.eventEmitter}
+            style={{flex:1}}
+            data={this.props.markers}
+            renderRow={this.props._renderRow}
+            ref="SortableListView"
           />
         </View>
     );
@@ -36,24 +41,11 @@ var WaypointQueue = React.createClass({
 });
 
 var styles = StyleSheet.create({
-  container:{
-    flex:1,
-    flexDirection:'column',
-  },
+
   waypointList:{
     position: 'absolute',
     bottom: 0,
-    width: width,
     left:0,
-  },
-  item:{
-    backgroundColor: '#16a092',
-    padding:10,
-    marginLeft:2,
-    marginRight:2,
-    borderRadius:5,
-    borderBottomLeftRadius:0,
-    borderBottomRightRadius:0,
   },
 
 });

@@ -55,7 +55,6 @@ var Main = React.createClass({
 
   },
   changeFlightMode(data){
-    console.log(data);
     switch(data.mode){
       case 'live':
         this.setState({

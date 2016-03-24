@@ -1,5 +1,5 @@
 import React from 'react-native';
-var {View, Text, StyleSheet} = React;
+var {View, Text, StyleSheet, TouchableOpacity} = React;
 var Icon = require('react-native-vector-icons/MaterialIcons');
 
 var WaypointQueueItem = React.createClass({
@@ -20,11 +20,13 @@ var WaypointQueueItem = React.createClass({
     }
     return(
       <View style={styles.container}>
-        <Text style={styles.id}>{this.props.data.id}</Text>
-        <View style={styles.itemMeta}>
-          <Icon name={icon} style={styles.icon} size={25} color="#f9f9f9" />
-          <Text style={styles.altitude}>{this.props.data.altitude} ft</Text>
-        </View>
+        <TouchableOpacity activeOpacity={this.props.activeOpacity} onPress={this.props.handlePress} style={this.props.style} onLongPress={this.props.handleLongPress} ref={this.props.ref}>
+          <Text style={styles.id}>{this.props.data.id}</Text>
+          <View style={styles.itemMeta}>
+            <Icon name={icon} style={styles.icon} size={25} color="#f9f9f9" />
+            <Text style={styles.altitude}>{this.props.data.altitude} ft</Text>
+          </View>
+        </TouchableOpacity>
       </View>
     );
   }

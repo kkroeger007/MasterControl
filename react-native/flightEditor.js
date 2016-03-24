@@ -8,14 +8,14 @@ var Subscribable = require('Subscribable');
 var EditMarker = require('./editMarker');
 
 var markers = [
-  {id: 1, altitude: 66.0, lat: 90, lon: 80, type: 'waypoint'},
-  {id: 2, altitude: 66.0, lat: 90, lon: 80, type:'land'},
-  {id: 3, altitude: 66.0, lat: 90, lon: 80, type: 'loiter'},
-  {id: 4, altitude: 66.0, lat: 90, lon: 80, type: 'survey'},
-  {id: 5, altitude: 66.0, lat: 90, lon: 80, type:'waypoint'},
-  {id: 6, altitude: 66.0, lat: 90, lon: 80, type:'waypoint'},
-  {id: 7, altitude: 66.0, lat: 90, lon: 80, type:'waypoint'},
-  {id: 8, altitude: 66.0, lat: 90, lon: 80, type:'waypoint'},
+  {id: 1, altitude: 66.0, lat: 90, lon: 80, type: 'waypoint', selected: false},
+  {id: 2, altitude: 66.0, lat: 90, lon: 80, type:'land', selected: false},
+  {id: 3, altitude: 66.0, lat: 90, lon: 80, type: 'loiter', selected: false},
+  {id: 4, altitude: 66.0, lat: 90, lon: 80, type: 'survey', selected: false},
+  {id: 5, altitude: 66.0, lat: 90, lon: 80, type:'waypoint', selected: false},
+  {id: 6, altitude: 66.0, lat: 90, lon: 80, type:'waypoint', selected: false},
+  {id: 7, altitude: 66.0, lat: 90, lon: 80, type:'waypoint', selected: false},
+  {id: 8, altitude: 66.0, lat: 90, lon: 80, type:'waypoint', selected: false},
 ];
 
 
@@ -78,14 +78,12 @@ var FlightEditor = React.createClass({
   },
   drawMode(){
     this.refs.map.scrollEnabled = false;
-    console.log(this.refs.map);
   },
   editMarkerOpen(data){
     this.setState({
       editingMarker: true,
       selectedMarker: data,
     });
-    console.log(!this.state.selectedMarker);
   },
   render(){
     return(
@@ -133,21 +131,9 @@ var FlightEditor = React.createClass({
 });
 
 var styles = StyleSheet.create({
-  map:{
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    right: 0,
-    bottom: 0,
-  },
   container:{
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    right: 0,
-    bottom: 0,
-    justifyContent: 'flex-end',
-    alignItems: 'center',
+    flex:1,
+    position: 'relative',
   },
   center:{
     position:'absolute',

@@ -8,6 +8,7 @@ import React, {
   BackAndroid,
   Navigator,
   DrawerLayoutAndroid,
+  Dimensions,
 } from 'react-native';
 var EventEmitter = require('EventEmitter');
 var Subscribable = require('Subscribable');
@@ -15,6 +16,7 @@ var Main = require('./main');
 var NavigationBar = require('./navigationBar');
 var DrawerNavigation = require('./drawerNavigation');
 var Settings = require('./settings');
+var Orientation = require('react-native-orientation-listener');
 
 var _navigator;
 
@@ -41,6 +43,7 @@ var Hawkeye = React.createClass({
     this.addListenerOn(this.eventEmitter, 'drawerItemClicked', this.navigateToScene);
     this.addListenerOn(this.eventEmitter, 'changeFlightMode', this.closeDrawer);
     this.addBackListener();
+    Orientation.addListener(() => {this.getOrientation()});
   },
   removeEventListeners(){
     this.removeListener(this.eventEmitter, 'openDrawer');
@@ -67,6 +70,18 @@ var Hawkeye = React.createClass({
     _navigator.push({
       id: data.id,
     });
+  },
+  getOrientation(){
+    Orientation.getOrientation(
+      (orientation) => {
+        if(orientation.orientation !== this.state.orientation){
+          this.setState({
+            orientation: orientation.orientation
+          });
+          this.eventEmitter.emit('orientationChanged', {orientation: orientation});
+        }
+      }
+    )
   },
   render() {
     var navigationView = (
