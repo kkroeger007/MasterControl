@@ -17,6 +17,7 @@ var NavigationBar = require('./navigationBar');
 var DrawerNavigation = require('./drawerNavigation');
 var Settings = require('./settings');
 var Orientation = require('react-native-orientation-listener');
+let {width, height} = Dimensions.get('window');
 
 var _navigator;
 
@@ -29,6 +30,7 @@ var Hawkeye = React.createClass({
     }
   },
   componentWillMount(){
+    console.log(width, height);
     this.eventEmitter = new EventEmitter();
   },
   componentDidMount(){
@@ -74,11 +76,22 @@ var Hawkeye = React.createClass({
   getOrientation(){
     Orientation.getOrientation(
       (orientation) => {
-        if(orientation.orientation !== this.state.orientation){
+        if(orientation.orientation !== this.state.orientation || this.state.orientation == ''){
+          if(orientation.orientation == 'PORTRAIT'){
+            var screenHeight = Math.max(width, height);
+            var screenWidth = Math.min(width, height);
+          }else{
+            var screenHeight = Math.min(width, height);
+            var screenWidth = Math.max(width, height);
+          }
           this.setState({
-            orientation: orientation.orientation
+            orientation: orientation.orientation,
+            dimensions: {
+              width: screenWidth,
+              height: screenHeight,
+            }
           });
-          this.eventEmitter.emit('orientationChanged', {orientation: orientation});
+          this.eventEmitter.emit('orientationChanged', {orientation: orientation, dimensions: this.state.dimensions});
         }
       }
     )

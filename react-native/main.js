@@ -26,7 +26,29 @@ var WebViewBridge = require('./components/WebViewBridge/webviewBridge');
 let {width, height} = Dimensions.get('window');
 var WaypointGraph = require('./waypointGraph');
 
-const injectScript = `$('#map').css('width', `+width+`)`;
+const injectScript = `
+  function webViewBridgeReady(cb) {
+    if (window.WebViewBridge) {
+      cb(window.WebViewBridge);
+      return;
+    }
+
+    function handler() {
+      document.removeEventListener('WebViewBridge', handler, false);
+      cb(window.WebViewBridge);
+    }
+
+    document.addEventListener('WebViewBridge', handler, false);
+  }
+
+  webViewBridgeReady(function (webViewBridge) {
+    webViewBridge.onMessage = function (message) {
+      dispatchAction(message);
+      webViewBridge.send(message);
+    };
+  });
+`;
+
 
 
 var Main = React.createClass({
@@ -36,7 +58,8 @@ var Main = React.createClass({
       language: '',
       activeAircraft: 'No Active Aircraft',
       aircraftSelected: false,
-      flightMode: (<LiveFlight />),
+      flightMode: (<LiveFlight eventEmitter={this.props.eventEmitter} />),
+      webviewJS: injectScript,
     }
   },
   componentWillMount(){
@@ -45,6 +68,17 @@ var Main = React.createClass({
   componentDidMount(){
     this.addListenerOn(this.props.eventEmitter, 'selectAircraft', this.selectAircraft);
     this.addListenerOn(this.props.eventEmitter, 'changeFlightMode', this.changeFlightMode);
+    this.addListenerOn(this.props.eventEmitter, 'orientationChanged', this.setOrientation);
+  },
+  onLoadEnd(){
+    this.setState({
+      flightMode: (<LiveFlight eventEmitter={this.props.eventEmitter} webViewBridge={this.refs.webviewbridge} />),
+    });
+  },
+  setOrientation(data){
+    this.setState({
+      webviewJS: `$('#map').css('width', `+data.dimensions.width+`);$('#map').css('height', `+data.dimensions.height+`) `,
+    });
   },
   componentWillUnmount(){
     // this.removeListenerOn(this.props.eventEmitter, 'selectAircraft');
@@ -60,29 +94,37 @@ var Main = React.createClass({
 
   },
   changeFlightMode(data){
+    console.log(this.refs.webviewbridge);
     switch(data.mode){
       case 'live':
         this.setState({
-          flightMode: (<LiveFlight eventEmitter={this.props.eventEmitter} />),
+          flightMode: (<LiveFlight eventEmitter={this.props.eventEmitter} webViewBridge={this.refs.webviewbridge} />),
         });
       break;
       case 'editor':
       this.setState({
-        flightMode: (<FlightEditor eventEmitter={this.props.eventEmitter} />),
+        flightMode: (<FlightEditor eventEmitter={this.props.eventEmitter} webViewBridge={this.refs.webviewbridge} />),
       });
       break;
     }
   },
   onBridgeMessage(message){
-    const { webviewbridge } = this.refs;
-    switch (message) {
-      case "hello from webview":
-        webviewbridge.sendToBridge("hello from react-native");
-        break;
-      case "got the message inside webview":
-        console.log("we have got a message from webview! yeah");
-        break;
+    var obj = JSON.parse(message);
+    switch(obj.type){
+      case 'mapClick':
+
+      break;
+      case 'markerClick':
+        console.log(obj.position);
+      break;
+      case 'addedMarker':
+        this.props.eventEmitter.emit('addedMarker', obj);
+      break;
     }
+  },
+  testingBridge(){
+    const { webviewbridge } = this.refs;
+    webviewbridge.sendToBridge('testingBridge');
   },
   render() {
     return (
@@ -91,6 +133,7 @@ var Main = React.createClass({
             <WebViewBridge
             style={{flex:1}}
             ref="webviewbridge"
+            onLoadEnd={this.onLoadEnd}
             javaScriptEnabled={true}
             onBridgeMessage={this.onBridgeMessage}
             injectedJavaScript={injectScript}

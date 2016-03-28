@@ -39,10 +39,17 @@ var FlightEditor = React.createClass({
     this.addEventListeners();
   },
   componentDidMount(){
-
+    console.log(this.props.eventEmitter);
   },
   addEventListeners(){
     this.addListenerOn(this.props.eventEmitter, 'editMarkerOpen', this.editMarkerOpen);
+    this.addListenerOn(this.props.eventEmitter, 'addedMarker', this.addMarker);
+  },
+  addMarker(data){
+    var id = this.state.markers.length;
+    var marker = {id: id, altitude: 66.0, lat: data.position.lat, lon: data.position.lng, type:'waypoint', selected: false};
+    this.state.markers.push(marker);
+    console.log(this.state.markers);
   },
   toggleEditor(mode){
     if(this.state.editorMode == mode){
@@ -57,6 +64,9 @@ var FlightEditor = React.createClass({
     if(this.state.editorMode == "draw"){
       this.drawMode();
     }
+  },
+  onBridgeMessage(){
+    console.log('testing');
   },
   selectAll(){
     this.setState({

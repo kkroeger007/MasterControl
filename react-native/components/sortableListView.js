@@ -12,10 +12,12 @@ var {
 } = React;
 
 var WaypointQueueItem = require('../waypointQueueItem');
+var Subscribable = require('Subscribable');
 
 let HEIGHT = Dimensions.get('window').height;
 
 var SortableListView = React.createClass({
+  mixins: [Subscribable.Mixin],
   getInitialState(){
     var ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
     return {
@@ -25,6 +27,22 @@ var SortableListView = React.createClass({
         backgroundColor: '#638ca6',
       },
     };
+  },
+  componentWillMount(){
+    this.addEventListeners();
+  },
+  addEventListeners(){
+      this.addListenerOn(this.props.eventEmitter, 'addedMarker', this.addMarker);
+  },
+  addMarker(data){
+    var dataclone= this.state.markers;
+    var id = this.state.markers.length;
+    var marker = {id: id, altitude: 66.0, lat: data.position.lat, lon: data.position.lng, type:'waypoint', selected: false};
+    dataclone.push(marker);
+    this.setState({
+      markers: dataclone,
+    });
+    console.log(this.state.markers);
   },
   componentDidMount(){
     this.setState({

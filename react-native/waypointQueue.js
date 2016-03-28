@@ -13,10 +13,12 @@ var WaypointQueue = React.createClass({
     return {
       width: dimensions.width,
       height: dimensions.height,
+      markers: [],
     };
   },
   componentDidMount(){
     this.addListenerOn(this.props.eventEmitter, 'orientationChanged', this.orientationChanged);
+
   },
   orientationChanged(data){
     var dimensions = Dimensions.get('window');

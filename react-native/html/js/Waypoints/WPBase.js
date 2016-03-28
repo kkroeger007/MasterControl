@@ -77,11 +77,15 @@ var WPBase = Class.extend(function() {
     _marker.on('drag', markerDragEvent);
     _marker.on('mouseover', markerMouseOverEvent);
     _marker.on('dblclick', markerDblClickEvent)
-    _marker.on('contextmenu', markerConextMenuEvent);
+    _marker.on('contextmenu', markerContextMenuEvent);
 
     this.options.displayOriginMarker = display;
     if (display == true) {
       _marker.addTo(_leafletMap);
+      var marker = _marker.getLatLng();
+      var obj = {position: marker, type: 'addedMarker'};
+      obj = JSON.stringify(obj);
+      WebViewBridge.send(obj);
     }
   };
 
@@ -108,7 +112,11 @@ var WPBase = Class.extend(function() {
    * @return {[type]}       [description]
    */
   markerClickEvent = function(event) {
-
+    var marker = event.target;
+    var position = marker.getLatLng();
+    var obj = {position: position, type: 'markerClick'};
+    obj = JSON.stringify(obj);
+    WebViewBridge.send(obj);
   };
 
   /**
@@ -152,7 +160,7 @@ var WPBase = Class.extend(function() {
    * @param  {[event]} event [description]
    * @return {[type]}       [description]
    */
-  markerConextMenuEvent = function(event) {
+  markerContextMenuEvent = function(event) {
 
   };
 

@@ -1,6 +1,5 @@
 (function (window) {
   'use strict';
-
   //Make sure that if WebViewBridge already in scope we don't override it.
   if (window.WebViewBridge) {
     return;

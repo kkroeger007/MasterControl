@@ -1,11 +1,14 @@
 import React from 'react-native';
-var {StyleSheet, View, TouchableOpacity, Text, Navigator, Animated, LayoutAnimation} = React;
+var {StyleSheet, View, TouchableOpacity, Text, Navigator, Animated, LayoutAnimation, Navigator} = React;
 import TimerMixin from 'react-timer-mixin';
 var Icon = require('react-native-vector-icons/MaterialIcons');
 var InstrumentPanel = require('./instrumentPanel');
+var WaypointGraph = require('./waypointGraph');
+var Subscribable = require('Subscribable');
+
 
 var LiveFlight = React.createClass({
-  mixins: [TimerMixin],
+  mixins: [TimerMixin, Subscribable.Mixin],
   getInitialState(){
     return{
       dashboard: false,
@@ -15,7 +18,13 @@ var LiveFlight = React.createClass({
     };
   },
   componentDidMount(){
-
+    this.addEventListeners();
+  },
+  addEventListeners(){
+    this.addListenerOn(this.props.eventEmitter, 'addedMarker', this.addMarker);
+  },
+  addMarker(data){
+    console.log(data);
   },
   showDashboard(){
     LayoutAnimation.configureNext(LayoutAnimation.Presets.Linear);
@@ -35,6 +44,16 @@ var LiveFlight = React.createClass({
     this.setState({
       dashboard: !this.state.dashboard,
     });
+  },
+  centerToUserLocation(){
+    console.log('get position');
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        console.log(position);
+      },
+      (error) => console.log(error.message),
+      {enableHighAccuracy: true, timeout: 20000, maximumAge: 1000}
+    );
   },
   render(){
     return(
@@ -58,6 +77,8 @@ var LiveFlight = React.createClass({
         <View style={[styles.slide, this.state.dashboardStyles]}>
           <InstrumentPanel />
         </View>
+        <View style={{flex:1}}>
+      </View>
     </View>
     );
   }
@@ -72,13 +93,7 @@ var styles = StyleSheet.create({
     bottom: 0,
   },
   container:{
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    right: 0,
-    bottom: 0,
-    justifyContent: 'flex-end',
-    alignItems: 'center',
+    flex:1,
   },
   center:{
     position:'absolute',
