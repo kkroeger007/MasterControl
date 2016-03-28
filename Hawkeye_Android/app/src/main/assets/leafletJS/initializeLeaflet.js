@@ -23,14 +23,15 @@ function initializeLeaflet(){
     initializeLayerMaps();
 
     //TODO: Renable when the click makes sense.
-    var originLocation = new L.LatLng(37.88974435295123,-76.8137776851654);
+    var originLocation = new L.LatLng(37.8893064,-76.8141308);
     //mWPHandler = new WPStructureScanner(map,originLocation,false);
-    mWPHandler = new WPCircle(map,originLocation,true,20,'CW');
+    mWPHandler = new CameraHandler(map,true,true,false);
+    mWPHandler.updateUAVState(originLocation,15,0,0,100);
 
     map.on('click', mWPHandler.mapClickEvent);
 
-    var tmpVar = math.eval('5.08 cm to inch');
-    console.log("The value is: "+tmpVar);
+    // var tmpVar = math.eval('5.08 cm to inch');
+    // console.log("The value is: "+tmpVar);
     // var arrayTemp = [new L.LatLng(37.89050215748388,-76.81409955024719),
     // new L.LatLng(37.88997719874947,-76.81269407272339),
     // new L.LatLng(37.88880026153274,-76.81357383728027),

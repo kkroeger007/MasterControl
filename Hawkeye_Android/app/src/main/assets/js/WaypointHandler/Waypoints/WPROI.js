@@ -65,6 +65,12 @@ var WPROI = WPBase.extend(function() {
    */
   this.markerProp.title = 'ROI';
 
+  this.removeROI = function(){
+    this.WPParams_Latitude(0);
+    this.WPParams_Longitude(0);
+    this.WPParams_Altitude(0;
+  };
+
   /**
    * [function: this.initializer ] This function intializes the necessary variables
    * required for this class.

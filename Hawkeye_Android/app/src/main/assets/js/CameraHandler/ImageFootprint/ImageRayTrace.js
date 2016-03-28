@@ -58,18 +58,18 @@ var ImageRayTrace = Class.extend(function() {
    * [function description]
    * @return {[type]} [description]
    */
-  this.constructor = function(leafletMap,displayRayTrace) {
+  this.constructor = function(leafletMap, displayRayTrace) {
     mLeafletMap = leafletMap;
     this.options.displayRayTrace = displayRayTrace;
 
   };
 
-/**
- * [function description]
- * @param  {[type]} imageBoundaries  [description]
- * @param  {[type]} aircraftLocation [description]
- * @return {[type]}                  [description]
- */
+  /**
+   * [function description]
+   * @param  {[type]} imageBoundaries  [description]
+   * @param  {[type]} aircraftLocation [description]
+   * @return {[type]}                  [description]
+   */
   this.updateRayTrace = function(imageBoundaries, aircraftLocation) {
     if (this.options.displayRayTrace == true) {
       for (index = 0; index < mWPPolylineArray.length; index++) {
@@ -78,19 +78,19 @@ var ImageRayTrace = Class.extend(function() {
       mWPPolylineArray = [];
 
       for (index = 0; index < imageBoundaries.length; index++) {
-        var WPPolyline = new L.polyline([imageBoundaries[index],aircraftLocation],polyLineProp);
+        var WPPolyline = new L.polyline([imageBoundaries[index], aircraftLocation], polyLineProp);
         WPPolyline.addTo(mLeafletMap);
         mWPPolylineArray.push(WPPolyline);
       }
     }
   };
 
-/**
- * [displayRayTrace description]
- * @param  {[type]} displayRayTrace [description]
- * @return {[type]}                 [description]
- */
-  this.displayRayTrace = function(displayRayTrace) {
+  /**
+   * [displayRayTrace description]
+   * @param  {[type]} displayRayTrace [description]
+   * @return {[type]}                 [description]
+   */
+  this.updateDisplay = function(displayRayTrace) {
     this.options.displayRayTrace = displayRayTrace;
 
     if (this.options.displayRayTrace == false) {

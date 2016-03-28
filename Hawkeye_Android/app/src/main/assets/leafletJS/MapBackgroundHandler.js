@@ -6,6 +6,8 @@
 * leaflet plugin tileproviders.
 */
 
+var MapBackgroundHandler = Base.extend(function() {
+
 var mapPlugin_GoogleStreets = 'http://{s}.google.com/vt/lyrs=m&x={x}&y={y}&z={z}';
 var mapPlugin_GoogleHybrid = 'http://{s}.google.com/vt/lyrs=h&x={x}&y={y}&z={z}';
 var mapPlugin_GoogleSatellite = 'http://{s}.google.com/vt/lyrs=s&x={x}&y={y}&z={z}';
@@ -21,10 +23,33 @@ var mapPlugin_MaxZoom = 18;
 
 var mapBackgroundLayer;
 
+
+/**
+ * [function: this.initializer ] This function intializes the necessary variables
+ * required for this class.
+ * @return {[type]} [description]
+ */
+this.initializer = function() {
+
+};
+
+/**
+ * [function this.constructor] This is the default constructor for the
+ * WPGeneral class.
+ * @param  {[Leaflet Map]} Leaflet map to display things on.
+ * @param  {[LatLng (DEG)]} locationLatLng [description] Origin location of the general
+ * waypoint. Passed as a LatLng leaflet datatype.
+ * @param  {[Bool]} display        [description]
+ * @return {[type]}                [description]
+ */
+this.constructor = function(BaseLayerCode) {
+  var returnValue = this.setMapBaseLayer(BaseLayerCode);
+};
+
 /*
 * This function handles
 */
-function setMapBaseLayer(BaseLayerCode){
+this.setMapBaseLayer = function (BaseLayerCode){
   var returnValue;
 
   //This should check to determine if the mapBackgroundLayer object has
@@ -73,12 +98,12 @@ function setMapBaseLayer(BaseLayerCode){
   }
 
   return(returnValue);
-}
+};
 
 /*
 *
 */
-function getMapBaseLayerZoom(BaseLayerCode){
+this.getMapBaseLayerZoom = function(BaseLayerCode){
   switch (BaseLayerCode) {
     case GST:
       mapPlugin_MaxZoom = 20;
@@ -97,4 +122,6 @@ function getMapBaseLayerZoom(BaseLayerCode){
   }
 
   return(mapPlugin_MaxZoom);
-}
+};
+
+});
