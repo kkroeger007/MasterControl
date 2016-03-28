@@ -77,6 +77,7 @@ var WPCircle = WPBase.extend(function() {
  */
   this.callbackArrowMove = function(value){
     mWPCricle_Ring.updateCircleRadius(value);
+    this.WPMissionLength(2*Math.PI*value);
   }
 
 /**
@@ -87,6 +88,8 @@ var WPCircle = WPBase.extend(function() {
   this.updateCircleRadius = function(radiusValue){
     mWPCricle_Ring.updateCircleRadius(locationValue);
     mWPCircle_Arrow.updateArrowRadius(radiusValue);
+
+    this.WPMissionLength(2*Math.PI*radiusValue);
   };
 
 /**

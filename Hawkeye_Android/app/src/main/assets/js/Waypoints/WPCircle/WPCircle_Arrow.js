@@ -265,10 +265,19 @@ var WPCircle_Arrow = Class.extend(function() {
       var position = marker.getLatLng();
 
       var tmpDis = computeDistanceBetween(mLocation,position);
+
+      var tmpValue = {
+        origin: mLocation,
+        radius: tmpDis
+      };
+
+      popupAlert(1,tmpValue);
       this.updateArrowRadius(tmpDis);
       mCallbackArrowMove(tmpDis);
 
     }.bind(this);
+
+
 
     this.callbackArrowMove = function(value) {
       if (value === undefined) return (mCallbackArrowMove);
@@ -307,6 +316,21 @@ var WPCircle_Arrow = Class.extend(function() {
       if (value === undefined) return (mLeafletMap);
       mLeafletMap = value;
     }
+
+/**
+ * [function description]
+ * @param  {[type]} e     [description]
+ * @param  {[type]} value [description]
+ * @return {[type]}       [description]
+ */
+    popupAlert = function(e,value){
+      //TODO: Update the alert with something more appealing
+      var popup = L.popup()
+           .setLatLng(value.origin)
+           .setContent("Radius: " + value.radius.toFixed(1))
+           .openOn(mLeafletMap);
+    };
+
 
 
 

@@ -23,25 +23,36 @@
  * for a latitude/longitude/altitude parameter then the current location value
  * for the parameter will be used.
  */
-var WPLoiterTurns = WPCircle.extend(function() {
+var WPSurvey = Circle.extend(function() {
 
-  this.descriptor = 'WPLoiterTurns';
+  this.descriptor = 'WPSurvey';
 
-  this.WPParams_turns = function(value) {
-    if (value === undefined) return (this.WPParams_param1());
-    this.WPParams.param1(value);
+  this.descriptiveProps = {
+    footprintWidth: 0,
+    footprintHeight: 0,
+    area: 0,
+    pictures: 0,
+    GSD: 0,
+    length: 0,
+    numStrips: 0
   };
 
-  //This flight parameter is not available in Copter
-  this.WPParams_orbitRadius = function(value) {
-    if (value === undefined) return (this.WPParams_param3());
-    this.WPParams_param3(value);
+  this.flightProperties = {
+    angle: 0,
+    altitude: 0,
+    overlap: 0,
+    sidelap: 0
+  }
+
+  this.updateDescriptors = function(value){
+
   };
 
-  //This flight parameter is not available in Copter
-  this.WPParams_yawAngle = function(value) {
-    if (value === undefined) return (this.WPParams_param4());
-    this.WPParams_param4(value);
+
+  this.updateFlightProperties = function(value){
+
   };
+
+  
 
 });

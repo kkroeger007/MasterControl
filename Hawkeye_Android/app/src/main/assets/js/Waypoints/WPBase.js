@@ -16,19 +16,29 @@ var WPBase = Class.extend(function() {
   var mLeafletMap; //This holds the leaflet map object.
   var mOriginLocation; // This holds the origin position object.
 
+  /**
+   * [mWPExtrinsics description] Holds the potential value length of the mission item. This
+   * item will be used for items such as survey, loiter, circle etc. Otherwise
+   * the default length shall be 0.
+   * @type {Object}
+   */
+  var mWPExtrinsics = {
+    missionLength: 0,
+    duration: 0,
+  }
 
   /**
    * [_WPParams description]
    * @type {Object}
    */
   var mWPParams = {
-    param1: null,   //Delay - Hold time at mission waypoint (MAX 65535 seconds) (copter only)
-    param2: null,  //Acceptance radius meters-inside wp considered hit (plane only)
-    param3: null,  //0 to pass through WP, If >0 meters to pass CW orbit (plane only)
-    param4: null,  //Desired yaw angle at waypoint target (rotary wind only)
-    param5: null,  //Latitude (If zero the vehicle will hold current).
-    param6: null,  //Longitude (if zero the vehicle will hold current).
-    param7: null   //Altitude (if zero the vehicle will hold current).
+    param1: null, //Delay - Hold time at mission waypoint (MAX 65535 seconds) (copter only)
+    param2: null, //Acceptance radius meters-inside wp considered hit (plane only)
+    param3: null, //0 to pass through WP, If >0 meters to pass CW orbit (plane only)
+    param4: null, //Desired yaw angle at waypoint target (rotary wind only)
+    param5: null, //Latitude (If zero the vehicle will hold current).
+    param6: null, //Longitude (if zero the vehicle will hold current).
+    param7: null //Altitude (if zero the vehicle will hold current).
   };
 
   this.WPParams = function(value) {
@@ -70,6 +80,28 @@ var WPBase = Class.extend(function() {
     if (value === undefined) return (mWPParams.param7);
     mWPParams.param7 = value;
   };
+
+
+  /**
+   * [function description]
+   * @param  {[type]} value [description]
+   * @return {[type]}       [description]
+   */
+  this.WPMissionLength = function(value) {
+    if (value === undefined) return (mWPExtrinsics.missionLength);
+    mWPExtrinsics.missionLength = value;
+  };
+
+  /**
+   * [function description]
+   * @param  {[type]} value [description]
+   * @return {[type]}       [description]
+   */
+  this.WPMissionDuration = function(value) {
+    if (value === undefined) return (mWPExtrinsics.duration);
+    mWPExtrinsics.duration = value;
+  };
+
 
 
   /**
@@ -128,6 +160,7 @@ var WPBase = Class.extend(function() {
    */
   this.constructor = function(leafletMap, locationLatLng, display) {
     mLeafletMap = leafletMap;
+    console.log(locationLatLng);
     mOriginLocation = locationLatLng;
     mMarker = new L.marker(mOriginLocation, this.markerProp);
 
@@ -181,17 +214,17 @@ var WPBase = Class.extend(function() {
     mMarker.setLatLng(new L.LatLng(position.lat, position.lng));
     mMarker.update();
 
-    try{
+    try {
       onMoveCallback(position);
-    }catch(e){
-      console.log('An error has occured on the callback: ' +e.message);
+    } catch (e) {
+      console.log('An error has occured on the callback: ' + e.message);
     }
 
     _callbackOnMove(this);
   }.bind(this);
 
-  this.getOriginLoc = function(){
-    return(mOriginLocation);
+  this.getOriginLoc = function() {
+    return (mOriginLocation);
   };
 
   /**

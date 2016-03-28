@@ -1,35 +1,32 @@
 /*
  * Created: Kenneth Kroeger
- * Date: 3/21/2016
+ * Date: 3/24/2016
  *
- * Description: The purpose of this class is be the basic WPGeneral class that
+ * Description: The purpose of this class is be the basic WPROI class that
  * is inherets the WPBase Class. This waypoint represents the target location
- * for the UAV to land.
+ * for the UAV to point the nose towards while performing the flight.
  */
 
-var WPGeneral = WPBase.extend(function() {
-  this.descriptor = 'WPGeneral';
+
+/* NOTES:
+ *COPTER
+ *Points the nose of the vehicle and camera gimbal at the “region of interest”.
+ *In the example above the nose and camera would be pointed at the red marker.
+ *
+ *The nose would continue to point at the red marker until the end of the
+ *mission. *To “clear” the do-set-roi and cause the vehicle to return to
+ *it’s default behaviour (i.e. pointing at the next waypoint) a second
+ *DO_SET_ROI command should be placed later in the mission with all zero for
+ *Lat, Lon and Alt.
+ */
+var WPROI = WPBase.extend(function() {
+
+  this.descriptor = 'WPROI';
 
   /**
    * [_WPParams description]
    * @type {Object}
    */
-  this.WPParams_delay = function(value) {
-    if (value === undefined) return (this.WPParams_param1());
-    this.WPParams.param1(value);
-  };
-  this.WPParams_acceptanceRadius = function(value) {
-    if (value === undefined) return (this.WPParams_param2());
-    this.WPParams_param2(value);
-  };
-  this.WPParams_orbitRadius = function(value) {
-    if (value === undefined) return (this.WPParams_param3());
-    this.WPParams_param3(value);
-  };
-  this.WPParams_yawAngle = function(value) {
-    if (value === undefined) return (this.WPParams_param4());
-    this.WPParams_param4(value);
-  };
   this.WPParams_Latitude = function(value) {
     if (value === undefined) return (this.WPParams_param5());
     this.WPParams_param5(value);
@@ -66,7 +63,7 @@ var WPGeneral = WPBase.extend(function() {
    *
    * @type {Object}
    */
-  this.markerProp.title = 'WP';
+  this.markerProp.title = 'ROI';
 
   /**
    * [function: this.initializer ] This function intializes the necessary variables
@@ -78,13 +75,21 @@ var WPGeneral = WPBase.extend(function() {
     this.markerProp.icon = this.markerLocationIcon();
   };
 
-  this.constructor = function(leafletMap, locationLatLng, display) {
+  /**
+   * [function description]
+   * @param  {[type]} leafletMap     [description]
+   * @param  {[type]} locationLatLng [description]
+   * @param  {[type]} altitude       [description]
+   * @param  {[type]} display        [description]
+   * @return {[type]}                [description]
+   */
+  this.constructor = function(leafletMap, locationLatLng, altitude, display) {
     this.super(leafletMap, locationLatLng, display);
 
     this.WPParams_Latitude(locationLatLng.lat);
     this.WPParams_Longitude(locationLatLng.lng);
+    this.WPParams_Altitude(altitude);
   };
-
 
   /**
    * [function description]

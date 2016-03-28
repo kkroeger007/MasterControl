@@ -21,7 +21,10 @@ var WPHandler = Class.extend(function() {
     WPLoiterTime: 'Loiter_Time',
     WPLoiterTurns: 'Loiter_Turns',
     WPLoiter: 'Loiter',
-    WPRally: 'Rally'
+    WPRally: 'Rally',
+    WPROI: 'ROI',
+    WPStructureScanner: 'Structure Scanner',
+    WPSurvey: 'Survey'
   };
 
   this.initializer = function() {
@@ -40,10 +43,16 @@ var WPHandler = Class.extend(function() {
 
     switch(this.mCurrentWPOperation){
       case this.WPAvailabe.WPHome:
+      var tempObj = new WPHome(map,tempPosition,true);
+      mWPQueue.appendMarker(tempObj);
       break;
       case this.WPAvailabe.WPLaunch:
+      var tempObj = new WPLaunch(map,tempPosition,true);
+      mWPQueue.appendMarker(tempObj);
       break;
       case this.WPAvailabe.WPLand:
+      var tempObj = new WPLand(map,tempPosition,true);
+      mWPQueue.appendMarker(tempObj);
       break;
       case this.WPAvailabe.WPGeneral:
       var tempObj = new WPGeneral(map,tempPosition,true);
@@ -62,9 +71,6 @@ var WPHandler = Class.extend(function() {
       default:
 
     }
-
-    //var tempObj = new WPGeneral(map,tempPosition,true);
-
   };
 
   /**
