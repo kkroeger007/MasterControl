@@ -1,9 +1,14 @@
 import React from 'react-native';
-var {View, Text, StyleSheet} = React;
+var {View, Text, StyleSheet, TouchableOpacity} = React;
 var Icon = require('react-native-vector-icons/MaterialIcons');
 var LinearGradient = require('react-native-linear-gradient');
 
 var Horizon = React.createClass({
+  getInitialState(){
+    return{
+      horizonLocations: [0, 0.5, 0.51, 1],
+    };
+  },
   render(){
     return(
       <View style={styles.horizonContainer}>
@@ -38,7 +43,7 @@ var Horizon = React.createClass({
           </View>
           <View style={styles.flightIndicatorContainer}>
             <View style={styles.flightIndicator}>
-              <LinearGradient colors={['#638ca6', '#638ca6', '#16a092', '#16a092']} locations={[0, 0.5, 0.51, 1]} style={styles.flightIndicatorInner}>
+              <LinearGradient ref={(horizon) => this.horizon = horizon} colors={['#638ca6', '#638ca6', '#16a092', '#16a092']} locations={this.state.horizonLocations} style={styles.flightIndicatorInner}>
                 <View style={styles.indicatorLine}></View>
                 <View style={styles.indicatorLine}></View>
                 <View style={styles.indicatorLine}></View>

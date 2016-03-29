@@ -1,30 +1,30 @@
 import React from 'react-native';
-var {View, Text, StyleSheet, TouchableOpacity} = React;
+var {View, Text, StyleSheet, TouchableOpacity, Component} = React;
 var Icon = require('react-native-vector-icons/MaterialIcons');
 
-var DrawerNavigation = React.createClass({
+class DrawerNavigation extends React.Component {
+  componentDidMount(){
+
+  }
+  handleNavigationPress(id){
+    this.props.eventEmitter.emit('drawerItemClicked', {id: id});
+  }
+  handleFlightModeChange(mode){
+    this.props.eventEmitter.emit('changeFlightMode', {mode: mode});
+  }
   render(){
     return(
         <View style={styles.container}>
-          <TouchableOpacity style={styles.navItem}>
-            <Icon
-              name="person"
-              size={30}
-              style={styles.navItemIcon}
-              color="#16a092"
-              />
-            <Text style={styles.navItemLabel}>Account</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.navItem}>
+          <TouchableOpacity onPress={() => this.handleFlightModeChange("live")} style={styles.navItem}>
             <Icon
               name="flight"
               size={30}
               style={styles.navItemIcon}
               color="#16a092"
               />
-            <Text style={styles.navItemLabel}>Flight Data</Text>
+            <Text style={styles.navItemLabel}>Live Flight</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={styles.navItem}>
+          <TouchableOpacity onPress={() => this.handleFlightModeChange("editor")} style={styles.navItem}>
             <Icon
               name="edit"
               size={25}
@@ -33,19 +33,19 @@ var DrawerNavigation = React.createClass({
               />
             <Text style={styles.navItemLabel}>Editor</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={styles.navItem}>
+          <TouchableOpacity onPress={() => this.handleNavigationPress(2)} style={styles.navItem}>
             <Icon
-              name="timelapse"
-              size={25}
+              name="settings"
+              size={30}
               style={styles.navItemIcon}
               color="#16a092"
               />
-            <Text style={styles.navItemLabel}>Flight History</Text>
+            <Text style={styles.navItemLabel}>Settings</Text>
           </TouchableOpacity>
         </View>
     );
   }
-});
+}
 
 var styles = StyleSheet.create({
   container:{
@@ -57,8 +57,8 @@ var styles = StyleSheet.create({
   },
   navItem:{
     flexDirection: 'row',
-    paddingTop:10,
-    paddingBottom:10,
+    paddingTop:20,
+    paddingBottom:20,
   },
   navItemIcon:{
     width:60,

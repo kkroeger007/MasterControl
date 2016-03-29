@@ -1,83 +1,55 @@
 import React from 'react-native';
 var {View, Text, StyleSheet, Animated, TouchableOpacity, PanResponder, TouchableWithoutFeedback} = React;
-var MapView = require('react-native-maps');
 var TimerMixin = 'react-timer-mixin';
 var Icon = require('react-native-vector-icons/MaterialIcons');
+var WaypointQueue = require('./waypointQueue');
+var EventEmitter = require('EventEmitter');
+var Subscribable = require('Subscribable');
+var EditMarker = require('./editMarker');
 
+var markers = [
+  {id: 1, altitude: 66.0, lat: 90, lon: 80, type: 'waypoint', selected: false},
+  {id: 2, altitude: 66.0, lat: 90, lon: 80, type:'land', selected: false},
+  {id: 3, altitude: 66.0, lat: 90, lon: 80, type: 'loiter', selected: false},
+  {id: 4, altitude: 66.0, lat: 90, lon: 80, type: 'survey', selected: false},
+  {id: 5, altitude: 66.0, lat: 90, lon: 80, type:'waypoint', selected: false},
+  {id: 6, altitude: 66.0, lat: 90, lon: 80, type:'waypoint', selected: false},
+  {id: 7, altitude: 66.0, lat: 90, lon: 80, type:'waypoint', selected: false},
+  {id: 8, altitude: 66.0, lat: 90, lon: 80, type:'waypoint', selected: false},
+];
 
-LATITUDE_DELTA = 0.015;
-LONGITUDE_DELTA = 0.010;
 
 var FlightEditor = React.createClass({
-  mixins: [TimerMixin],
+  mixins: [TimerMixin, Subscribable.Mixin],
   getInitialState(){
     return{
-      region:{
-        latitude: 37.888704,
-        longitude: -76.814500,
-        latitudeDelta: LATITUDE_DELTA,
-        longitudeDelta: LONGITUDE_DELTA,
-      },
       dashboard: false,
       dashboardStyles:{
         right: -500,
       },
-      markers: [],
+      markers: markers,
       editorMode: '',
       selectAll: false,
       lastMarkerSet: [],
+      editingMarker: false,
+      selectedMarker: {},
     };
   },
   componentWillMount(){
-    this.enablePanResponder();
+    this.addEventListeners();
   },
   componentDidMount(){
-    this.refs.map.rotateEnabled = true;
-    this.markers = [];
+    console.log(this.props.eventEmitter);
   },
-  resetRotation(){
-    console.log(this.refs.map.rotateEnabled);
-    this.refs.map.rotateEnabled = !this.refs.map.rotateEnabled;
-    this.setTimeout(
-      () => { this.refs.map.rotateEnabled = !this.refs.map.rotateEnabled; },
-      150
-    );
+  addEventListeners(){
+    this.addListenerOn(this.props.eventEmitter, 'editMarkerOpen', this.editMarkerOpen);
+    this.addListenerOn(this.props.eventEmitter, 'addedMarker', this.addMarker);
   },
-  onRegionChange(region) {
-    this.setState({
-      region: {
-        latitude: region.latitude,
-        longitude: region.longitude,
-        latitudeDelta: region.latitudeDelta,
-        longitudeDelta: region.longitudeDelta,
-      }
-    });
-  },
-  centerToUserLocation(){
-    navigator.geolocation.getCurrentPosition(
-      (position) => {
-        region= {
-         latitude: position.coords.latitude,
-         longitude: position.coords.longitude,
-         latitudeDelta: LATITUDE_DELTA,
-         longitudeDelta: LONGITUDE_DELTA,
-       };
-        this.refs.map.animateToRegion(region, 1000);
-      },
-      (error) => alert(error.message),
-      {enableHighAccuracy: true, timeout: 20000, maximumAge: 1000}
-    );
-  },
-  handleMarkerAddition(data){
-    switch(this.state.editorMode){
-      case 'waypoint':
-        this.state.markers.push(<MapView.Marker draggable key={this.state.markers.length} id={this.state.markers.length}  coordinate={data.nativeEvent.coordinate} onPress={(e) => this.pressMarker(e)}  />);
-        this.onRegionChange(this.state.region);
-      break;
-    }
-  },
-  pressMarker(id){
-    console.log(id.dispatchMarker)
+  addMarker(data){
+    var id = this.state.markers.length;
+    var marker = {id: id, altitude: 66.0, lat: data.position.lat, lon: data.position.lng, type:'waypoint', selected: false};
+    this.state.markers.push(marker);
+    console.log(this.state.markers);
   },
   toggleEditor(mode){
     if(this.state.editorMode == mode){
@@ -93,10 +65,8 @@ var FlightEditor = React.createClass({
       this.drawMode();
     }
   },
-  fitMarkers(){
-    if(this.state.markers != ''){
-      this.refs.map.fitToElements(true);
-    }
+  onBridgeMessage(){
+    console.log('testing');
   },
   selectAll(){
     this.setState({
@@ -109,7 +79,6 @@ var FlightEditor = React.createClass({
       markers: [],
       selectAll: false,
     });
-    this.onRegionChange(this.state.region);
   },
   undo(){
     this.setState({
@@ -117,66 +86,18 @@ var FlightEditor = React.createClass({
       lastMarkerSet: [],
     });
   },
-  enablePanResponder(){
-    this._panResponder = PanResponder.create({
-      // Ask to be the responder:
-      onStartShouldSetPanResponder: (evt, gestureState) => true,
-      onStartShouldSetPanResponderCapture: (evt, gestureState) => true,
-      onMoveShouldSetPanResponder: (evt, gestureState) => true,
-      onMoveShouldSetPanResponderCapture: (evt, gestureState) => true,
-
-      onPanResponderGrant: (evt, gestureState) => {
-        // The guesture has started. Show visual feedback so the user knows
-        // what is happening!
-
-        // gestureState.{x,y}0 will be set to zero now
-        console.log(evt);
-      },
-      onPanResponderMove: (evt, gestureState) => {
-        // The most recent move distance is gestureState.move{X,Y}
-
-        // The accumulated gesture distance since becoming responder is
-        // gestureState.d{x,y}
-        console.log(evt);
-      },
-      onPanResponderTerminationRequest: (evt, gestureState) => true,
-      onPanResponderRelease: (evt, gestureState) => {
-        // The user has released all touches while this view is the
-        // responder. This typically means a gesture has succeeded
-        console.log(evt);
-      },
-      onPanResponderTerminate: (evt, gestureState) => {
-        // Another component has become the responder, so this gesture
-        // should be cancelled
-        console.log(evt);
-      },
-      onShouldBlockNativeResponder: (evt, gestureState) => {
-        // Returns whether this component should block native components from becoming the JS
-        // responder. Returns true by default. Is currently only supported on android.
-        return true;
-      },
-    });
-  },
   drawMode(){
     this.refs.map.scrollEnabled = false;
-    console.log(this.refs.map);
+  },
+  editMarkerOpen(data){
+    this.setState({
+      editingMarker: true,
+      selectedMarker: data,
+    });
   },
   render(){
     return(
       <View style={styles.container}>
-        <MapView
-          style={styles.map}
-          region={this.state.region}
-          onRegionChange={(region) => this.onRegionChange(region)}
-          mapType="satellite"
-          ref="map"
-          rotateEnabled={true}
-          showsUserLocation={true}
-          onPress={this.handleMarkerAddition}
-          scrollEnabled={true}
-        >
-      {this.state.markers}
-      </MapView>
         <TouchableOpacity activeOpacity={0.7} style={styles.center} onPress={this.centerToUserLocation}>
           <Icon
             name="gps-fixed"
@@ -210,27 +131,19 @@ var FlightEditor = React.createClass({
             <Icon name="undo" size={30} color="#f9f9f9" style={this.state.lastMarkerSet != '' && styles.undoActive}/>
           </TouchableOpacity>
         </View>
+      {this.state.editingMarker  &&
+        <EditMarker data={this.state.selectedMarker}/>
+      }
+      <WaypointQueue markers={this.state.markers} eventEmitter={this.props.eventEmitter} />
     </View>
     );
   }
 });
 
 var styles = StyleSheet.create({
-  map:{
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    right: 0,
-    bottom: 0,
-  },
   container:{
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    right: 0,
-    bottom: 0,
-    justifyContent: 'flex-end',
-    alignItems: 'center',
+    position:'relative',
+    flex:1,
   },
   center:{
     position:'absolute',

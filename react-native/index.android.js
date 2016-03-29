@@ -1,178 +1,135 @@
-
 import React, {
   AppRegistry,
   Component,
   StyleSheet,
   Text,
   View,
-  Image,
-  WebView,
   TouchableOpacity,
-  DrawerLayoutAndroid,
   BackAndroid,
+  Navigator,
+  DrawerLayoutAndroid,
   Dimensions,
-  NavigationExperimental,
-  Picker,
 } from 'react-native';
-
 var EventEmitter = require('EventEmitter');
 var Subscribable = require('Subscribable');
-
-var Icon = require('react-native-vector-icons/MaterialIcons');
-var LiveFlight = require('./liveFlight');
-var FlightEditor = require('./flightEditor');
+var Main = require('./main');
+var NavigationBar = require('./navigationBar');
 var DrawerNavigation = require('./drawerNavigation');
-var AircraftSelector = require('./aircraftSelector');
-var InstrumentPanel = require('./instrumentPanel');
+var Settings = require('./settings');
+var Orientation = require('react-native-orientation-listener');
+let {width, height} = Dimensions.get('window');
 
-var DRAWER_WIDTH_LEFT = 56;
+var _navigator;
+
 
 var Hawkeye = React.createClass({
   mixins: [Subscribable.Mixin],
   getInitialState(){
     return{
-      language: '',
-      activeAircraft: 'No Active Aircraft',
-      aircraftSelected: false,
+
     }
   },
   componentWillMount(){
+    console.log(width, height);
     this.eventEmitter = new EventEmitter();
   },
   componentDidMount(){
-    this.addListenerOn(this.eventEmitter, 'selectAircraft', (aircraft) => this.setActiveAircraft(aircraft));
+    this.addEventListeners();
+
   },
   componentWillUnmount(){
-    this.removeListenerOn(this.eventEmitter, 'selectAircraft');
+    this.removeEventListeners();
+  },
+  addEventListeners(){
+    this.addListenerOn(this.eventEmitter, 'openDrawer', this.openDrawer);
+    this.addListenerOn(this.eventEmitter, 'drawerItemClicked', this.navigateToScene);
+    this.addListenerOn(this.eventEmitter, 'changeFlightMode', this.closeDrawer);
+    this.addBackListener();
+    Orientation.addListener(() => {this.getOrientation()});
+  },
+  removeEventListeners(){
+    // this.removeListener(this.eventEmitter, 'openDrawer');
+    // this.removeListener(this.eventEmitter, 'drawerItemClicked');
+    // this.removeListener(this.eventEmitter, 'changeFlightMode');
+  },
+  addBackListener(){
+    BackAndroid.addEventListener('hardwareBackPress', () => {
+      if (_navigator.getCurrentRoutes().length === 1  ) {
+         return false;
+      }
+      _navigator.pop();
+      return true;
+    });
   },
   openDrawer(){
     this.drawer.openDrawer();
   },
-  triggerDropdown(){
-    this.eventEmitter.emit('dropdown');
+  closeDrawer(){
+    this.drawer.closeDrawer();
   },
-  setActiveAircraft(aircraft){
-    console.log(aircraft.aircraft);
-    this.setState({
-      activeAircraft: aircraft.aircraft,
-      aircraftSelected: true,
+  navigateToScene(data){
+    this.closeDrawer();
+    _navigator.push({
+      id: data.id,
     });
+  },
+  getOrientation(){
+    Orientation.getOrientation(
+      (orientation) => {
+        if(orientation.orientation !== this.state.orientation || this.state.orientation == ''){
+          if(orientation.orientation == 'PORTRAIT'){
+            var screenHeight = Math.max(width, height);
+            var screenWidth = Math.min(width, height);
+          }else{
+            var screenHeight = Math.min(width, height);
+            var screenWidth = Math.max(width, height);
+          }
+          this.setState({
+            orientation: orientation.orientation,
+            dimensions: {
+              width: screenWidth,
+              height: screenHeight,
+            }
+          });
+          this.eventEmitter.emit('orientationChanged', {orientation: orientation, dimensions: this.state.dimensions});
+        }
+      }
+    )
   },
   render() {
     var navigationView = (
-      <DrawerNavigation />
+      <DrawerNavigation navigator={navigator} eventEmitter={this.eventEmitter} />
     );
     return (
       <DrawerLayoutAndroid
-        drawerPosition={DrawerLayoutAndroid.positions.Left}
-        drawerWidth={Dimensions.get('window').width - DRAWER_WIDTH_LEFT}
-        keyboardDismissMode="on-drag"
-        ref={(drawer) => { this.drawer = drawer; }}
-        renderNavigationView={() => navigationView}>
-        <View style={styles.container}>
-          <FlightEditor />
-            <View style={styles.header}>
-              <TouchableOpacity onPress={this.openDrawer}>
-                <Icon
-                  name="menu"
-                  size={25}
-                  color="#f9f9f9"
-                  style={styles.headerIcon}
-                   />
-              </TouchableOpacity>
-              <TouchableOpacity
-                onPress={this.triggerDropdown}
-                style={styles.dropdownTrigger}>
-                <Icon
-                  name="more-vert"
-                  style={styles.dropdownIcon}
-                  size={25}
-                  color="#f9f9f9" />
-              </TouchableOpacity>
-              <Text style={styles.selectedAircraft}>{this.state.activeAircraft}</Text>
-            </View>
-            <AircraftSelector style={styles.aircraftSelector} events={this.eventEmitter} />
-              {this.state.aircraftSelected &&
-                <View style={styles.connectContainer}>
-                  <TouchableOpacity activeOpacity={0.7} style={styles.connect}>
-                    <Icon name="wifi" size={30} color="#666666" style={styles.connectIcon} />
-                  </TouchableOpacity>
-                  <Text style={styles.connectText}>Connect</Text>
-                </View>
-              }
-          </View>
+      drawerWidth={300}
+      drawerPosition={DrawerLayoutAndroid.positions.Left}
+      renderNavigationView={() => navigationView}
+      ref={(drawer) => { this.drawer = drawer; }}>
+        <Navigator
+          initialRoute={{id: 1}}
+          renderScene={this.navigatorRenderScene}
+          navigationBar={<NavigationBar eventEmitter={this.eventEmitter} />}
+          style={styles.container}
+          />
       </DrawerLayoutAndroid>
     );
+  },
+  navigatorRenderScene(route, navigator){
+    _navigator = navigator;
+    switch(route.id){
+      case 1:
+        return (<Main navigator={navigator} eventEmitter={this.eventEmitter}/>);
+      break;
+      case 2:
+        return (<Settings navgiator={navigator} />);
+      break;
+    }
   }
 });
 
 const styles = StyleSheet.create({
-  container: {
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    right: 0,
-    bottom: 0,
-    justifyContent: 'flex-end',
-    alignItems: 'center',
-  },
-  header:{
-    backgroundColor:'#16a092',
-    height:60,
-    flex:1,
-    left:0,
-    right:0,
-    position: 'absolute',
-    top:25,
-    alignItems:'center',
-    flexDirection: 'row',
-    paddingLeft: 15,
-    paddingRight:15,
-  },
-  headerIcon:{
-    alignItems:'center',
-    flex:1,
-    color:'#fff',
-  },
-  dropdownTrigger:{
-    alignItems:'center',
-    flex:1,
-    alignSelf:'center',
-    flexDirection:'row',
-    position: 'absolute',
-    top:0,
-    bottom:0,
-    right:10,
-  },
-  dropdownIcon:{
-      flex:1,
-      color:'#f9f9f9',
-      alignSelf:'center',
-  },
-  selectedAircraft:{
-    textAlign:'center',
-    alignSelf:'center',
-    marginLeft: 15,
-    color:'#f9f9f9',
-  },
-  connect:{
-    width:50,
-    height:50,
-    borderRadius:50,
-    backgroundColor:'#f9f9f9',
-    position: 'relative',
-    left:0,
-    right:0,
-    alignItems:'center',
-    justifyContent:'center',
-    alignSelf:'center',
-  },
-  connectContainer:{
-    bottom:15,
-  },
-  connectText:{
-    color:'#f9f9f9',
-  }
+
 });
 
 AppRegistry.registerComponent('Hawkeye', () => Hawkeye);

@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title></title>
+
+    <!-- **** CSS **** -->
+    <!-- Ionicons -->
+    <link rel="stylesheet" href="css/ionicons/ionicons.min.css" />
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="css/font-awesome-4.5.0/css/font-awesome.min.css" />
+
+    <!-- Leaflet CSS -->
+    <link rel="stylesheet" href="leaflet.css" />
+
+    <!-- Material Design Lite CSS -->
+    <link rel="stylesheet" href="material_design_lite/material-teal-blue.min.css" />
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="css/custom_material.css" />
+    <link rel="stylesheet" href="material_design_lite/google_icons.css">
+    <link rel="stylesheet" href="css/mdl-collapse.css" />
+
+
+    <!-- **** JavaScript **** -->
+    <!-- jQuery and jQuery-UI JS -->
+    <script src="js/jquery/dist/jquery.min.js"></script>
+
+
+    <!-- Leaflet JS -->
+    <script src="leaflet.js"></script>
+    <script src="leaflet-providers.js"></script>
+
+    <!-- Material Design Lite JS -->
+    <script src="material_design_lite/material.min.js"></script>
+    <!-- <script src="material_design_lite/material.min.js.map"></script> -->
+
+
+    <!-- Drawing Leaflet JS -->
+    <script type="text/javascript" src="leafletJS/polygonDrawing/Leaflet.draw.js"></script>
+    <link rel="stylesheet" href="leafletJS/polygonDrawing/dist/leaflet.draw.css" />
+
+    <script type="text/javascript" src="leafletJS/polygonDrawing/Toolbar.js"></script>
+    <script type="text/javascript" src="leafletJS/polygonDrawing/Tooltip.js"></script>
+    <script type="text/javascript" src="leafletJS/polygonDrawing/TextPolyline.js"></script>
+
+    <script type="text/javascript" src="leafletJS/polygonDrawing/ext/GeometryUtil.js"></script>
+    <script type="text/javascript" src="leafletJS/polygonDrawing/ext/LatLngUtil.js"></script>
+    <script type="text/javascript" src="leafletJS/polygonDrawing/ext/LineUtil.Intersect.js"></script>
+    <script type="text/javascript" src="leafletJS/polygonDrawing/ext/Polygon.Intersect.js"></script>
+    <script type="text/javascript" src="leafletJS/polygonDrawing/ext/Polyline.Intersect.js"></script>
+
+
+    <script type="text/javascript" src="leafletJS/polygonDrawing/draw/DrawToolbar.js"></script>
+    <script type="text/javascript" src="leafletJS/polygonDrawing/draw/handler/Draw.Feature.js"></script>
+    <script type="text/javascript" src="leafletJS/polygonDrawing/draw/handler/Draw.SimpleShape.js"></script>
+    <script type="text/javascript" src="leafletJS/polygonDrawing/draw/handler/Draw.Polyline.js"></script>
+    <script type="text/javascript" src="leafletJS/polygonDrawing/draw/handler/Draw.Circle.js"></script>
+    <script type="text/javascript" src="leafletJS/polygonDrawing/draw/handler/Draw.Marker.js"></script>
+    <script type="text/javascript" src="leafletJS/polygonDrawing/draw/handler/Draw.Polygon.js"></script>
+    <script type="text/javascript" src="leafletJS/polygonDrawing/draw/handler/Draw.Rectangle.js"></script>
+
+
+    <script type="text/javascript" src="leafletJS/polygonDrawing/edit/EditToolbar.js"></script>
+    <script type="text/javascript" src="leafletJS/polygonDrawing/edit/handler/EditToolbar.Edit.js"></script>
+    <script type="text/javascript" src="leafletJS/polygonDrawing/edit/handler/EditToolbar.Delete.js"></script>
+
+    <script type="text/javascript" src="leafletJS/polygonDrawing/Control.Draw.js"></script>
+
+    <script type="text/javascript" src="leafletJS/polygonDrawing/edit/handler/Edit.Poly.js"></script>
+    <script type="text/javascript" src="leafletJS/polygonDrawing/edit/handler/Edit.SimpleShape.js"></script>
+    <script type="text/javascript" src="leafletJS/polygonDrawing/edit/handler/Edit.Circle.js"></script>
+    <script type="text/javascript" src="leafletJS/polygonDrawing/edit/handler/Edit.Rectangle.js"></script>
+    <script type="text/javascript" src="leafletJS/polygonDrawing/edit/handler/Edit.Marker.js"></script>
+
+    <!-- Context Menu Leaflet JS -->
+    <script type="text/javascript" src="leafletJS/contextMenu/leaflet.contextmenu.js"></script>
+    <link rel="stylesheet" href="leafletJS/contextMenu/leaflet.contextmenu.css" />
+
+    <!-- Custom JS Class Helper -->
+    <script type="text/javascript" src="js/classHelper/extend.js"></script>
+
+    <!-- Custom JS -->
+    <script type="text/javascript" src="parseJS/parseLeaflet.js"></script>
+    <script type="text/javascript" src="androidJS/callbackAndroid.js"></script>
+    <script type="text/javascript" src="leafletJS/mapHandling.js"></script>
+    <script type="text/javascript" src="leafletJS/serverMaps.js"></script>
+    <script type="text/javascript" src="leafletJS/UserLocationHandler.js"></script>
+    <script type="text/javascript" src="leafletJS/mapBackgroundLayer.js"></script>
+    <script type="text/javascript" src="leafletJS/initializeLeaflet.js"></script>
+    <script type="text/javascript" src="leafletJS/WPMarker_Circle.js"></script>
+    <script type="text/javascript" src="leafletJS/drawBoundaries.js"></script>
+
+    <script type="text/javascript" src="js/Waypoints/WPBase.js"></script>
+    <script type="text/javascript" src="js/Waypoints/WPLand.js"></script>
+    <script type="text/javascript" src="js/Waypoints/WPLaunch.js"></script>
+    <script type="text/javascript" src="js/Waypoints/WPGeneral.js"></script>
+    <script type="text/javascript" src="js/Waypoints/WPQueue.js"></script>
+    <script type="text/javascript" src="js/Waypoints/WPPathHandler.js"></script>
+    <script type="text/javascript" src="js/index_page.js"></script>
+
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.2/html5shiv.js"></script>
+      <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+</head>
+
+
+<body style="padding:0; margin:0;">
+
+    <div class="mdl-layout mdl-js-layout mdl-layout--fixed-header pushmenu-push">
+        <header class="mdl-layout__header">
+            <div class="mdl-layout__header-row">
+                <!-- Add spacer, to align navigation to the right -->
+                <div class="mdl-layout-spacer"></div>
+
+
+                <button id="markerType" class="mdl-button mdl-js-button mdl-js-ripple-effect marker-type-button">
+                  Waypoint<i class="material-icons">keyboard_arrow_down</i>
+                </button>
+                <ul class="mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect marker-type-list" for="markerType">
+                    <li class="mdl-menu__item">Waypoint</li>
+                    <li class="mdl-menu__item">Spline Waypoint</li>
+                    <li class="mdl-menu__item">Circle</li>
+                    <li class="mdl-menu__item mdl-menu__item--full-bleed-divider">Land</li>
+                    <li class="mdl-menu__item">Region of Interest</li>
+                    <li class="mdl-menu__item test-li">Structure Scanner</li>
+                </ul>
+
+            </div>
+        </header>
+        <div class="mdl-layout__drawer">
+            <span class="mdl-layout-title">Hawkeye</span>
+            <nav class="mdl-navigation">
+                <div class="mdl-collapse">
+                    <a class="mdl-navigation__link mdl-collapse__button">
+                        <i class="material-icons mdl-collapse__icon mdl-animation--default">expand_more</i> Preferences
+                    </a>
+                    <div class="mdl-collapse__content-wrapper">
+                        <div class="mdl-collapse__content mdl-animation--default">
+                            <a class="mdl-navigation__link" onclick="return openPreferences()">Application</a>
+                            <a class="mdl-navigation__link" onclick="return openPreferences()">Bluetooth</a>
+                            <a class="mdl-navigation__link" onclick="return openPreferences()">Communication</a>
+                            <a class="mdl-navigation__link" onclick="return openPreferences()">HSI Companion Module</a>
+                            <a class="mdl-navigation__link" onclick="return openPreferences()">Mapping</a>
+                            <a class="mdl-navigation__link" onclick="return openPreferences()">Planning</a>
+                            <a class="mdl-navigation__link" onclick="return openPreferences()">Speech</a>
+                            <a class="mdl-navigation__link" onclick="return openPreferences()">Vehicle</a>
+                        </div>
+                    </div>
+                </div>
+                <a class="mdl-navigation__link" href="flighteditor.html">Flight Editor</a>
+
+            </nav>
+        </div>
+
+        <!-- Map -->
+        <div id="map"></div>
+
+        <!-- Waypoints Button -->
+        <div class="manage-waypoints-button">
+            <button class="mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect mdl-button--colored" onclick="openWaypoints()">
+                <i class="material-icons">place</i>
+            </button>
+        </div>
+
+        <!-- Manage Layers Button -->
+        <div class="manage-layers-button">
+            <button class="mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect mdl-button--colored" onclick="openMapLayers()">
+                <i class="material-icons">layers</i>
+            </button>
+        </div>
+
+        <!-- Center on Location -->
+        <div class="center-location-button">
+            <button class="mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect mdl-button--colored" onclick="centerOnLocation()">
+                <i class="material-icons">my_location</i>
+            </button>
+        </div>
+
+
+        <!-- Waypoints Button -->
+        <div class="manage-waypoints-button">
+            <button class="mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect mdl-button--colored" onclick="openWaypoints()">
+                <i class="material-icons">place</i>
+            </button>
+        </div>
+
+        <!-- ************************************ -->
+        <!-- ******* Waypoints Container ******* -->
+        <!-- ************************************ -->
+        <div class="waypoints-outer-container pushmenu-bottom pushmenu-up" style="display: ;">
+            <div class="waypoints-inner-container">
+                <div class="mdl-grid">
+                    <div class="mdl-cell mdl-cell--12-col">
+                        <button class="mdl-button mdl-js-button mdl-button--icon">
+                            <i class="material-icons">check</i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <!-- ************************************ -->
+        <!-- ******* Preferences Container ****** -->
+        <!-- ************************************ -->
+        <div class="preferences-outer-container" style="display: none;">
+            <div class="preferences-inner-container">
+
+                <div class="mdl-grid">
+                    <div class="mdl-cell mdl-cell--6-col">
+                        <button class="mdl-button mdl-js-button mdl-button--icon back-button">
+                            <i class="material-icons">keyboard_backspace</i>
+                        </button>
+                    </div>
+                    <div class="mdl-cell mdl-cell--6-col check-button-div">
+                        <button class="mdl-button mdl-js-button mdl-button--icon check-button">
+                            <i class="material-icons">check</i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <!-- ************************************ -->
+        <!-- ******* Map Layers Container ******* -->
+        <!-- ************************************ -->
+            <div class="maplayers-outer-container pushmenu pushmenu-left" style="display: ;">
+                <div class="maplayers-inner-container">
+                    <div class="mdl-grid">
+                        <div class="mdl-cell mdl-cell--12-col check-button-div">
+                            <button class="mdl-button mdl-js-button mdl-button--icon map-layers-check">
+                                <i class="material-icons">check</i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="map-layers-cards">
+                    </div>
+                </div>
+            </div>
+
+
+
+        <!-- ************************************ -->
+        <!-- ******* Waypoints Container ******* -->
+        <!-- ************************************ -->
+        <div class="waypoints-outer-container pushmenu-bottom pushmenu-up" style="display: ;">
+            <div class="waypoints-inner-container">
+                <div class="mdl-grid">
+                    <div class="mdl-cell mdl-cell--12-col">
+                        <button class="mdl-button mdl-js-button mdl-button--icon">
+                            <i class="material-icons">check</i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        initializeLeaflet();
+    </script>
+
+</body>
+
+</html>

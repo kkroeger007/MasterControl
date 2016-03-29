@@ -1,23 +1,16 @@
 import React from 'react-native';
-var {StyleSheet, View, TouchableOpacity, Text, Navigator, Animated, LayoutAnimation} = React;
-import MapView from 'react-native-maps';
+var {StyleSheet, View, TouchableOpacity, Text, Navigator, Animated, LayoutAnimation, Navigator} = React;
 import TimerMixin from 'react-timer-mixin';
 var Icon = require('react-native-vector-icons/MaterialIcons');
 var InstrumentPanel = require('./instrumentPanel');
+var WaypointGraph = require('./waypointGraph');
+var Subscribable = require('Subscribable');
 
-LATITUDE_DELTA = 0.015;
-LONGITUDE_DELTA = 0.010;
 
 var LiveFlight = React.createClass({
-  mixins: [TimerMixin],
+  mixins: [TimerMixin, Subscribable.Mixin],
   getInitialState(){
     return{
-      region: new Animated.Region({
-        latitude: 37.888704,
-        longitude: -76.814500,
-        latitudeDelta: LATITUDE_DELTA,
-        longitudeDelta: LONGITUDE_DELTA,
-      }),
       dashboard: false,
       dashboardStyles:{
         right: -500,
@@ -25,7 +18,13 @@ var LiveFlight = React.createClass({
     };
   },
   componentDidMount(){
-    this.refs.map.rotateEnabled = true;
+    this.addEventListeners();
+  },
+  addEventListeners(){
+    this.addListenerOn(this.props.eventEmitter, 'addedMarker', this.addMarker);
+  },
+  addMarker(data){
+    console.log(data);
   },
   showDashboard(){
     LayoutAnimation.configureNext(LayoutAnimation.Presets.Linear);
@@ -45,72 +44,40 @@ var LiveFlight = React.createClass({
     this.setState({
       dashboard: !this.state.dashboard,
     });
-
-  },
-  resetRotation(){
-    console.log(this.refs.map.rotateEnabled);
-    this.refs.map.rotateEnabled = !this.refs.map.rotateEnabled;
-    this.setTimeout(
-      () => { this.refs.map.rotateEnabled = !this.refs.map.rotateEnabled; },
-      150
-    );
-  },
-  onRegionChange(region) {
-    this.setState({
-      region: new Animated.Region({
-        latitude: region.latitude,
-        longitude: region.longitude,
-        latitudeDelta: region.latitudeDelta,
-        longitudeDelta: region.longitudeDelta,
-      })
-    });
   },
   centerToUserLocation(){
+    console.log('get position');
     navigator.geolocation.getCurrentPosition(
       (position) => {
-        this.setState({
-          region: new Animated.Region({
-           latitude: position.coords.latitude,
-           longitude: position.coords.longitude,
-           latitudeDelta: LATITUDE_DELTA,
-           longitudeDelta: LONGITUDE_DELTA,
-         }),
-       });
+        console.log(position);
       },
-      (error) => alert(error.message),
+      (error) => console.log(error.message),
       {enableHighAccuracy: true, timeout: 20000, maximumAge: 1000}
     );
   },
   render(){
     return(
       <View style={styles.container}>
-        <MapView.Animated
-          style={styles.map}
-          region={this.state.region}
-          onRegionChange={this.onRegionChange}
-          mapType="satellite"
-          ref="map"
-          rotateEnabled={true}
-          showsUserLocation={true}
-        />
-      <TouchableOpacity activeOpacity={0.7} style={styles.center} onPress={this.centerToUserLocation}>
-        <Icon
-          name="gps-fixed"
-          size={25}
-          color='#666666'
-          style={this.state.center && styles.active}
-           />
-      </TouchableOpacity>
-      <TouchableOpacity activeOpacity={0.7} style={styles.instrumentation} onPress={this.showDashboard}>
-        <Icon
-          name="network-check"
-          size={25}
-          color='#666666'
-          style={this.state.dashboard && styles.active}
-           />
-      </TouchableOpacity>
-      <View style={[styles.slide, this.state.dashboardStyles]}>
-        <InstrumentPanel />
+        <TouchableOpacity activeOpacity={0.7} style={styles.center} onPress={this.centerToUserLocation}>
+          <Icon
+            name="gps-fixed"
+            size={25}
+            color='#666666'
+            style={this.state.center && styles.active}
+             />
+        </TouchableOpacity>
+        <TouchableOpacity activeOpacity={0.7} style={styles.instrumentation} onPress={this.showDashboard}>
+          <Icon
+            name="network-check"
+            size={25}
+            color='#666666'
+            style={this.state.dashboard && styles.active}
+             />
+        </TouchableOpacity>
+        <View style={[styles.slide, this.state.dashboardStyles]}>
+          <InstrumentPanel />
+        </View>
+        <View style={{flex:1}}>
       </View>
     </View>
     );
@@ -126,13 +93,7 @@ var styles = StyleSheet.create({
     bottom: 0,
   },
   container:{
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    right: 0,
-    bottom: 0,
-    justifyContent: 'flex-end',
-    alignItems: 'center',
+    flex:1,
   },
   center:{
     position:'absolute',
@@ -141,6 +102,7 @@ var styles = StyleSheet.create({
     backgroundColor: '#f9f9f9',
     borderRadius:60,
     padding:5,
+    elevation:5,
   },
   instrumentation:{
     position: 'absolute',
@@ -149,6 +111,7 @@ var styles = StyleSheet.create({
     backgroundColor: '#f9f9f9',
     borderRadius:60,
     padding:5,
+    elevation:5,
   },
   active:{
     color: '#16a092'

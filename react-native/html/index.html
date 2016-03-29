@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title></title>
+
+    <!-- **** CSS **** -->
+    <!-- Ionicons -->
+    <link rel="stylesheet" href="css/ionicons/ionicons.min.css" />
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="css/font-awesome-4.5.0/css/font-awesome.min.css" />
+
+    <!-- Leaflet CSS -->
+    <link rel="stylesheet" href="leaflet.css" />
+
+    <!-- Material Design Lite CSS -->
+    <link rel="stylesheet" href="material_design_lite/material-teal-blue.min.css" />
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="css/custom_material.css" >
+    <link rel="stylesheet" href="material_design_lite/google_icons.css">
+    <link rel="stylesheet" href="css/mdl-collapse.css" >
+    <link rel="stylesheet" href="css/custom.css">
+
+
+    <!-- **** JavaScript **** -->
+    <!-- jQuery and jQuery-UI JS -->
+    <script type="text/javascript" src="js/jquery/dist/jquery.min.js"></script>
+
+
+    <!-- Leaflet JS -->
+    <script type="text/javascript" src="leaflet.js"></script>
+    <script src="leaflet-providers.js"></script>
+
+    <!-- Material Design Lite JS -->
+    <script type="text/javascript" src="material_design_lite/material.min.js"></script>
+
+
+    <!-- Drawing Leaflet JS -->
+    <script type="text/javascript" src="leafletJS/polygonDrawing/Leaflet.draw.js"></script>
+    <link rel="stylesheet" href="leafletJS/polygonDrawing/dist/leaflet.draw.css" />
+
+    <script type="text/javascript" src="leafletJS/polygonDrawing/Toolbar.js"></script>
+    <script type="text/javascript" src="leafletJS/polygonDrawing/Tooltip.js"></script>
+    <script type="text/javascript" src="leafletJS/polygonDrawing/TextPolyline.js"></script>
+
+    <script type="text/javascript" src="leafletJS/polygonDrawing/ext/GeometryUtil.js"></script>
+    <script type="text/javascript" src="leafletJS/polygonDrawing/ext/LatLngUtil.js"></script>
+    <script type="text/javascript" src="leafletJS/polygonDrawing/ext/LineUtil.Intersect.js"></script>
+    <script type="text/javascript" src="leafletJS/polygonDrawing/ext/Polygon.Intersect.js"></script>
+    <script type="text/javascript" src="leafletJS/polygonDrawing/ext/Polyline.Intersect.js"></script>
+
+
+    <script type="text/javascript" src="leafletJS/polygonDrawing/draw/DrawToolbar.js"></script>
+    <script type="text/javascript" src="leafletJS/polygonDrawing/draw/handler/Draw.Feature.js"></script>
+    <script type="text/javascript" src="leafletJS/polygonDrawing/draw/handler/Draw.SimpleShape.js"></script>
+    <script type="text/javascript" src="leafletJS/polygonDrawing/draw/handler/Draw.Polyline.js"></script>
+    <script type="text/javascript" src="leafletJS/polygonDrawing/draw/handler/Draw.Circle.js"></script>
+    <script type="text/javascript" src="leafletJS/polygonDrawing/draw/handler/Draw.Marker.js"></script>
+    <script type="text/javascript" src="leafletJS/polygonDrawing/draw/handler/Draw.Polygon.js"></script>
+    <script type="text/javascript" src="leafletJS/polygonDrawing/draw/handler/Draw.Rectangle.js"></script>
+
+
+    <script type="text/javascript" src="leafletJS/polygonDrawing/edit/EditToolbar.js"></script>
+    <script type="text/javascript" src="leafletJS/polygonDrawing/edit/handler/EditToolbar.Edit.js"></script>
+    <script type="text/javascript" src="leafletJS/polygonDrawing/edit/handler/EditToolbar.Delete.js"></script>
+
+    <script type="text/javascript" src="leafletJS/polygonDrawing/Control.Draw.js"></script>
+
+    <script type="text/javascript" src="leafletJS/polygonDrawing/edit/handler/Edit.Poly.js"></script>
+    <script type="text/javascript" src="leafletJS/polygonDrawing/edit/handler/Edit.SimpleShape.js"></script>
+    <script type="text/javascript" src="leafletJS/polygonDrawing/edit/handler/Edit.Circle.js"></script>
+    <script type="text/javascript" src="leafletJS/polygonDrawing/edit/handler/Edit.Rectangle.js"></script>
+    <script type="text/javascript" src="leafletJS/polygonDrawing/edit/handler/Edit.Marker.js"></script>
+
+    <!-- Context Menu Leaflet JS -->
+    <script type="text/javascript" src="leafletJS/contextMenu/leaflet.contextmenu.js"></script>
+    <link rel="stylesheet" href="leafletJS/contextMenu/leaflet.contextmenu.css" />
+
+    <!-- Custom JS Class Helper -->
+    <script type="text/javascript" src="js/classHelper/extend.js"></script>
+
+    <!-- Custom JS -->
+    <script type="text/javascript" src="parseJS/parseLeaflet.js"></script>
+    <script type="text/javascript" src="androidJS/callbackAndroid.js"></script>
+    <script type="text/javascript" src="leafletJS/mapHandling.js"></script>
+    <script type="text/javascript" src="leafletJS/serverMaps.js"></script>
+    <script type="text/javascript" src="leafletJS/UserLocationHandler.js"></script>
+    <script type="text/javascript" src="leafletJS/mapBackgroundLayer.js"></script>
+    <script type="text/javascript" src="leafletJS/initializeLeaflet.js"></script>
+    <script type="text/javascript" src="leafletJS/WPMarker_Circle.js"></script>
+    <script type="text/javascript" src="leafletJS/drawBoundaries.js"></script>
+
+    <script type="text/javascript" src="js/Waypoints/WPBase.js"></script>
+    <script type="text/javascript" src="js/Waypoints/WPCircle.js"></script>
+    <script type="text/javascript" src="js/Waypoints/WPLand.js"></script>
+    <script type="text/javascript" src="js/Waypoints/WPLaunch.js"></script>
+    <script type="text/javascript" src="js/Waypoints/WPGeneral.js"></script>
+    <script type="text/javascript" src="js/Waypoints/WPQueue.js"></script>
+    <script type="text/javascript" src="js/Waypoints/WPPathHandler.js"></script>
+    <script type="text/javascript" src="js/index_page.js"></script>
+    <script src="js/initialize.js" charset="utf-8"></script>
+
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.2/html5shiv.js"></script>
+      <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+</head>
+
+
+<body style="padding:0; margin:0;">
+        <!-- Map -->
+        <div style="width:800px; height:1366px;" id="map-container" class="map-container">
+          <div style="width:100%; height:100%" id="map"></div>
+        </div>
+        <script type="text/javascript">
+          $(document).ready(function(){
+            var height = window.innerHeight;
+            var width = window.innerWidth;
+            $('#map').css('width', width);
+            $('#map').css('height', height);
+            initializeLeaflet();
+            window.addEventListener("orientationchange", function(e) {
+              $('#map').css('width', width);
+              $('#map').css('height', height);
+            }, false);
+          });
+
+          $('#map').click(function(){
+            sendToRN('mapClick');
+          });
+
+        function dispatchAction(message){
+          if(message === 'testingBridge'){
+            testingBridge();
+          }
+        }
+
+        function testingBridge(){
+          console.log('bridge is safe');
+        }
+
+        function sendToRN(message){
+          var obj = {type: message};
+          obj = JSON.stringify(obj);
+          WebViewBridge.send(obj);
+        }
+        </script>
+</body>
+
+</html>
